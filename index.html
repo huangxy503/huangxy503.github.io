@@ -252,7 +252,8 @@ function render(){
   else if(ctx.tab==="me") body = memberHome();
 
   const sw = `<span class="sw" onclick="switchRole()">${isAdmin?"切换为参与者":"切换身份"}</span>`;
-  app.innerHTML = `<div class="hd"><span class="t">${title}</span>${sw}</div><div class="page">${body}</div>${tabbar()}`;
+  const syncBtn = isAdmin ? `<button class="btn sm ghost" style="margin-left:auto;font-size:12px;padding:4px 10px;white-space:nowrap" onclick="genSyncLink()">📤 同步</button>` : "";
+  app.innerHTML = `<div class="hd"><span class="t">${title}</span>${sw}${syncBtn}</div><div class="page">${body}</div>${tabbar()}`;
 }
 function switchRole(){ctx.role=null;ctx.tab="home";render();}
 function go(t){ctx.tab=t;render();}
@@ -561,9 +562,8 @@ function adminTable(){
   <div class="hint">组织者后台：每行一个人、每列一个字段，点「改」可编辑任意字段（含完整手机号/身份证号）。横向可滑动查看全部24列。</div>
   <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn sm" onclick="editPerson(-1)">+ 新增人员</button>
-    <button class="btn sm ghost" onclick="genSyncLink()">📤 生成同步链接</button>
   </div>
-  <div class="hint">📡 改完信息后点「生成同步链接」，把链接发到微信群，大家点开就会自动同步你的最新安排（无需电脑、数据不经任何服务器）。</div>
+  <div class="hint">📡 改完信息后点右上角「📤 同步」按钮，把链接发到微信群，大家点开就会自动同步你的最新安排（无需电脑、数据不经任何服务器）。</div>
   <div class="tbl-wrap"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
 }
 function delPerson(idx){
@@ -648,19 +648,53 @@ async function decodeSync(payload){
   const str = mark==="Z" ? await gunzipB64(b64) : rawDec(b64);
   return JSON.parse(str);
 }
-function copyText(t){ if(!t)return; const ta=document.createElement("textarea"); ta.value=t; ta.style.position="fixed"; ta.style.opacity="0"; document.body.appendChild(ta); ta.select(); try{document.execCommand("copy");toast("已复制链接");}catch(e){toast("复制失败，请手动长按选择");} ta.remove(); }
-function copySync(){ copyText(window._syncUrl); }
+/* ---- 复制链接（兼容 iOS / 微信粘贴场景）---- */
+async function copyTextAsync(text){
+  // 优先用现代 Clipboard API（iOS 14+/Android Chrome 均支持）
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    try{ await navigator.clipboard.writeText(text); return true; }catch(e){}
+  }
+  // 回退：textarea + execCommand（兼容老浏览器）
+  const ta=document.createElement("textarea");
+  ta.value=text; ta.style.cssText="position:fixed;left:-9999px;top:0;opacity:0";
+  document.body.appendChild(ta);
+  ta.focus(); ta.select();
+  try{ document.execCommand("copy"); return true; }catch(e){ return false; }
+  finally{ ta.remove(); }
+}
+async function copySync(){
+  const ok = await copyTextAsync(window._syncUrl);
+  if(ok){ toast("已复制链接 ✅"); } else{ toast("复制失败，请手动长按下方文字复制"); }
+}
+
 async function genSyncLink(){
-  // 隐私：同步链接里剔除手机号/身份证号等敏感字段，避免 37 人 PII 随链接外泄；成员本机已填的自己信息不会丢
+  // 隐私：同步链接里剔除手机号/身份证号等敏感字段
   const SENS=["手机号","身份证号"];
   const peopleForSync=state.people.map(p=>{const o=Object.assign({},p);SENS.forEach(k=>o[k]="");return o;});
   const payload=await encodeSync({people:peopleForSync, schedule:state.schedule, notices:state.notices});
   const url = location.origin+location.pathname+"#sync="+encodeURIComponent(payload);
   window._syncUrl=url;
-  if(navigator.share){
-    try{ await navigator.share({title:"团建最新信息更新", text:"点开链接即可同步组织者最新安排", url:url}); return; }catch(e){ if(e&&e.name==="AbortError") return; }
-  }
-  showSheet(`<h3>同步链接</h3><div class="hint">把下面的链接发到微信群，大家点开即可同步你的最新安排：</div><div style="word-break:break-all;font-size:12px;background:#f1f5f9;padding:10px;border-radius:8px">${esc(url)}</div><button class="btn" onclick="copySync()">复制链接</button><div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">关闭</button>`);
+
+  // 不再使用 navigator.share()——iOS 对长 URL 分享支持差、拷贝后变文件
+  showSheet(`
+    <h3>📤 生成同步链接</h3>
+    <div class="hint">把链接发到微信群，大家点开即自动同步你的最新安排。</div>
+    <div style="background:#eff6ff;border:1.5px dashed #93c5fd;padding:10px;border-radius:10px;margin:10px 0">
+      <div style="font-size:11px;color:#6b7280;margin-bottom:4px">🔗 同步链接（点击可全选复制）：</div>
+      <div id="sync-url-box" style="word-break:break-all;font-size:11px;color:#1e40af;line-height:1.6;user-select:text;-webkit-user-select:text">${esc(url)}</div>
+    </div>
+    <button class="btn" onclick="copySync()">① 复制链接</button>
+    <div class="hint" style="margin-top:10px;text-align:left">
+      <strong>② 发到微信群（按这个步骤）：</strong><br>
+      1. 点上方「复制链接」→ 手机会提示“已复制”<br>
+      2. 打开<strong>微信</strong> → 进你要发的群<br>
+      3. 在输入框<strong>长按 → 点「粘贴」</strong>→ 发送<br>
+      4. 群友点这个蓝色链接 → 自动同步 ✅<br>
+      <span style="color:#dc2626">⚠️ 不要用系统分享面板的「微信」按钮，那个在 iPhone 上会把链接变成文件打不开。</span>
+    </div>
+    <div style="height:8px"></div>
+    <button class="btn ghost" onclick="closeSheet()">关闭</button>
+  `);
 }
 async function applySync(payload){
   try{
