@@ -52,6 +52,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .f-item{margin-bottom:14px}
 .f-item label{display:block;font-size:13px;color:var(--sub);margin-bottom:5px}
 .f-item input,.f-item select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff}
+.sheet textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;min-height:60px;font-family:inherit;margin-top:6px;box-sizing:border-box}
 .f-note{font-size:11px;color:#94a3b8;margin-top:3px}
 .sens-badge{font-size:10px;background:var(--redbg);color:var(--red);padding:1px 6px;border-radius:5px;margin-left:5px}
 /* schedule */
@@ -182,7 +183,7 @@ let ADMIN_PWD = (ADMIN_PWD_DEFAULT || "8888");
 try{ const sp = localStorage.getItem(PWD_KEY); if(sp) ADMIN_PWD = sp; }catch(e){}
 
 /* ============== 通用工具 ============== */
-let ctx = {role:null, me:null, tab:"home", schedDay:0};
+let ctx = {role:null, me:null, tab:"home", schedDay:0, groupIdx:0};
 const $=(s)=>document.querySelector(s);
 const app=$("#app");
 function maskPhone(p){return p&&p.length>=7 ? p.slice(0,3)+"****"+p.slice(-4) : (p||"");}
@@ -398,6 +399,17 @@ function filterMembers(q){
 
 /* ============== 贴士 ============== */
 function tipsView(){
+  const isAdmin=ctx.role==="admin";
+  if(isAdmin){
+    if(!state.tips||!state.tips.length) return `<div class="hint">组织者视角：可随时修改、删除贴士，或新增一条。</div><button class="btn" onclick="addTip()">+ 新增贴士</button>`;
+    let html=`<div class="hint">组织者视角：可随时修改、删除贴士，或新增。</div>`;
+    state.tips.forEach((t,i)=>{
+      const preview = t.groups ? (t.groups.length+" 个分类") : (t.blocks ? (t.blocks.length+" 段") : "");
+      html+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📌 ${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div><div class="meta" style="margin-top:4px;color:#94a3b8;font-size:12px">${esc(preview)}</div></div>`;
+    });
+    html+=`<button class="btn" onclick="addTip()">+ 新增贴士</button>`;
+    return html;
+  }
   if(!state.tips||!state.tips.length) return `<div class="empty-note">暂无贴士内容</div>`;
   return `<div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`+
     state.tips.map(t=>{
@@ -412,6 +424,68 @@ function tipsView(){
       }
       return `<div class="card"><h3>📌 ${esc(t.title)}</h3>${body}</div>`;
     }).join("");
+}
+
+/* ============== 贴士：组织者改写/删除/新增 ============== */
+let _tipBuf=null, _tipIdx=-1;
+function delTip(i){confirmSheet('确定删除该贴士「'+(state.tips[i]?state.tips[i].title:'')+'」？',()=>{state.tips.splice(i,1);persist();render();});}
+function addTip(){_tipIdx=-1;_tipBuf={title:'新贴士',type:'items',groups:[{name:'分类一',items:[{name:'',detail:''}]}],blocks:[]};_renderTipSheet();}
+function editTip(i){_tipIdx=i;_tipBuf=JSON.parse(JSON.stringify(state.tips[i]));_renderTipSheet();}
+function _syncTipBuf(){
+  _tipBuf.title=document.querySelector('[data-tt="title"]').value;
+  if(_tipBuf.type==='items'){
+    _tipBuf.groups=[...document.querySelectorAll('.tip-cat-row')].map(cr=>{
+      const name=cr.querySelector('[data-cn]').value;
+      const items=[...cr.querySelectorAll('.tip-item-row')].map(ir=>({name:ir.querySelector('[data-in]').value,detail:ir.querySelector('[data-id]').value}));
+      return {name,items};
+    });
+  } else {
+    _tipBuf.blocks=[...document.querySelectorAll('.tip-block-row')].map(br=>{
+      const kind=br.dataset.kind;
+      if(kind==='subtitle')return{kind,subtitle:br.querySelector('[data-bs]').value,text:br.querySelector('[data-bt]').value};
+      return{kind:'text',text:br.querySelector('[data-bt]').value};
+    });
+  }
+}
+function _renderTipSheet(){
+  const t=_tipBuf;
+  let inner=`<h3>编辑贴士</h3><div class="f-item"><label>标题</label><input data-tt="title" value="${esc(t.title)}"></div>`;
+  if(t.type==='items'){
+    inner+=`<div class="hint">分类与条目均可增删改</div>`;
+    t.groups.forEach((g,gi)=>{
+      inner+=`<div class="tip-cat-row" style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:8px 0">
+        <div style="display:flex;gap:6px;align-items:center"><input data-cn value="${esc(g.name)}" style="flex:1;font-weight:600"><button class="mini del" data-del-cat="${gi}">删分类</button></div>`;
+      g.items.forEach((it,ii)=>{
+        inner+=`<div class="tip-item-row" style="display:flex;gap:6px;margin-top:6px"><input data-in value="${esc(it.name)}" placeholder="名称" style="flex:1"><input data-id value="${esc(it.detail||'')}" placeholder="说明" style="flex:1.4"><button class="mini del" data-del-item="${gi}-${ii}">删</button></div>`;
+      });
+      inner+=`<button class="btn sm" data-add-item="${gi}" style="margin-top:6px">+ 添加条目</button></div>`;
+    });
+    inner+=`<button class="btn sm" data-add-cat style="margin-top:8px">+ 添加分类</button>`;
+  } else {
+    t.blocks.forEach((b,bi)=>{
+      if(b.kind==='subtitle'){
+        inner+=`<div class="tip-block-row" data-kind="subtitle" style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:8px 0"><input data-bs value="${esc(b.subtitle||'')}" placeholder="小标题" style="font-weight:600"><textarea data-bt placeholder="正文">${esc(b.text||'')}</textarea><button class="mini del" data-del-block="${bi}">删</button></div>`;
+      } else {
+        inner+=`<div class="tip-block-row" data-kind="text" style="border:1px solid var(--line);border-radius:10px;padding:8px;margin:8px 0"><textarea data-bt placeholder="正文">${esc(b.text||'')}</textarea><button class="mini del" data-del-block="${bi}">删</button></div>`;
+      }
+    });
+    inner+=`<button class="btn sm" data-add-block style="margin-top:8px">+ 添加正文</button>`;
+  }
+  inner+=`<button class="btn" onclick="saveTip()">保存</button><div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
+  showSheet(inner);
+  document.querySelectorAll('[data-del-cat]').forEach(b=>b.onclick=()=>{_syncTipBuf();_tipBuf.groups.splice(+b.dataset.delCat,1);_renderTipSheet();});
+  document.querySelectorAll('[data-del-item]').forEach(b=>b.onclick=()=>{_syncTipBuf();const a=b.dataset.delItem.split('-');_tipBuf.groups[+a[0]].items.splice(+a[1],1);_renderTipSheet();});
+  document.querySelectorAll('[data-add-item]').forEach(b=>b.onclick=()=>{_syncTipBuf();_tipBuf.groups[+b.dataset.addItem].items.push({name:'',detail:''});_renderTipSheet();});
+  document.querySelectorAll('[data-add-cat]').forEach(b=>b.onclick=()=>{_syncTipBuf();_tipBuf.groups.push({name:'新分类',items:[]});_renderTipSheet();});
+  document.querySelectorAll('[data-del-block]').forEach(b=>b.onclick=()=>{_syncTipBuf();_tipBuf.blocks.splice(+b.dataset.delBlock,1);_renderTipSheet();});
+  document.querySelectorAll('[data-add-block]').forEach(b=>b.onclick=()=>{_syncTipBuf();_tipBuf.blocks.push({kind:'text',text:''});_renderTipSheet();});
+}
+function saveTip(){
+  _syncTipBuf();
+  const copy=JSON.parse(JSON.stringify(_tipBuf));
+  if(_tipIdx<0) state.tips.push(copy);
+  else state.tips[_tipIdx]=copy;
+  persist();closeSheet();render();
 }
 
 /* ============== 行程 ============== */
@@ -480,19 +554,20 @@ function groupsView(){
   const isAdmin=ctx.role==="admin"; const me=isAdmin?null:findMe();
   const gf=(GROUP_FIELDS||[]).filter(k=> state.people.some(p=>valOf(p,k)));
   if(gf.length===0) return `<div class="empty-note">尚未设置分组字段（生成时未包含分组列）</div>`;
-  let html="";
-  gf.forEach(k=>{
-    const by={};
-    state.people.forEach(p=>{const v=valOf(p,k)||"未分组";(by[v]=by[v]||[]).push(p);});
-    html+=`<div class="card" style="margin-top:6px"><h3>🚗 ${esc(k)} 分组</h3></div>`;
-    html+=Object.keys(by).sort().map(g=>`
-      <div class="grp"><div class="gh">${g==='未分组'?g:esc(g)} (${by[g].length}人)</div>
-      <div class="gm">${by[g].map(p=>{const id=state.people.indexOf(p);return `<span class="m ${!isAdmin&&me&&p._id===me._id?'me':''}" ${isAdmin?`onclick="editGroup(${id})" style="cursor:pointer"`:''}>${esc(displayName(p))}</span>`;}).join("")}</div>
-      ${isAdmin?`<div style="margin-top:6px"><button class="mini" onclick="renameGroup('${esc(k)}','${esc(g)}')">改名此分组</button></div>`:''}</div>`).join("");
-  });
-  const tip = isAdmin?`<div class="hint">组织者视角：点任意成员可调整其${gf.map(x=>"「"+x+"」").join("")}；也可批量改名分组。</div>`:"";
-  return tip+html;
+  if(ctx.groupIdx==null||ctx.groupIdx>=gf.length)ctx.groupIdx=0;
+  const k=gf[ctx.groupIdx];
+  const by={};
+  state.people.forEach(p=>{const v=valOf(p,k)||"未分组";(by[v]=by[v]||[]).push(p);});
+  const tabs=`<div class="daytabs">`+gf.map((g,i)=>
+    `<div class="dtab ${ctx.groupIdx===i?'on':''}" onclick="goGroupTab(${i})"><div class="dw">${esc(g)}</div><div class="dd">${state.people.filter(p=>valOf(p,g)).length}人</div></div>`).join("")+`</div>`;
+  const groupsHtml=Object.keys(by).sort().map(g=>`
+    <div class="grp"><div class="gh">${g==='未分组'?g:esc(g)} (${by[g].length}人)</div>
+    <div class="gm">${by[g].map(p=>{const id=state.people.indexOf(p);return `<span class="m ${!isAdmin&&me&&p._id===me._id?'me':''}" ${isAdmin?`onclick="editGroup(${id})" style="cursor:pointer"`:''}>${esc(displayName(p))}</span>`;}).join("")}</div>
+    ${isAdmin?`<div style="margin-top:6px"><button class="mini" onclick="renameGroup('${esc(k)}','${esc(g)}')">改名此分组</button></div>`:''}</div>`).join("");
+  const tip = isAdmin?`<div class="hint">组织者视角：点任意成员可调整其${gf.map(x=>"「"+x+"」").join("")}；也可批量改名分组。切换上方标签查看不同分组维度。</div>`:"";
+  return tabs+tip+groupsHtml;
 }
+function goGroupTab(i){ctx.groupIdx=i;render();}
 function editGroup(idx){
   const p=state.people[idx];
   const f=(k,label)=>`<div class="f-item"><label>${label}</label><input data-gk="${k}" value="${esc(valOf(p,k))}"></div>`;
@@ -554,9 +629,7 @@ function delNotice(idx){confirmSheet('确定删除该公告？',()=>{state.notic
 function adminHome(){return adminTable();}
 function adminTable(){
   const flds=state.fields;
-  const filled=(key)=>state.people.filter(p=>valOf(p,key)).length;
   const total=state.people.length;
-  const idDone=filled("身份证号"), flightDone=filled("去程航班");
   let head=`<th class="name-col">${esc(NAME_FIELD||"姓名")}</th>`+flds.filter(f=>f.key!==NAME_FIELD).map(f=>`<th>${esc(f.label)}</th>`).join("")+`<th>操作</th>`;
   let rows=state.people.map((p,idx)=>{
     let tds=`<td class="name-col">${esc(displayName(p))}</td>`;
@@ -574,8 +647,6 @@ function adminTable(){
   return `
   <div class="adm-top">
     <div class="stat"><div class="num">${total}</div><div class="lb">总人数</div></div>
-    <div class="stat"><div class="num" style="color:${idDone<total?'#d97706':'#059669'}">${idDone}/${total}</div><div class="lb">身份证号已填</div></div>
-    <div class="stat"><div class="num" style="color:${flightDone<total?'#d97706':'#059669'}">${flightDone}/${total}</div><div class="lb">航班已填</div></div>
   </div>
   <div class="hint">组织者后台：每行一个人、每列一个字段，点「改」可编辑任意字段。横向可滑动查看全部列。</div>
   <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
