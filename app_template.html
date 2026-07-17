@@ -717,8 +717,9 @@ function editPerson(idx){
   document.body.appendChild(mask);
   window._editIdx=idx; window._newObj=p;
 }
-function closeSheet(){const m=$("#mask");if(m)m.remove();}
+function closeSheet(){const m=$("#mask");if(m)m.remove();render();}
 function showSheet(inner){
+  closeSheet();
   const mask=document.createElement("div");mask.className="mask";mask.id="mask";
   mask.innerHTML=`<div class="sheet">${inner}</div>`;
   mask.onclick=(e)=>{if(e.target===mask)closeSheet();};
