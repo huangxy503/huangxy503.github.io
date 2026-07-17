@@ -180,7 +180,6 @@ try{
   }
 }catch(e){}
 function persist(){localStorage.setItem(LS_KEY, JSON.stringify({v:DATA_VERSION, people:state.people, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview}));}
-function resetData(){ confirmSheet("确定恢复为初始数据？你在本地的修改会清空。", ()=>{ try{localStorage.removeItem(LS_KEY);}catch(e){} state=JSON.parse(JSON.stringify(DATA)); persist(); render(); }); }
 
 /* ============== 口令（默认可配置 + 应用内修改） ============== */
 const PWD_KEY = LS_KEY + "_pwd";
@@ -305,7 +304,7 @@ function tabbar(){
 function memberHome(){
   const me=findMe();
   const modules={};
-  state.fields.forEach(f=>{(modules[f.module]=modules[f.module]||[]).push(f);});
+  state.fields.filter(f=>f.key!=="身份证姓名").forEach(f=>{(modules[f.module]=modules[f.module]||[]).push(f);});
   let cards=Object.keys(modules).map(m=>{
     const rows=modules[m].map(f=>{
       let v=valOf(me,f.key);
@@ -330,14 +329,13 @@ function memberHome(){
   <div style="height:8px"></div>
   <div class="hint">切换到「组织者」身份可看到全部人员的完整信息并统一安排${GROUP_FIELDS&&GROUP_FIELDS.length?(" / "+GROUP_FIELDS.join(" / ")):""}。</div>
   <div style="height:8px"></div>
-  ${SYNC_ENABLED?`<div class="role-btn ghost" onclick="manualResync()"><b>🔄 重新同步最新数据</b></div><div style="height:8px"></div>`:""}
-  <div class="role-btn ghost" onclick="resetData()"><b>♻️ 恢复初始数据（清本机缓存）</b></div>`;
+  ${SYNC_ENABLED?`<div class="role-btn ghost" onclick="manualResync()"><b>🔄 重新同步最新数据</b></div>`:""}`;
 }
 
 /* ============== MEMBER: 编辑表单 ============== */
 function editForm(){
   const me=findMe();
-  const editable = state.fields.filter(f=>f.editor==="member");
+  const editable = state.fields.filter(f=>f.editor==="member" && f.key!=="身份证姓名");
   const bymod={};
   editable.forEach(f=>{(bymod[f.module]=bymod[f.module]||[]).push(f);});
   let html=`<div class="hint">这里只放「你自己要填」的字段；${GROUP_FIELDS&&GROUP_FIELDS.length?GROUP_FIELDS.join(" / ")+" 等":""}由组织者统一安排，你在上一页只能看。</div>`;
