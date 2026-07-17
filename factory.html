@@ -67,13 +67,27 @@ a.dl{color:var(--brand);font-size:13px}
 </div>
 
 <div class="card">
-  <h2>④ 上传成员表（CSV / Excel 另存为 CSV）</h2>
+  <h2>④ 上传成员表（CSV / Excel 另存为 CSV）<span style="font-size:12px;color:var(--red);font-weight:400"> 必填</span></h2>
   <div class="f-item"><input id="csv" type="file" accept=".csv,text/csv"></div>
   <div class="note">第一行为表头（列名即字段名）。常见列：姓名、性别、部门、手机号、身份证号、去程航班、车号、游戏分组、住宿… 列名含「手机/身份证」会自动脱敏，含「车/分组/角色」会自动变成分组依据。</div>
   <div id="preview"></div>
 </div>
 
-<button class="btn" id="genBtn" disabled>⑤ 生成并下载我的小程序</button>
+<div class="card">
+  <h2>⑤ 上传行程表（可选，可跳过）</h2>
+  <div class="f-item"><input id="schedCsv" type="file" accept=".csv,text/csv"></div>
+  <div class="note">CSV 格式：第一行是表头（必须包含「日期」列）。有「日期」值的行 = 新的一天（同时填星期/主题）；没有日期值的行 = 当天时段（开始时间/结束时间/事项/交通方式）。不传则行程为空，生成后可在后台手动添加。</div>
+  <div id="schedPreview"></div>
+</div>
+
+<div class="card">
+  <h2>⑥ 上传公告列表（可选，可跳过）</h2>
+  <div class="f-item"><input id="noticeCsv" type="file" accept=".csv,text/csv"></div>
+  <div class="note">CSV 格式：每行一条公告。建议列：标题、内容、级别(普通/重要)、发布人、时间。不传则公告为空，生成后可在后台发布。</div>
+  <div id="noticePreview"></div>
+</div>
+
+<button class="btn" id="genBtn" disabled>⑦ 生成并下载我的小程序</button>
 
 <div id="result" class="card ok">
   <h2>✅ 生成成功！</h2>
@@ -158,6 +172,8 @@ function isGroupField(h){
 
 /* ---------- 解析成员表 ---------- */
 let CSV = {headers:[], rows:[], nameIdx:0};
+let SCHED_DATA = null;   // null=未上传, []=上传但空, [...]=已解析
+let NOTICE_DATA = null;  // 同上
 document.getElementById("csv").addEventListener("change", async (e)=>{
   const f=e.target.files[0]; if(!f) return;
   const text = await f.text();
@@ -166,6 +182,106 @@ document.getElementById("csv").addEventListener("change", async (e)=>{
   const headers = raw[0].map(h=>(h||"").trim());
   CSV = {headers, rows: raw.slice(1), nameIdx: chooseNameIdx(headers)};
   renderPreview();
+});
+
+/* ---------- 行程 CSV 解析 ---------- */
+function findCol(headers, ...names){
+  const i = headers.findIndex(h => names.some(n => new RegExp(n,"i").test(h)));
+  return i;
+}
+function parseScheduleCSV(text){
+  const raw = parseCSV(text);
+  if(raw.length < 2) return [];
+  const h = raw[0].map(x=>(x||"").trim());
+  const ci_date = findCol(h, "日期","date");
+  const ci_week = findCol(h, "星期","周","week","第几天");
+  const ci_title = findCol(h, "主题","title","路线");
+  const ci_start = findCol(h, "开始时间","开始","start","时间");
+  const ci_end = findCol(h, "结束时间","结束","end");
+  const ci_act = findCol(h, "事项","活动","act","内容");
+  const ci_trans = findCol(h, "交通方式","交通","trans","交通工具");
+
+  if(ci_date < 0){ alert("行程表缺少「日期」列，请检查表头"); return null; }
+
+  const schedule = [];
+  let curDay = null;
+  for(let ri=1; ri<raw.length; ri++){
+    const r = raw[ri].map((x,i)=>(x||"").trim());
+    const dateVal = r[ci_date] || "";
+    if(dateVal){
+      // 新的一天
+      let wk = ci_week>=0 ? r[ci_week] : "";
+      let ttl = ci_title>=0 ? r[ci_title] : "";
+      curDay = { week: wk, date: dateVal.replace(/\n/g," ").trim(), title: ttl, tip: "", items: [] };
+      schedule.push(curDay);
+    } else if(curDay) {
+      // 当天时段
+      curDay.items.push({
+        start: ci_start>=0?r[ci_start]:"",
+        end: ci_end>=0?r[ci_end]:"",
+        act: ci_act>=0?r[ci_act]:"",
+        trans: ci_trans>=0?r[ci_trans]:""
+      });
+    }
+    // 空行跳过
+  }
+  return schedule;
+}
+
+/* ---------- 公告 CSV 解析 ---------- */
+function parseNoticeCSV(text){
+  const raw = parseCSV(text);
+  if(raw.length < 2) return [];
+  const h = raw[0].map(x=>(x||"").trim());
+  const ci_title = findCol(h, "标题","title","题目");
+  const ci_content = findCol(h, "内容","content","正文","详情");
+  const ci_level = findCol(h, "级别","level","重要性","重要");
+  const ci_author = findCol(h, "发布人","author","作者","发布者");
+  const ci_time = findCol(h, "时间","time","日期","发布时间");
+
+  const notices = [];
+  for(let ri=1; ri<raw.length; ri++){
+    const r = raw[ri].map((x,i)=>(x||"").trim());
+    const title = ci_title>=0 ? r[ci_title] : "";
+    if(!title) continue;  // 跳过空标题行
+    notices.push({
+      title,
+      content: ci_content>=0 ? r[ci_content] : "",
+      level: (ci_level>=0 && /重要|urgent/i.test(r[ci_level])) ? "重要" : "普通",
+      author: ci_author>=0 ? r[ci_author] : "组织者",
+      time: ci_time>=0 ? r[ci_time] : new Date().toLocaleDateString("zh-CN")
+    });
+  }
+  return notices;
+}
+
+// 行程文件监听
+document.getElementById("schedCsv").addEventListener("change", async (e)=>{
+  const f=e.target.files[0]; if(!f){ SCHED_DATA=null; document.getElementById("schedPreview").style.display="none"; updateGenBtn(); return; }
+  const text = await f.text();
+  SCHED_DATA = parseScheduleCSV(text);
+  const pv=document.getElementById("schedPreview");
+  if(!SCHED_DATA){
+    pv.style.display="none";
+  } else {
+    pv.style.display="block";
+    pv.innerHTML = `识别到 <b>${SCHED_DATA.length}</b> 天行程，共 ${SCHED_DATA.reduce((s,d)=>s+d.items.length,0)} 个时段。`;
+  }
+  updateGenBtn();
+});
+// 公告文件监听
+document.getElementById("noticeCsv").addEventListener("change", async (e)=>{
+  const f=e.target.files[0]; if(!f){ NOTICE_DATA=null; document.getElementById("noticePreview").style.display="none"; updateGenBtn(); return; }
+  const text = await f.text();
+  NOTICE_DATA = parseNoticeCSV(text);
+  const pv=document.getElementById("noticePreview");
+  if(!NOTICE_DATA){
+    pv.style.display="none";
+  } else {
+    pv.style.display="block";
+    pv.innerHTML = `识别到 <b>${NOTICE_DATA.length}</b> 条公告。`;
+  }
+  updateGenBtn();
 });
 
 function renderPreview(){
@@ -214,7 +330,9 @@ function buildData(){
     return o;
   });
   const groupF = h.filter(isGroupField);
-  return {fields, people, groupF};
+  return {fields, people, groupF,
+          schedule: SCHED_DATA || [],
+          notices: NOTICE_DATA || []};
 }
 
 document.getElementById("genBtn").addEventListener("click", async ()=>{
@@ -267,7 +385,10 @@ document.getElementById("genBtn").addEventListener("click", async ()=>{
     a.href = url;
     a.download = (title||"团建小程序") + ".html";
     document.getElementById("resultMsg").innerHTML =
-      `文件已准备好（${people.length} 人 / ${fields.length} 个字段）。<br>同步模式：${syncMode==="git"?"✅ 已绑定你的 GitHub 仓库 <b>"+esc(document.getElementById("repo").value.trim())+"</b>":"⚠️ 手动导出模式"}`;
+      `文件已准备好（${people.length} 人 / ${fields.length} 个字段）。<br>同步模式：${syncMode==="git"?"✅ 已绑定你的 GitHub 仓库 <b>"+esc(document.getElementById("repo").value.trim())+"</b>":"⚠️ 手动导出模式"}<br>`+
+      (SCHED_DATA&&SCHED_DATA.length?`📅 行程：${SCHED_DATA.length}天 / ${SCHED_DATA.reduce((s,d)=>s+d.items.length,0)}个时段<br>`:"")+
+      (NOTICE_DATA&&NOTICE_DATA.length?`📢 公告：${NOTICE_DATA.length}条<br>`:"")+
+      (!SCHED_DATA&&!NOTICE_DATA?"<i style='color:var(--sub)'>（行程和公告未上传，可在生成后通过「组织者后台」手动添加）</i><br>":"");
     document.getElementById("result").style.display="block";
     document.getElementById("result").scrollIntoView({behavior:"smooth"});
     a.click();
