@@ -398,39 +398,43 @@ function filterMembers(q){
 }
 
 /* ============== 贴士 ============== */
+function _tipBody(t){
+  let body="";
+  if(t.groups&&t.groups.length){
+    body=t.groups.map(g=>`<div class="tip-cat">${esc(g.name)}</div>`+
+      (g.items||[]).map(it=>`<div class="tip-item"><div class="ti-name">${esc(it.name)}</div>${it.detail?`<div class="ti-detail">${esc(it.detail)}</div>`:''}</div>`).join("")).join("");
+  } else if(t.blocks&&t.blocks.length){
+    body=t.blocks.map(b=> b.kind==="subtitle"
+      ? `<div class="tip-sub">${esc(b.subtitle)}</div><div class="tip-body">${esc(b.text)}</div>`
+      : `<div class="tip-body">${esc(b.text)}</div>`).join("");
+  }
+  return body;
+}
 function tipsView(){
   const isAdmin=ctx.role==="admin";
   if(isAdmin){
     if(!state.tips||!state.tips.length) return `<div class="hint">组织者视角：可随时修改、删除贴士，或新增一条。</div><button class="btn" onclick="addTip()">+ 新增贴士</button>`;
-    let html=`<div class="hint">组织者视角：可随时修改、删除贴士，或新增。</div>`;
+    let html=`<div class="hint">组织者视角：下方为贴士完整内容，每条可「改 / 删」，底部可新增。</div>`;
     state.tips.forEach((t,i)=>{
-      const preview = t.groups ? (t.groups.length+" 个分类") : (t.blocks ? (t.blocks.length+" 段") : "");
-      html+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📌 ${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div><div class="meta" style="margin-top:4px;color:#94a3b8;font-size:12px">${esc(preview)}</div></div>`;
+      html+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📌 ${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div>${_tipBody(t)}</div>`;
     });
     html+=`<button class="btn" onclick="addTip()">+ 新增贴士</button>`;
     return html;
   }
   if(!state.tips||!state.tips.length) return `<div class="empty-note">暂无贴士内容</div>`;
   return `<div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`+
-    state.tips.map(t=>{
-      let body="";
-      if(t.groups&&t.groups.length){
-        body=t.groups.map(g=>`<div class="tip-cat">${esc(g.name)}</div>`+
-          g.items.map(it=>`<div class="tip-item"><div class="ti-name">${esc(it.name)}</div>${it.detail?`<div class="ti-detail">${esc(it.detail)}</div>`:''}</div>`).join("")).join("");
-      } else if(t.blocks&&t.blocks.length){
-        body=t.blocks.map(b=> b.kind==="subtitle"
-          ? `<div class="tip-sub">${esc(b.subtitle)}</div><div class="tip-body">${esc(b.text)}</div>`
-          : `<div class="tip-body">${esc(b.text)}</div>`).join("");
-      }
-      return `<div class="card"><h3>📌 ${esc(t.title)}</h3>${body}</div>`;
-    }).join("");
+    state.tips.map(t=>`<div class="card"><h3>📌 ${esc(t.title)}</h3>${_tipBody(t)}</div>`).join("");
 }
 
 /* ============== 贴士：组织者改写/删除/新增 ============== */
 let _tipBuf=null, _tipIdx=-1;
 function delTip(i){confirmSheet('确定删除该贴士「'+(state.tips[i]?state.tips[i].title:'')+'」？',()=>{state.tips.splice(i,1);persist();render();});}
 function addTip(){_tipIdx=-1;_tipBuf={title:'新贴士',type:'items',groups:[{name:'分类一',items:[{name:'',detail:''}]}],blocks:[]};_renderTipSheet();}
-function editTip(i){_tipIdx=i;_tipBuf=JSON.parse(JSON.stringify(state.tips[i]));_renderTipSheet();}
+function editTip(i){_tipIdx=i;_tipBuf=JSON.parse(JSON.stringify(state.tips[i]));
+  if(!_tipBuf.type)_tipBuf.type=(_tipBuf.groups&&_tipBuf.groups.length)?'items':((_tipBuf.blocks&&_tipBuf.blocks.length)?'blocks':'items');
+  if(_tipBuf.type==='items'&&!_tipBuf.groups)_tipBuf.groups=[];
+  if(_tipBuf.type==='blocks'&&!_tipBuf.blocks)_tipBuf.blocks=[];
+  _renderTipSheet();}
 function _syncTipBuf(){
   _tipBuf.title=document.querySelector('[data-tt="title"]').value;
   if(_tipBuf.type==='items'){
@@ -563,8 +567,8 @@ function groupsView(){
   const groupsHtml=Object.keys(by).sort().map(g=>`
     <div class="grp"><div class="gh">${g==='未分组'?g:esc(g)} (${by[g].length}人)</div>
     <div class="gm">${by[g].map(p=>{const id=state.people.indexOf(p);return `<span class="m ${!isAdmin&&me&&p._id===me._id?'me':''}" ${isAdmin?`onclick="editGroup(${id})" style="cursor:pointer"`:''}>${esc(displayName(p))}</span>`;}).join("")}</div>
-    ${isAdmin?`<div style="margin-top:6px"><button class="mini" onclick="renameGroup('${esc(k)}','${esc(g)}')">改名此分组</button></div>`:''}</div>`).join("");
-  const tip = isAdmin?`<div class="hint">组织者视角：点任意成员可调整其${gf.map(x=>"「"+x+"」").join("")}；也可批量改名分组。切换上方标签查看不同分组维度。</div>`:"";
+    ${isAdmin&&g!=='未分组'?`<div style="margin-top:6px"><button class="mini" onclick="editGroupCat('${esc(k)}','${esc(g)}')">修改</button> <button class="mini del" onclick="delGroupCat('${esc(k)}','${esc(g)}')">删除</button></div>`:''}</div>`).join("");
+  const tip = isAdmin?`<div class="hint">组织者视角：点任意成员可调整其${gf.map(x=>"「"+x+"」").join("")}；每个分组可「修改」名称或「删除」（成员回到未分组）。切换上方标签查看不同分组维度。</div>`:"";
   return tabs+tip+groupsHtml;
 }
 function goGroupTab(i){ctx.groupIdx=i;render();}
@@ -581,11 +585,28 @@ function saveGroup(idx){
   document.querySelectorAll('[data-gk]').forEach(el=>{o[el.dataset.gk]=el.value.trim();});
   persist();closeSheet();render();
 }
-function renameGroup(field,oldName){
-  const nv=prompt("将「"+oldName+"」统一改名为：",oldName);
-  if(nv==null)return; nv=nv.trim(); if(!nv)return;
+function editGroupCat(field,oldName){
+  const cnt=state.people.filter(p=>(valOf(p,field)||"未分组")===oldName).length;
+  const inner=`<h3>修改分组</h3>`+
+    `<div class="hint">「${esc(field)}」维度下的「${esc(oldName)}」分组，共 ${cnt} 人。改名后该组所有成员一起更新。</div>`+
+    `<div class="f-item"><label>分组名称</label><input data-gcn value="${esc(oldName)}"></div>`+
+    `<button class="btn" onclick="saveGroupCat('${esc(field)}','${esc(oldName)}')">保存</button><div style="height:8px"></div>`+
+    `<button class="btn ghost" onclick="closeSheet()">取消</button>`;
+  showSheet(inner);
+}
+function saveGroupCat(field,oldName){
+  const el=document.querySelector('[data-gcn]'); if(!el)return;
+  const nv=el.value.trim(); if(!nv){toast("名称不能为空");return;}
+  if(nv===oldName){closeSheet();return;}
   state.people.forEach(p=>{if((valOf(p,field)||"未分组")===oldName)p[field]=nv;});
-  persist();render();
+  persist();closeSheet();render();toast("已更新分组名 ✅");
+}
+function delGroupCat(field,oldName){
+  const cnt=state.people.filter(p=>(valOf(p,field)||"未分组")===oldName).length;
+  confirmSheet('删除分组「'+oldName+'」？该组 '+cnt+' 人将回到「未分组」（成员本身不会被删除）。',()=>{
+    state.people.forEach(p=>{if((valOf(p,field)||"未分组")===oldName)p[field]="";});
+    persist();render();toast("已删除该分组 ✅");
+  });
 }
 
 /* ============== 公告 ============== */
