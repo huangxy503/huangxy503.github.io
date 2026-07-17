@@ -384,6 +384,7 @@ document.getElementById("genBtn").addEventListener("click", async ()=>{
       html = fill(html, "__SYNC_TOKEN_PARTS__", "[]");
     }
     html = fill(html, "__DATA__", JSON.stringify(data));
+    html = fill(html, "__BUILD_QS__", "?v="+Date.now());
 
     // 残留占位符检查
     const leftover = html.match(/__[A-Z_]+__/);
