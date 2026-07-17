@@ -660,18 +660,21 @@ function exportData(){
 }
 function importData(){
   const inp=document.createElement("input");
-  inp.type="file"; inp.accept=".json,application/json";
+  inp.type="file";
+  inp.accept=".json,.txt,text/plain,application/json,*/*";
   inp.onchange=()=>{
     const f=inp.files[0]; if(!f)return;
     const rd=new FileReader();
     rd.onload=()=>{
       try{
         const d=JSON.parse(rd.result);
+        if(!d.people&&!d.schedule&&!d.notices) throw new Error("不是有效的数据文件（缺少 people/schedule/notices 字段）");
         if(d.people) state.people=d.people;
         if(d.schedule) state.schedule=d.schedule;
         if(d.notices) state.notices=d.notices;
+        if(d.tips) state.tips=d.tips; if(d.overview) state.overview=d.overview;
         persist(); toast("导入成功 ✅"); closeSheet(); render();
-      }catch(e){ alert("文件解析失败，请确认是导出的数据文件"); }
+      }catch(e){ alert("导入失败："+(e.message||"文件格式不对，请确认是「导出数据文件」生成的 JSON 文件")); }
     };
     rd.readAsText(f);
   };
