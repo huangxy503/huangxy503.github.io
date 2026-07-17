@@ -214,6 +214,16 @@ function parseScheduleCSV(text){
       let ttl = ci_title>=0 ? r[ci_title] : "";
       curDay = { week: wk, date: dateVal.replace(/\n/g," ").trim(), title: ttl, tip: "", items: [] };
       schedule.push(curDay);
+      // 同一行若也带了时段信息（开始时间/事项等），算当天第一条时段，避免丢失首条
+      const hasItem = (ci_start>=0&&r[ci_start]) || (ci_act>=0&&r[ci_act]) || (ci_end>=0&&r[ci_end]) || (ci_trans>=0&&r[ci_trans]);
+      if(hasItem){
+        curDay.items.push({
+          start: ci_start>=0?r[ci_start]:"",
+          end: ci_end>=0?r[ci_end]:"",
+          act: ci_act>=0?r[ci_act]:"",
+          trans: ci_trans>=0?r[ci_trans]:""
+        });
+      }
     } else if(curDay) {
       // 当天时段
       curDay.items.push({
@@ -338,13 +348,13 @@ function buildData(){
 document.getElementById("genBtn").addEventListener("click", async ()=>{
   try{
     const tpl = await getTemplate();
-    const {fields, people, groupF} = buildData();
+    const {fields, people, groupF, schedule, notices} = buildData();
     const title = document.getElementById("evTitle").value.trim();
     const sub = document.getElementById("evSub").value.trim();
     const pwd = document.getElementById("pwd").value.trim() || "8888";
     const syncMode = document.querySelector('input[name="sync"]:checked').value;
 
-    const data = {fields, modules:{}, people, schedule:[], notices:[], tips:[], overview:[]};
+    const data = {fields, modules:{}, people, schedule:schedule||[], notices:notices||[], tips:[], overview:[]};
     let html = tpl;
     html = fill(html, "__EVENT_TITLE__", title);
     html = fill(html, "__EVENT_SUBTITLE__", JSON.stringify(sub));
