@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>团建小程序 · 傻瓜生成器</title>
+<style>
+:root{--brand:#2563eb;--brand2:#1d4ed8;--bg:#f2f4f8;--card:#fff;--ink:#1f2937;--sub:#6b7280;--line:#e5e7eb;--ok:#059669;--warn:#d97706;--red:#dc2626;--redbg:#fef2f2;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.6;padding:18px;max-width:560px;margin:0 auto}
+h1{font-size:22px;margin-bottom:4px}
+.sub{color:var(--sub);font-size:13px;margin-bottom:18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:14px}
+.card h2{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:6px}
+.f-item{margin-bottom:12px}
+.f-item label{display:block;font-size:13px;color:var(--sub);margin-bottom:5px}
+.f-item input,.f-item select{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;box-sizing:border-box}
+.note{font-size:12px;color:#94a3b8;margin-top:3px}
+.btn{display:block;width:100%;background:var(--brand);color:#fff;border:none;padding:15px;border-radius:12px;font-size:16px;font-weight:600;cursor:pointer}
+.btn:active{background:var(--brand2)}
+.btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.hint{font-size:12px;color:var(--sub);background:#fffbeb;border:1px solid #fde68a;padding:9px 12px;border-radius:10px;margin-bottom:12px}
+.ok{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+.radio{display:flex;gap:10px;margin-bottom:10px}
+.radio label{flex:1;border:1px solid var(--line);border-radius:10px;padding:10px;text-align:center;font-size:14px;cursor:pointer;background:#fff}
+.radio input{display:none}
+.radio label.on{border-color:var(--brand);background:#eff6ff;color:var(--brand);font-weight:600}
+#preview{font-size:13px;background:#f8fafc;border:1px dashed var(--line);border-radius:10px;padding:10px;margin-top:8px;display:none}
+#preview b{color:var(--brand)}
+#result{display:none;margin-top:14px}
+.tag{display:inline-block;background:#eff6ff;color:var(--brand);padding:2px 8px;border-radius:6px;font-size:12px;margin:2px}
+a.dl{color:var(--brand);font-size:13px}
+</style>
+</head>
+<body>
+<h1>🛠️ 团建小程序 · 傻瓜生成器</h1>
+<div class="sub">填好下面几项、上传成员表，点一下就生成你自己的小程序文件。<b>全程不用找原作者，数据同步也用你自己的仓库。</b></div>
+
+<div class="card">
+  <h2>① 活动信息</h2>
+  <div class="f-item"><label>活动名称（显示在首页）</label><input id="evTitle" placeholder="例如：2026 普者黑团建 · 同行助手"></div>
+  <div class="f-item"><label>副标题（首页小字）</label><input id="evSub" placeholder="例如：Leader offsite · 25人 · 09.20-09.23"></div>
+</div>
+
+<div class="card">
+  <h2>② 组织者口令</h2>
+  <div class="f-item"><label>设一个只有你知道的口令</label><input id="pwd" placeholder="例如：tuanjian2026"></div>
+  <div class="note">进入「组织者后台」时要输入它。以后也能在后台「⚙️设置」里随时改。</div>
+</div>
+
+<div class="card">
+  <h2>③ 手机同步后台（可选）</h2>
+  <div class="radio">
+    <label id="rbGit" class="on"><input type="radio" name="sync" value="git" checked> 用我自己的 GitHub</label>
+    <label id="rbNone"><input type="radio" name="sync" value="none"> 不同步（手动导出）</label>
+  </div>
+  <div id="gitBox">
+    <div class="f-item"><label>你的 GitHub 仓库名（格式 owner/repo）</label><input id="repo" placeholder="例如：xiaoming/my-tuanjian"></div>
+    <div class="f-item"><label>私人令牌（PAT，仅需 repo 权限）</label><input id="token" placeholder="ghp_xxxxxxxxxxxx" type="password" autocomplete="off"></div>
+    <div class="f-item"><label>分支（默认 main）</label><input id="branch" value="main"></div>
+    <div class="note">仓库里会自动生成一个数据文件（如 sync-data.json），成员点链接即从这里拉取。令牌仅写在你自己的小程序里，建议用「只对本仓库有写权限」的细粒度令牌。</div>
+  </div>
+  <div id="noneBox" style="display:none">
+    <div class="hint">不选同步也能用：组织者改完在后台「⚙️设置 → 导出数据文件」发给大家，成员「导入」即可。改一次导一次。</div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>④ 上传成员表（CSV / Excel 另存为 CSV）</h2>
+  <div class="f-item"><input id="csv" type="file" accept=".csv,text/csv"></div>
+  <div class="note">第一行为表头（列名即字段名）。常见列：姓名、性别、部门、手机号、身份证号、去程航班、车号、游戏分组、住宿… 列名含「手机/身份证」会自动脱敏，含「车/分组/角色」会自动变成分组依据。</div>
+  <div id="preview"></div>
+</div>
+
+<button class="btn" id="genBtn" disabled>⑤ 生成并下载我的小程序</button>
+
+<div id="result" class="card ok">
+  <h2>✅ 生成成功！</h2>
+  <div id="resultMsg" style="font-size:13px;margin-bottom:10px"></div>
+  <a class="dl" id="dlLink" download>📥 点击这里下载你的小程序（.html）</a>
+  <div class="hint" style="margin-top:10px">
+    <b>接下来：</b><br>
+    1. 把下载的 .html 发到微信群 / 用任意方式托管（GitHub Pages、腾讯云COS、公司内网都行）。<br>
+    2. 自己打开 → 输入口令 → 后台改信息 → 点「📤同步」→ 把短链接发群。<br>
+    3. 伙伴打开链接 → 选自己姓名 → 自动同步 ✅
+  </div>
+  <div style="height:8px"></div>
+  <button class="btn ghost" onclick="location.reload()">再做一个新的</button>
+</div>
+
+<script>
+/* ---------- 单选切换 ---------- */
+document.querySelectorAll('input[name="sync"]').forEach(r=>r.addEventListener("change",()=>{
+  const v=r.value;
+  document.getElementById("rbGit").classList.toggle("on",v==="git");
+  document.getElementById("rbNone").classList.toggle("on",v==="none");
+  document.getElementById("gitBox").style.display = v==="git"?"block":"none";
+  document.getElementById("noneBox").style.display = v==="none"?"block":"none";
+}));
+
+/* ---------- CSV 解析 ---------- */
+function parseCSV(text){
+  text = text.replace(/^﻿/,"");
+  const rows=[]; let row=[], field="", i=0, inQ=false;
+  while(i<text.length){
+    const c=text[i];
+    if(inQ){
+      if(c==='"'){ if(text[i+1]==='"'){field+='"';i++;} else inQ=false; }
+      else field+=c;
+    } else {
+      if(c==='"') inQ=true;
+      else if(c===',') { row.push(field); field=""; }
+      else if(c==='\r'){ }
+      else if(c==='\n'){ row.push(field); rows.push(row); row=[]; field=""; }
+      else field+=c;
+    }
+    i++;
+  }
+  if(field.length||row.length){ row.push(field); rows.push(row); }
+  return rows.filter(r=>r.length && r.some(x=>(x||"").trim()!==""));
+}
+
+/* ---------- 字段分类 ---------- */
+function classifyModule(h){
+  if(/姓名|名字|name/i.test(h)) return "人员基础";
+  if(/手机|电话|身份证|证件|证号|微信|企微/i.test(h)) return "机酒/身份";
+  if(/车|分组|组|住宿|房|房间|角色|安排|编号|班次|现场/i.test(h)) return "现场分组";
+  if(/航班|机票|出发|到达|去程|返程|酒店|行程/i.test(h)) return "行程安排";
+  if(/忌口|过敏|高反|血压|病史|药物|驾照|无人[机机]|关怀|备注|其他|简介/i.test(h)) return "特殊关怀";
+  return "其他信息";
+}
+function classifyEditor(h){
+  if(/车|分组|组|住宿|房|房间|角色|安排|编号|班次|现场/i.test(h)) return "admin";
+  return "member";
+}
+function classifyType(h){
+  if(/性别|驾照|高反|是否|有无|婚育/i.test(h)) return "select";
+  return "text";
+}
+function isSensitive(h){ return /手机|电话|身份证|证件|证号|微信|企微|隐私/i.test(h); }
+function defaultOptions(h){
+  if(/性别/.test(h)) return ["","男","女"];
+  if(/驾照|有无|是否/.test(h)) return ["","是","否"];
+  if(/高反/.test(h)) return ["","无","轻微","严重"];
+  return [];
+}
+function chooseNameIdx(headers){
+  let i = headers.findIndex(h=>/中文名|姓名|名字|name/i.test(h));
+  return i<0?0:i;
+}
+
+/* ---------- 解析成员表 ---------- */
+let CSV = {headers:[], rows:[], nameIdx:0};
+document.getElementById("csv").addEventListener("change", async (e)=>{
+  const f=e.target.files[0]; if(!f) return;
+  const text = await f.text();
+  const raw = parseCSV(text);
+  if(raw.length<2){ alert("表格为空或只有表头，请检查"); return; }
+  const headers = raw[0].map(h=>(h||"").trim());
+  CSV = {headers, rows: raw.slice(1), nameIdx: chooseNameIdx(headers)};
+  renderPreview();
+});
+
+function renderPreview(){
+  const h=CSV.headers;
+  const groupF = h.filter(x=>classifyEditor(x)==="admin" && /分组|组|车|角色|班次/.test(x));
+  const sensF = h.filter(x=>isSensitive(x));
+  const pv=document.getElementById("preview");
+  pv.style.display="block";
+  pv.innerHTML = `检测到 <b>${h.length}</b> 列 / <b>${CSV.rows.length}</b> 人。<br>
+   姓名列：<span class="tag">${esc(h[CSV.nameIdx])}</span><br>
+   分组依据（组织者填）： ${groupF.length?groupF.map(x=>`<span class="tag">${esc(x)}</span>`).join(" "):"<i>无</i>"}<br>
+   敏感字段（自动脱敏）： ${sensF.length?sensF.map(x=>`<span class="tag">${esc(x)}</span>`).join(" "):"<i>无</i>"}
+   <div style="margin-top:8px">所有列名即字段名，都会显示在小程序里。如需调整，直接改你的 CSV 表头即可。</div>`;
+  updateGenBtn();
+}
+function esc(s){return (s==null?"":String(s)).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));}
+
+function updateGenBtn(){
+  document.getElementById("genBtn").disabled = !(CSV.headers.length && document.getElementById("evTitle").value.trim());
+}
+document.getElementById("evTitle").addEventListener("input", updateGenBtn);
+
+/* ---------- 模板获取（同目录 app_template.html） ---------- */
+let _tpl=null;
+async function getTemplate(){
+  if(_tpl) return _tpl;
+  const r = await fetch("./app_template.html", {cache:"no-store"});
+  if(!r.ok) throw new Error("找不到模板 app_template.html（请确认它与本生成器在同一目录）");
+  _tpl = await r.text();
+  return _tpl;
+}
+
+/* ---------- 占位符填充 ---------- */
+function fill(tpl, token, val){ return tpl.split(token).join(val); }
+
+function buildData(){
+  const h=CSV.headers, rows=CSV.rows;
+  const fields = h.map(x=>({
+    key:x, label:x, module:classifyModule(x), editor:classifyEditor(x),
+    type:classifyType(x), sensitive:isSensitive(x), options:defaultOptions(x)
+  }));
+  const people = rows.map((r,i)=>{
+    const o={};
+    h.forEach((x,idx)=>{ o[x]=(r[idx]||"").trim(); });
+    o._id = o["企微ID"] || o[h[CSV.nameIdx]] || ("p"+i);
+    return o;
+  });
+  const groupF = h.filter(x=>classifyEditor(x)==="admin" && /分组|组|车|角色|班次/.test(x));
+  return {fields, people, groupF};
+}
+
+document.getElementById("genBtn").addEventListener("click", async ()=>{
+  try{
+    const tpl = await getTemplate();
+    const {fields, people, groupF} = buildData();
+    const title = document.getElementById("evTitle").value.trim();
+    const sub = document.getElementById("evSub").value.trim();
+    const pwd = document.getElementById("pwd").value.trim() || "8888";
+    const syncMode = document.querySelector('input[name="sync"]:checked').value;
+
+    const data = {fields, modules:{}, people, schedule:[], notices:[], tips:[], overview:[]};
+    let html = tpl;
+    html = fill(html, "__EVENT_TITLE__", title);
+    html = fill(html, "__EVENT_SUBTITLE__", JSON.stringify(sub));
+    html = fill(html, "__ADMIN_PWD__", JSON.stringify(pwd));
+    html = fill(html, "__NAME_FIELD__", JSON.stringify(CSV.headers[CSV.nameIdx]));
+    html = fill(html, "__SUB_FIELD__", JSON.stringify(""));
+    html = fill(html, "__GROUP_FIELDS__", JSON.stringify(groupF.length?groupF:[]));
+    html = fill(html, "__CHIP_FIELDS__", JSON.stringify(groupF.length?groupF:[]));
+
+    if(syncMode==="git"){
+      const repo = document.getElementById("repo").value.trim();
+      const token = document.getElementById("token").value.trim();
+      const branch = document.getElementById("branch").value.trim()||"main";
+      const file = "sync-data.json";
+      if(!repo || !token){ alert("请填写 GitHub 仓库名和令牌"); return; }
+      const parts = "[" + [...token].map(c=>c.charCodeAt(0)).join(",") + "]";
+      html = fill(html, "__SYNC_ENABLED__", "true");
+      html = fill(html, "__SYNC_REPO__", JSON.stringify(repo));
+      html = fill(html, "__SYNC_BRANCH__", JSON.stringify(branch));
+      html = fill(html, "__SYNC_FILE__", JSON.stringify(file));
+      html = fill(html, "__SYNC_TOKEN_PARTS__", parts);
+    } else {
+      html = fill(html, "__SYNC_ENABLED__", "false");
+      html = fill(html, "__SYNC_REPO__", "");
+      html = fill(html, "__SYNC_BRANCH__", "main");
+      html = fill(html, "__SYNC_FILE__", "sync-data.json");
+      html = fill(html, "__SYNC_TOKEN_PARTS__", "[]");
+    }
+    html = fill(html, "__DATA__", JSON.stringify(data));
+
+    // 残留占位符检查
+    const leftover = html.match(/__[A-Z_]+__/);
+    if(leftover){ throw new Error("有占位符未替换：" + leftover[0]); }
+
+    const blob = new Blob([html], {type:"text/html"});
+    const url = URL.createObjectURL(blob);
+    const a = document.getElementById("dlLink");
+    a.href = url;
+    a.download = (title||"团建小程序") + ".html";
+    document.getElementById("resultMsg").innerHTML =
+      `文件已准备好（${people.length} 人 / ${fields.length} 个字段）。<br>同步模式：${syncMode==="git"?"✅ 已绑定你的 GitHub 仓库 <b>"+esc(document.getElementById("repo").value.trim())+"</b>":"⚠️ 手动导出模式"}`;
+    document.getElementById("result").style.display="block";
+    document.getElementById("result").scrollIntoView({behavior:"smooth"});
+    a.click();
+  }catch(err){
+    alert("生成失败：" + err.message);
+    console.error(err);
+  }
+});
+</script>
+</body>
+</html>
