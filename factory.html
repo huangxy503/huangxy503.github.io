@@ -149,6 +149,12 @@ function chooseNameIdx(headers){
   let i = headers.findIndex(h=>/中文名|姓名|名字|name/i.test(h));
   return i<0?0:i;
 }
+function isGroupField(h){
+  if(classifyEditor(h)!=="admin") return false;
+  if(!/分组|组|车|角色|班次/.test(h)) return false;
+  if(/意愿|意向|忌口|过敏|备注|情况|需求|偏好|可[否]/i.test(h)) return false;
+  return true;
+}
 
 /* ---------- 解析成员表 ---------- */
 let CSV = {headers:[], rows:[], nameIdx:0};
@@ -164,7 +170,7 @@ document.getElementById("csv").addEventListener("change", async (e)=>{
 
 function renderPreview(){
   const h=CSV.headers;
-  const groupF = h.filter(x=>classifyEditor(x)==="admin" && /分组|组|车|角色|班次/.test(x));
+  const groupF = h.filter(isGroupField);
   const sensF = h.filter(x=>isSensitive(x));
   const pv=document.getElementById("preview");
   pv.style.display="block";
@@ -207,7 +213,7 @@ function buildData(){
     o._id = o["企微ID"] || o[h[CSV.nameIdx]] || ("p"+i);
     return o;
   });
-  const groupF = h.filter(x=>classifyEditor(x)==="admin" && /分组|组|车|角色|班次/.test(x));
+  const groupF = h.filter(isGroupField);
   return {fields, people, groupF};
 }
 
@@ -244,9 +250,9 @@ document.getElementById("genBtn").addEventListener("click", async ()=>{
       html = fill(html, "__SYNC_TOKEN_PARTS__", parts);
     } else {
       html = fill(html, "__SYNC_ENABLED__", "false");
-      html = fill(html, "__SYNC_REPO__", "");
-      html = fill(html, "__SYNC_BRANCH__", "main");
-      html = fill(html, "__SYNC_FILE__", "sync-data.json");
+      html = fill(html, "__SYNC_REPO__", JSON.stringify(""));
+      html = fill(html, "__SYNC_BRANCH__", JSON.stringify("main"));
+      html = fill(html, "__SYNC_FILE__", JSON.stringify("sync-data.json"));
       html = fill(html, "__SYNC_TOKEN_PARTS__", "[]");
     }
     html = fill(html, "__DATA__", JSON.stringify(data));
