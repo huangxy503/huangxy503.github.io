@@ -826,10 +826,10 @@ async function genSyncLink(){
   const payload={people:peopleForSync, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview, _ts:Date.now()};
 
   showSheet(`
-    <h3>📤 正在生成同步链接...</h3>
+    <h3>📤 正在同步...</h3>
     <div style="text-align:center;padding:20px 0">
       <div style="display:inline-block;width:32px;height:32px;border:3px solid #93c5fd;border-top-color:#3b82f6;border-radius:50%;animation:spin 0.8s linear infinite"></div>
-      <div style="margin-top:10px;font-size:13px;color:#6b7280">正在把数据上传到你的仓库...</div>
+      <div style="margin-top:10px;font-size:13px;color:#6b7280">正在把数据上传到云端...</div>
     </div>
     <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
     <div id="sync-result"></div>
@@ -857,21 +857,12 @@ async function genSyncLink(){
       throw new Error("GitHub API 返回 "+wr.status+": "+errText.slice(0,200));
     }
 
-    const shortUrl = location.origin+location.pathname+BUILD_QS;
     document.getElementById("sync-result").innerHTML = `
-      <div style="color:#059669;font-size:14px;margin-bottom:12px">✅ 数据已上传到你自己的仓库！</div>
-      <div class="hint">这就是活动主页链接，<b>只发一次</b>到微信群即可。伙伴打开就会自动同步最新安排，你以后改了东西他们也自动更新，<b>不用重复发链接</b>。</div>
-      <div style="background:#eff6ff;border:2px solid #3b82f6;padding:12px;border-radius:10px;margin:10px 0;text-align:center">
-        <div id="sync-short-url" style="font-size:15px;color:#1e40af;font-weight:600;word-break:all;user-select:text;-webkit-user-select:text;padding:4px">${esc(shortUrl)}</div>
+      <div style="text-align:center;padding:10px 0 16px">
+        <div style="font-size:40px;line-height:1">✅</div>
+        <div style="color:#059669;font-size:15px;font-weight:600;margin-top:8px">已同步到云端！</div>
+        <div style="font-size:13px;color:#6b7280;margin-top:6px">伙伴刷新页面（或等待自动刷新）即可看到更新</div>
       </div>
-      <button class="btn" onclick="doCopyShortLink()">① 复制活动主页链接</button>
-      <div class="hint" style="margin-top:10px;text-align:left">
-        <strong>② 发给伙伴：</strong><br>
-        1. 点「复制活动主页链接」→ 手机会提示"已复制"<br>
-        2. 打开<strong>微信</strong> → 进群 → 输入框<strong>长按 → 粘贴</strong> → 发送<br>
-        3. 伙伴点开即自动同步；你日后改了行程/分组/贴士，他们<b>隔几十秒自动刷新</b>，无需再发链接 ✅
-      </div>
-      <div style="height:8px"></div>
       <button class="btn ghost" onclick="closeSheet()">关闭</button>
     `;
   }catch(e){
