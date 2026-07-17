@@ -368,7 +368,38 @@ function editForm(){
 function saveEdit(){
   const me=findMe();
   document.querySelectorAll('[data-k]').forEach(el=>{me[el.dataset.k]=el.value.trim();});
-  persist(); alert("已保存！"); go('home');
+  persist();
+  if(SYNC_ENABLED) pushMyRecord();   // 双向：参与者改完自动回传云端，组织者/他人可见
+  alert("已保存！"); go('home');
+}
+/* ============== 参与者自推：只回传自己那条记录（双向同步） ============== */
+async function pushMyRecord(){
+  if(!SYNC_ENABLED) return;
+  const me=findMe();
+  if(!me || !me._id) return;
+  // 仅推送「成员可自行编辑」的字段，避免越权改分组/后台字段
+  const keys=(state.fields||[]).filter(f=>f.editor==="member").map(f=>f.key);
+  const patch={_id:me._id};
+  keys.forEach(k=>{ if(me[k]!==undefined) patch[k]=me[k]; });
+  async function attempt(){
+    const getR=await fetch(SYNC_API,{headers:{Authorization:"Bearer "+GITHUB_SYNC_TOKEN,Accept:"application/vnd.github+json"}});
+    if(!getR.ok) throw new Error("读取云端失败 "+getR.status);
+    const getD=await getR.json();
+    const cloud=decodeBase64Json(getD.content);
+    const people=(cloud.people||[]).slice();
+    const idx=people.findIndex(p=>p._id===me._id);
+    if(idx>=0){ keys.forEach(k=>{ people[idx][k]=patch[k]; }); }
+    else { people.push(patch); }
+    const payload=Object.assign({},cloud,{people:people,_ts:Date.now()});
+    const content=btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+    const body={message:"update: "+me._id+" @ "+new Date().toLocaleString('zh-CN'),content:content,branch:SYNC_BRANCH,sha:getD.sha};
+    const wr=await fetch(SYNC_API,{method:"PUT",headers:{Authorization:"Bearer "+GITHUB_SYNC_TOKEN,"Accept":"application/vnd.github+json","Content-Type":"application/json"},body:JSON.stringify(body)});
+    if(!wr.ok){ const t=await wr.text().catch(()=>""); throw new Error("上传失败 "+wr.status+": "+t.slice(0,160)); }
+  }
+  for(let i=0;i<3;i++){
+    try{ await attempt(); toast("✅ 你的修改已同步给组织者"); return; }
+    catch(e){ if(/409/.test(e.message) && i<2) continue; toast("同步失败，可稍后点「重新同步」重试"); return; }
+  }
 }
 
 /* ============== MEMBER: 成员名单 ============== */
