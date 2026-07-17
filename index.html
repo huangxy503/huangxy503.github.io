@@ -428,8 +428,13 @@ function scheduleView(){
   const ov=(state.overview||[]);
   const ovHtml = ov.length ? `<div class="card ov"><div class="ovh">🧭 行程概述 · 全程总览</div>`+
     ov.map(o=>`<div class="ovr"><span class="ovd">${esc(o.day)}</span><span class="ovrt">${esc(o.route)}</span><span class="ovk">${esc(o.km)}</span></div>`).join("")+`</div>` : "";
+  // 防崩溃：行程为空或数据异常时给出友好提示，而非整页卡死
+  if(!state.schedule || !state.schedule.length){
+    return ovHtml + `<div class="empty-note" style="padding:40px 20px">📭 暂无行程数据<br><span style="font-size:12px;color:#94a3b8">组织者可在后台「数据后台」手动添加，或重新生成时上传行程表。</span></div>` + tabbar();
+  }
   if(ctx.schedDay==null||ctx.schedDay>=state.schedule.length)ctx.schedDay=0;
   const d=state.schedule[ctx.schedDay];
+  if(!d || !d.items) return ovHtml + `<div class="empty-note">行程数据异常</div>` + tabbar();
   const tabs=dayTabs();
   if(isAdmin){
     const items=d.items.map((it,i)=>`<div class="di"><div class="tt">${esc(it.start)}${it.end?'-'+esc(it.end):''} ${esc(it.act)}</div>${it.trans?`<div class="meta">🚗 ${esc(it.trans)}</div>`:''}<div style="margin-top:6px"><button class="mini" onclick="editSchedItem(${ctx.schedDay},${i})">改</button> <button class="mini del" onclick="delSchedItem(${ctx.schedDay},${i})">删</button></div></div>`).join("");
