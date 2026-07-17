@@ -157,6 +157,9 @@ const SYNC_FILE = __SYNC_FILE__;
 const _tk = __SYNC_TOKEN_PARTS__;
 const GITHUB_SYNC_TOKEN = _tk.map(c => String.fromCharCode(c)).join("");
 
+// 分享链接的版本号参数（每次部署会变，用于绕过微信网页缓存；平时就是同一个链接）
+let BUILD_QS = "__BUILD_QS__";
+
 const DATA = __DATA__;
 
 /* ============== 本地持久化（按活动隔离） ============== */
@@ -854,19 +857,19 @@ async function genSyncLink(){
       throw new Error("GitHub API 返回 "+wr.status+": "+errText.slice(0,200));
     }
 
-    const shortUrl = location.origin+location.pathname+"?s=1";
+    const shortUrl = location.origin+location.pathname+BUILD_QS;
     document.getElementById("sync-result").innerHTML = `
       <div style="color:#059669;font-size:14px;margin-bottom:12px">✅ 数据已上传到你自己的仓库！</div>
-      <div class="hint">下面的链接非常短，直接复制发到微信群即可：</div>
+      <div class="hint">这就是活动主页链接，<b>只发一次</b>到微信群即可。伙伴打开就会自动同步最新安排，你以后改了东西他们也自动更新，<b>不用重复发链接</b>。</div>
       <div style="background:#eff6ff;border:2px solid #3b82f6;padding:12px;border-radius:10px;margin:10px 0;text-align:center">
         <div id="sync-short-url" style="font-size:15px;color:#1e40af;font-weight:600;word-break:all;user-select:text;-webkit-user-select:text;padding:4px">${esc(shortUrl)}</div>
       </div>
-      <button class="btn" onclick="doCopyShortLink()">① 复制链接</button>
+      <button class="btn" onclick="doCopyShortLink()">① 复制活动主页链接</button>
       <div class="hint" style="margin-top:10px;text-align:left">
-        <strong>② 发到微信群：</strong><br>
-        1. 点「复制链接」→ 手机会提示"已复制"<br>
+        <strong>② 发给伙伴：</strong><br>
+        1. 点「复制活动主页链接」→ 手机会提示"已复制"<br>
         2. 打开<strong>微信</strong> → 进群 → 输入框<strong>长按 → 粘贴</strong> → 发送<br>
-        3. 群友点这个蓝色链接 → 自动同步 ✅
+        3. 伙伴点开即自动同步；你日后改了行程/分组/贴士，他们<b>隔几十秒自动刷新</b>，无需再发链接 ✅
       </div>
       <div style="height:8px"></div>
       <button class="btn ghost" onclick="closeSheet()">关闭</button>
@@ -893,30 +896,64 @@ async function doCopyShortLink(){
   const ok = await copyTextAsync(url);
   toast(ok ? "已复制链接 ✅（去微信粘贴发送吧）" : "复制失败，请手动长按上方链接复制");
 }
+async function fetchJsonFrom(url, headers){
+  const ctrl=new AbortController();
+  const tid=setTimeout(()=>ctrl.abort(),8000);
+  try{
+    const r=await fetch(url,{headers:headers||{},cache:"no-store",signal:ctrl.signal});
+    if(!r.ok) throw new Error("HTTP "+r.status);
+    return await r.json();
+  }finally{ clearTimeout(tid); }
+}
+function decodeBase64Json(b64){
+  return JSON.parse(decodeURIComponent(escape(atob(b64.replace(/\s/g,"")))));
+}
 async function fetchSyncJson(){
-  const errs=[];
-  // ① 优先 GitHub API：即时反映最新提交，绕过 Pages CDN 延迟
+  const parts=SYNC_REPO.split("/"); const owner=parts[0]; const repoName=parts[1];
+  // ① GitHub API：即时反映最新提交，CORS:*，无 CDN 延迟
   try{
-    const apiUrl="https://api.github.com/repos/"+SYNC_REPO+"/contents/"+SYNC_FILE+"?ref="+encodeURIComponent(SYNC_BRANCH);
-    const r=await fetch(apiUrl,{headers:{Authorization:"Bearer "+GITHUB_SYNC_TOKEN,Accept:"application/vnd.github+json"},cache:"no-store"});
-    if(r.ok){
-      const d=await r.json();
-      if(d&&d.content){
-        const txt=decodeURIComponent(escape(atob(d.content.replace(/\s/g,""))));
-        return JSON.parse(txt);
-      }
+    const u="https://api.github.com/repos/"+SYNC_REPO+"/contents/"+SYNC_FILE+"?ref="+encodeURIComponent(SYNC_BRANCH);
+    const d=await fetchJsonFrom(u,{Authorization:"Bearer "+GITHUB_SYNC_TOKEN,Accept:"application/vnd.github+json"});
+    if(d&&d.content) return decodeBase64Json(d.content);
+  }catch(e){}
+  // ② raw.githubusercontent.com：即时，CORS:*
+  try{
+    const u="https://raw.githubusercontent.com/"+SYNC_REPO+"/"+SYNC_BRANCH+"/"+SYNC_FILE;
+    const d=await fetchJsonFrom(u);
+    if(d) return d;
+  }catch(e){}
+  // ③ 同域 Pages：最兼容微信，但 CDN 最长 10 分钟
+  const base=(repoName===owner+".github.io")?("https://"+owner+".github.io"):("https://"+owner+".github.io/"+repoName);
+  return await fetchJsonFrom(base+"/"+SYNC_FILE+"?_t="+Date.now());
+}
+const SENS_FIELDS=["手机号","身份证号","手机","电话","身份证"];
+function mergeSyncData(data){
+  if(data.people && data.people.length){
+    const localMap=new Map(state.people.map(p=>[p._id,p]));
+    state.people=data.people.map(p=>{
+      const local=localMap.get(p._id);
+      if(local){ SENS_FIELDS.forEach(k=>{ if(!p[k] && local[k]) p[k]=local[k]; }); }
+      return p;
+    });
+  }
+  // 仅当云端该板块确有内容时才覆盖，避免空数组把本地数据清空
+  if(data.schedule && data.schedule.length) state.schedule=data.schedule;
+  if(data.notices && data.notices.length) state.notices=data.notices;
+  if(data.tips && data.tips.length) state.tips=data.tips;
+  if(data.overview && data.overview.length) state.overview=data.overview;
+  persist();
+}
+let _lastSyncTs=0;
+async function silentSync(){
+  try{
+    const data=await fetchSyncJson();
+    if(data && data._ts && data._ts!==_lastSyncTs){
+      const changed=(_lastSyncTs!==0);
+      mergeSyncData(data);
+      _lastSyncTs=data._ts;
+      if(changed) toast("已同步最新安排 ✅");
     }
-    errs.push("api:"+r.status);
-  }catch(e){ errs.push("api:"+e.message); }
-  // ② 兜底：Pages 静态地址
-  try{
-    const parts=SYNC_REPO.split("/"); const owner=parts[0]; const repoName=parts[1];
-    const base=(repoName===owner+".github.io")?("https://"+owner+".github.io"):("https://"+owner+".github.io/"+repoName);
-    const r2=await fetch(base+"/"+SYNC_FILE+"?_t="+Date.now(),{cache:"no-store"});
-    if(r2.ok) return JSON.parse(await r2.text());
-    errs.push("pages:"+r2.status);
-  }catch(e){ errs.push("pages:"+e.message); }
-  throw new Error(errs.join(" | "));
+  }catch(e){ /* 静默失败，不阻塞页面 */ }
 }
 async function applyRemoteSync(){
   const overlay = document.createElement("div");
@@ -931,20 +968,8 @@ async function applyRemoteSync(){
   document.body.appendChild(overlay);
   try{
     const data = await fetchSyncJson();
-    if(data.people){
-      const SENS=["手机号","身份证号","手机","电话","身份证"];
-      const localMap=new Map(state.people.map(p=>[p._id,p]));
-      state.people=data.people.map(p=>{
-        const local=localMap.get(p._id);
-        if(local){ SENS.forEach(k=>{ if(!p[k] && local[k]) p[k]=local[k]; }); }
-        return p;
-      });
-    }
-    if(data.schedule) state.schedule=data.schedule;
-    if(data.notices) state.notices=data.notices;
-    if(data.tips) state.tips=data.tips;
-    if(data.overview) state.overview=data.overview;
-    persist();
+    mergeSyncData(data);
+    _lastSyncTs = data._ts || _lastSyncTs;
     overlay.innerHTML = `
       <div style="font-size:40px">✅</div>
       <div style="margin-top:12px;font-size:16px;color:#059669;font-weight:600">同步完成！</div>
@@ -971,16 +996,36 @@ async function manualResync(){
   if(!SYNC_ENABLED){ toast("该小程序未配置同步后台"); return; }
   await applyRemoteSync();
 }
+let _autoTimer=null;
+function startAutoRefresh(){
+  if(_autoTimer) clearInterval(_autoTimer);
+  if(!SYNC_ENABLED) return;
+  _autoTimer=setInterval(async ()=>{
+    try{
+      const data=await fetchSyncJson();
+      if(data && data._ts && data._ts!==_lastSyncTs){
+        mergeSyncData(data); _lastSyncTs=data._ts;
+        if(ctx.role) render();
+        toast("已同步组织者最新更新 ✅");
+      }
+    }catch(e){}
+  }, 45000);
+}
 async function init(){
   const params = new URLSearchParams(location.search);
   if(params.get("s") === "1"){
     try{ history.replaceState(null,"",location.pathname); }catch(e){}
-    if(SYNC_ENABLED){ await applyRemoteSync(); return; }
-    else { toast("该小程序未配置同步后台"); }
   }
   const h=location.hash||"";
   const m=h.match(/#sync=(.+)$/);
   if(m){ toast("⚠️ 这是旧版同步链接，可能已失效。请组织者重新生成。"); try{ history.replaceState(null,"",location.pathname); }catch(e){} }
+  if(SYNC_ENABLED){
+    // 单链接自动同步：进入即拉取最新，后台定时刷新（组织者改完参与者自动更新）
+    silentSync().then(()=>{ if(ctx.role) render(); });
+    startAutoRefresh();
+  } else if(params.get("s") === "1"){
+    toast("该小程序未配置同步后台");
+  }
   renderSplash();
 }
 init();
