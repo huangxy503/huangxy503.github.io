@@ -283,7 +283,7 @@ function render(){
   else if(ctx.tab==="me") body = memberHome();
 
   const sw = `<span class="sw" onclick="switchRole()">${isAdmin?"切换为参与者":"切换身份"}</span>`;
-  const gearBtn = isAdmin ? `<button class="btn sm ghost" style="margin-left:8px;font-size:13px;padding:4px 10px;white-space:nowrap" onclick="openSettings()">⚙️</button>` : "";
+  const gearBtn = "";
   const syncBtn = (isAdmin && SYNC_ENABLED) ? `<button class="btn sm ghost" style="margin-left:auto;font-size:12px;padding:4px 10px;white-space:nowrap" onclick="genSyncLink()">📤 同步</button>` : "";
   app.innerHTML = `<div class="hd"><span class="t">${title}</span>${sw}${gearBtn}${syncBtn}</div><div class="page">${body}</div>${tabbar()}`;
 }
@@ -684,7 +684,7 @@ function adminTable(){
   }).join("");
   const syncHint = SYNC_ENABLED
     ? `<div class="hint">📡 改完信息后点右上角「📤 同步」按钮，把链接发到群，大家点开就自动同步你的最新安排（数据不经服务器、自动剔除敏感字段）。</div>`
-    : `<div class="hint">⚠️ 本小程序未配置同步后台。你可在右上角「⚙️ 设置」里用「导出 / 导入数据文件」手动同步（把导出的文件发给大家，他们导入即可）。</div>`;
+    : `<div class="hint">⚠️ 本小程序未配置同步后台，数据仅保存在本机。</div>`;
   return `
   <div class="adm-top">
     <div class="stat"><div class="num">${total}</div><div class="lb">总人数</div></div>
@@ -745,59 +745,7 @@ function savePerson(idx){
   persist(); closeSheet(); render();
 }
 
-/* ============== 设置（改口令 / 导入导出） ============== */
-function openSettings(){
-  const inner=`<h3>⚙️ 设置</h3>
-    <div class="f-item"><label>修改组织者口令</label><input id="newpwd" value="${esc(ADMIN_PWD)}" placeholder="设置新口令"></div>
-    <button class="btn" onclick="savePwd()">保存口令</button>
-    <div style="height:10px"></div>
-    ${SYNC_ENABLED?`<div class="hint">同步后台已启用：${esc(SYNC_REPO)}（数据存于你自己的仓库）</div>`:`<div class="hint">未配置同步后台：用下方「导出 / 导入」手动同步。</div>`}
-    <div style="height:6px"></div>
-    <button class="btn ghost" onclick="exportData()">⬇️ 导出数据文件（发给成员导入）</button>
-    <div style="height:8px"></div>
-    <button class="btn ghost" onclick="importData()">⬆️ 导入数据文件（更新本地）</button>
-    <div style="height:8px"></div>
-    <button class="btn ghost" onclick="closeSheet()">关闭</button>`;
-  showSheet(inner);
-}
-function savePwd(){
-  const v=$("#newpwd").value.trim();
-  if(!v){toast("口令不能为空");return;}
-  try{localStorage.setItem(PWD_KEY,v);}catch(e){}
-  ADMIN_PWD=v; toast("口令已更新 ✅"); closeSheet();
-}
-function exportData(){
-  const payload={people:state.people, schedule:state.schedule, notices:state.notices};
-  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
-  const a=document.createElement("a");
-  a.href=URL.createObjectURL(blob);
-  a.download=(EVENT_TITLE||"团建")+"_数据.json";
-  a.click();
-  setTimeout(()=>URL.revokeObjectURL(a.href),2000);
-  toast("已导出数据文件");
-}
-function importData(){
-  const inp=document.createElement("input");
-  inp.type="file";
-  inp.accept=".json,.txt,text/plain,application/json,*/*";
-  inp.onchange=()=>{
-    const f=inp.files[0]; if(!f)return;
-    const rd=new FileReader();
-    rd.onload=()=>{
-      try{
-        const d=JSON.parse(rd.result);
-        if(!d.people&&!d.schedule&&!d.notices) throw new Error("不是有效的数据文件（缺少 people/schedule/notices 字段）");
-        if(d.people) state.people=d.people;
-        if(d.schedule) state.schedule=d.schedule;
-        if(d.notices) state.notices=d.notices;
-        if(d.tips) state.tips=d.tips; if(d.overview) state.overview=d.overview;
-        persist(); toast("导入成功 ✅"); closeSheet(); render();
-      }catch(e){ alert("导入失败："+(e.message||"文件格式不对，请确认是「导出数据文件」生成的 JSON 文件")); }
-    };
-    rd.readAsText(f);
-  };
-  inp.click();
-}
+
 
 /* ============== 同步（短链模式：数据存组织者自己的仓库） ============== */
 function toast(msg){
