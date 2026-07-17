@@ -168,6 +168,8 @@ const DATA_VERSION = 3;
 let state = JSON.parse(JSON.stringify(DATA));
 // 分组维度改为可编辑（存 state），初始值取生成时的 GROUP_FIELDS
 if(!state.groupFields) state.groupFields = (GROUP_FIELDS||[]).slice();
+// _edited：本地改过/新增过的人(_id)，云端拉取时不被覆盖（解决"组织者保存后被自动同步冲掉"）
+if(!state._edited) state._edited = {};
 try{
   const saved = localStorage.getItem(LS_KEY);
   if(saved){
@@ -179,12 +181,16 @@ try{
       if(s.tips) state.tips = s.tips;
       if(s.overview) state.overview = s.overview;
       if(s.groupFields) state.groupFields = s.groupFields;
+      if(s._edited) state._edited = s._edited;
     }
   }
 }catch(e){}
 // 当前分组维度列表（组织者可增删改）
 function GF(){ return (state.groupFields && state.groupFields.length!=null) ? state.groupFields : (GROUP_FIELDS||[]); }
-function persist(){localStorage.setItem(LS_KEY, JSON.stringify({v:DATA_VERSION, people:state.people, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview, groupFields:state.groupFields}));}
+function persist(){localStorage.setItem(LS_KEY, JSON.stringify({v:DATA_VERSION, people:state.people, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview, groupFields:state.groupFields, _edited:state._edited}));}
+// 标记某人为"本地已改"，拉取云端时不覆盖
+function markEdited(id){ if(!id) return; if(!state._edited) state._edited={}; state._edited[id]=true; }
+function clearEdited(id){ if(!state._edited) return; if(id) delete state._edited[id]; else state._edited={}; }
 
 /* ============== 口令（默认可配置 + 应用内修改） ============== */
 const PWD_KEY = LS_KEY + "_pwd";
@@ -368,6 +374,7 @@ function editForm(){
 function saveEdit(){
   const me=findMe();
   document.querySelectorAll('[data-k]').forEach(el=>{me[el.dataset.k]=el.value.trim();});
+  markEdited(me._id);   // 防止拉取云端时把自己刚改的覆盖掉
   persist();
   if(SYNC_ENABLED) pushMyRecord();   // 双向：参与者改完自动回传云端，组织者/他人可见
   alert("已保存！"); go('home');
@@ -397,7 +404,7 @@ async function pushMyRecord(){
     if(!wr.ok){ const t=await wr.text().catch(()=>""); throw new Error("上传失败 "+wr.status+": "+t.slice(0,160)); }
   }
   for(let i=0;i<3;i++){
-    try{ await attempt(); toast("✅ 你的修改已同步给组织者"); return; }
+    try{ await attempt(); clearEdited(me._id); toast("✅ 你的修改已同步给组织者"); return; }
     catch(e){ if(/409/.test(e.message) && i<2) continue; toast("同步失败，可稍后点「重新同步」重试"); return; }
   }
 }
@@ -827,11 +834,8 @@ function editPerson(idx){
   });
   inner+=`<button class="btn" onclick="savePerson(${idx})">保存</button>
     <div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
-  const mask=document.createElement("div");mask.className="mask";mask.id="mask";
-  mask.innerHTML=`<div class="sheet">${inner}</div>`;
-  mask.onclick=(e)=>{if(e.target===mask)closeSheet();};
-  document.body.appendChild(mask);
   window._editIdx=idx; window._newObj=p;
+  showSheet(inner);
 }
 function closeSheet(){const m=$("#mask");if(m)m.remove();render();}
 function showSheet(inner){
@@ -854,6 +858,7 @@ function savePerson(idx){
   const obj = idx<0 ? window._newObj : state.people[idx];
   document.querySelectorAll('[data-ek]').forEach(el=>{obj[el.dataset.ek]=el.value.trim();});
   if(idx<0) state.people.push(obj);
+  else markEdited(obj._id);   // 改已有成员：标记本地已改，云端拉取不被覆盖
   persist(); closeSheet(); render();
 }
 
@@ -923,6 +928,7 @@ async function genSyncLink(){
       </div>
       <button class="btn ghost" onclick="closeSheet()">关闭</button>
     `;
+    clearEdited();   // 已推送至云端，本地改标记清空，下次拉取恢复正常
   }catch(e){
     document.getElementById("sync-result").innerHTML = `
       <div style="color:#dc2626;font-size:14px;margin-bottom:8px">❌ 上传失败</div>
@@ -979,11 +985,22 @@ const SENS_FIELDS=["手机号","身份证号","手机","电话","身份证"];
 function mergeSyncData(data){
   if(data.people && data.people.length){
     const localMap=new Map(state.people.map(p=>[p._id,p]));
-    state.people=data.people.map(p=>{
-      const local=localMap.get(p._id);
-      if(local){ SENS_FIELDS.forEach(k=>{ if(!p[k] && local[k]) p[k]=local[k]; }); }
-      return p;
+    const cloudIds=new Set(data.people.map(p=>p._id));
+    const result=[];
+    // ① 云端里的人：本地改过的 → 保留本地(不被覆盖)；其余 → 用云端(补回敏感字段)
+    data.people.forEach(p=>{
+      if(state._edited && state._edited[p._id]){
+        const local=localMap.get(p._id);
+        result.push(local || p);
+      }else{
+        const local=localMap.get(p._id);
+        if(local){ SENS_FIELDS.forEach(k=>{ if(!p[k] && local[k]) p[k]=local[k]; }); }
+        result.push(p);
+      }
     });
+    // ② 本地新增、云端还没有的人(如组织者刚加的成员)：保留，避免被拉取冲掉
+    state.people.forEach(p=>{ if(p && p._id && !cloudIds.has(p._id)) result.push(p); });
+    state.people=result;
   }
   // 仅当云端该板块确有内容时才覆盖，避免空数组把本地数据清空
   if(data.schedule && data.schedule.length) state.schedule=data.schedule;
@@ -1045,6 +1062,7 @@ async function applyRemoteSync(){
 async function manualResync(){
   if(!SYNC_ENABLED){ toast("该小程序未配置同步后台"); return; }
   await applyRemoteSync();
+  clearEdited();   // 用户主动拉取=以云端为准，清除本地改标记
 }
 let _autoTimer=null;
 function startAutoRefresh(){
