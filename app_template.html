@@ -171,10 +171,12 @@ try{
       if(s.people) state.people = s.people;
       if(s.schedule) state.schedule = s.schedule;
       if(s.notices) state.notices = s.notices;
+      if(s.tips) state.tips = s.tips;
+      if(s.overview) state.overview = s.overview;
     }
   }
 }catch(e){}
-function persist(){localStorage.setItem(LS_KEY, JSON.stringify({v:DATA_VERSION, people:state.people, schedule:state.schedule, notices:state.notices}));}
+function persist(){localStorage.setItem(LS_KEY, JSON.stringify({v:DATA_VERSION, people:state.people, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview}));}
 function resetData(){ confirmSheet("确定恢复为初始数据？你在本地的修改会清空。", ()=>{ try{localStorage.removeItem(LS_KEY);}catch(e){} state=JSON.parse(JSON.stringify(DATA)); persist(); render(); }); }
 
 /* ============== 口令（默认可配置 + 应用内修改） ============== */
@@ -325,6 +327,7 @@ function memberHome(){
   <div style="height:8px"></div>
   <div class="hint">切换到「组织者」身份可看到全部人员的完整信息并统一安排${GROUP_FIELDS&&GROUP_FIELDS.length?(" / "+GROUP_FIELDS.join(" / ")):""}。</div>
   <div style="height:8px"></div>
+  ${SYNC_ENABLED?`<div class="role-btn ghost" onclick="manualResync()"><b>🔄 重新同步最新数据</b></div><div style="height:8px"></div>`:""}
   <div class="role-btn ghost" onclick="resetData()"><b>♻️ 恢复初始数据（清本机缓存）</b></div>`;
 }
 
@@ -817,7 +820,7 @@ const SYNC_API = "https://api.github.com/repos/" + SYNC_REPO + "/contents/" + SY
 async function genSyncLink(){
   const SENS=["手机号","身份证号","手机","电话","身份证"];
   const peopleForSync=state.people.map(p=>{const o=Object.assign({},p);SENS.forEach(k=>{ if(o[k]!==undefined) o[k]=""; });return o;});
-  const payload={people:peopleForSync, schedule:state.schedule, notices:state.notices, _ts:Date.now()};
+  const payload={people:peopleForSync, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview, _ts:Date.now()};
 
   showSheet(`
     <h3>📤 正在生成同步链接...</h3>
@@ -890,6 +893,31 @@ async function doCopyShortLink(){
   const ok = await copyTextAsync(url);
   toast(ok ? "已复制链接 ✅（去微信粘贴发送吧）" : "复制失败，请手动长按上方链接复制");
 }
+async function fetchSyncJson(){
+  const errs=[];
+  // ① 优先 GitHub API：即时反映最新提交，绕过 Pages CDN 延迟
+  try{
+    const apiUrl="https://api.github.com/repos/"+SYNC_REPO+"/contents/"+SYNC_FILE+"?ref="+encodeURIComponent(SYNC_BRANCH);
+    const r=await fetch(apiUrl,{headers:{Authorization:"Bearer "+GITHUB_SYNC_TOKEN,Accept:"application/vnd.github+json"},cache:"no-store"});
+    if(r.ok){
+      const d=await r.json();
+      if(d&&d.content){
+        const txt=decodeURIComponent(escape(atob(d.content.replace(/\s/g,""))));
+        return JSON.parse(txt);
+      }
+    }
+    errs.push("api:"+r.status);
+  }catch(e){ errs.push("api:"+e.message); }
+  // ② 兜底：Pages 静态地址
+  try{
+    const parts=SYNC_REPO.split("/"); const owner=parts[0]; const repoName=parts[1];
+    const base=(repoName===owner+".github.io")?("https://"+owner+".github.io"):("https://"+owner+".github.io/"+repoName);
+    const r2=await fetch(base+"/"+SYNC_FILE+"?_t="+Date.now(),{cache:"no-store"});
+    if(r2.ok) return JSON.parse(await r2.text());
+    errs.push("pages:"+r2.status);
+  }catch(e){ errs.push("pages:"+e.message); }
+  throw new Error(errs.join(" | "));
+}
 async function applyRemoteSync(){
   const overlay = document.createElement("div");
   overlay.id = "sync-overlay";
@@ -902,12 +930,7 @@ async function applyRemoteSync(){
   `;
   document.body.appendChild(overlay);
   try{
-    const rawUrl = location.origin + "/" + SYNC_FILE;
-    const r = await fetch(rawUrl + "?_t=" + Date.now(), {cache:"no-cache"});
-    if(!r.ok) throw new Error("服务器返回 "+r.status);
-    const text = await r.text();
-    if(!text || text.length < 10) throw new Error("数据为空");
-    const data = JSON.parse(text);
+    const data = await fetchSyncJson();
     if(data.people){
       const SENS=["手机号","身份证号","手机","电话","身份证"];
       const localMap=new Map(state.people.map(p=>[p._id,p]));
@@ -919,6 +942,8 @@ async function applyRemoteSync(){
     }
     if(data.schedule) state.schedule=data.schedule;
     if(data.notices) state.notices=data.notices;
+    if(data.tips) state.tips=data.tips;
+    if(data.overview) state.overview=data.overview;
     persist();
     overlay.innerHTML = `
       <div style="font-size:40px">✅</div>
@@ -928,7 +953,7 @@ async function applyRemoteSync(){
     setTimeout(() => {
       const ov = document.getElementById("sync-overlay");
       if(ov) ov.remove();
-      renderSplash();
+      if(ctx.role) render(); else renderSplash();
     }, 1200);
   }catch(e){
     overlay.innerHTML = `
@@ -936,10 +961,15 @@ async function applyRemoteSync(){
       <div style="margin-top:12px;font-size:15px;color:#dc2626;font-weight:600">同步失败</div>
       <div style="margin-top:6px;font-size:12px;color:#6b7280;max-width:280px;text-align:center">${esc(e.message||"无法连接服务器")}</div>
       <div style="margin-top:16px">
-        <button class="btn" onclick="location.href=location.pathname">进入网页</button>
+        <button class="btn" onclick="manualResync()">重试</button>
+        <button class="btn ghost" onclick="(function(){var ov=document.getElementById('sync-overlay');if(ov)ov.remove();if(ctx.role)render();else renderSplash();})()">进入网页</button>
       </div>
     `;
   }
+}
+async function manualResync(){
+  if(!SYNC_ENABLED){ toast("该小程序未配置同步后台"); return; }
+  await applyRemoteSync();
 }
 async function init(){
   const params = new URLSearchParams(location.search);
