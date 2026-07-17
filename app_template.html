@@ -166,6 +166,8 @@ const DATA = __DATA__;
 const LS_KEY = "tj_" + btoa(unescape(encodeURIComponent(EVENT_TITLE))).replace(/[^a-zA-Z0-9]/g,"").slice(0,18);
 const DATA_VERSION = 3;
 let state = JSON.parse(JSON.stringify(DATA));
+// 分组维度改为可编辑（存 state），初始值取生成时的 GROUP_FIELDS
+if(!state.groupFields) state.groupFields = (GROUP_FIELDS||[]).slice();
 try{
   const saved = localStorage.getItem(LS_KEY);
   if(saved){
@@ -176,10 +178,13 @@ try{
       if(s.notices) state.notices = s.notices;
       if(s.tips) state.tips = s.tips;
       if(s.overview) state.overview = s.overview;
+      if(s.groupFields) state.groupFields = s.groupFields;
     }
   }
 }catch(e){}
-function persist(){localStorage.setItem(LS_KEY, JSON.stringify({v:DATA_VERSION, people:state.people, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview}));}
+// 当前分组维度列表（组织者可增删改）
+function GF(){ return (state.groupFields && state.groupFields.length!=null) ? state.groupFields : (GROUP_FIELDS||[]); }
+function persist(){localStorage.setItem(LS_KEY, JSON.stringify({v:DATA_VERSION, people:state.people, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview, groupFields:state.groupFields}));}
 
 /* ============== 口令（默认可配置 + 应用内修改） ============== */
 const PWD_KEY = LS_KEY + "_pwd";
@@ -327,7 +332,7 @@ function memberHome(){
   ${cards}
   <button class="btn" onclick="go('edit')">✏️ 编辑我的资料</button>
   <div style="height:8px"></div>
-  <div class="hint">切换到「组织者」身份可看到全部人员的完整信息并统一安排${GROUP_FIELDS&&GROUP_FIELDS.length?(" / "+GROUP_FIELDS.join(" / ")):""}。</div>
+  <div class="hint">切换到「组织者」身份可看到全部人员的完整信息并统一安排${GF()&&GF().length?(" / "+GF().join(" / ")):""}。</div>
   <div style="height:8px"></div>
   ${SYNC_ENABLED?`<div class="role-btn ghost" onclick="manualResync()"><b>🔄 重新同步最新数据</b></div>`:""}`;
 }
@@ -338,7 +343,7 @@ function editForm(){
   const editable = state.fields.filter(f=>f.editor==="member" && f.key!=="身份证姓名");
   const bymod={};
   editable.forEach(f=>{(bymod[f.module]=bymod[f.module]||[]).push(f);});
-  let html=`<div class="hint">这里只放「你自己要填」的字段；${GROUP_FIELDS&&GROUP_FIELDS.length?GROUP_FIELDS.join(" / ")+" 等":""}由组织者统一安排，你在上一页只能看。</div>`;
+  let html=`<div class="hint">这里只放「你自己要填」的字段；${GF()&&GF().length?GF().join(" / ")+" 等":""}由组织者统一安排，你在上一页只能看。</div>`;
   Object.keys(bymod).forEach(m=>{
     html+=`<div class="card"><h3><span class="mod-tag">${esc(m)}</span></h3>`;
     bymod[m].forEach(f=>{
@@ -370,7 +375,7 @@ function saveEdit(){
 function membersView(){
   const me=findMe();
   const meId=me?me._id:null;
-  return `<div class="hint">全部参与成员（共 ${state.people.length} 人）。${GROUP_FIELDS&&GROUP_FIELDS.length?"点「分组」可按"+(GROUP_FIELDS.join("/"))+"查看；":""}带 <span style="color:var(--brand)">●</span> 的是「我」。</div>`+
+  return `<div class="hint">全部参与成员（共 ${state.people.length} 人）。${GF()&&GF().length?"点「分组」可按"+(GF().join("/"))+"查看；":""}带 <span style="color:var(--brand)">●</span> 的是「我」。</div>`+
     `<input id="memsearch" class="search" placeholder="🔍 搜索姓名 / ${esc(SUB_FIELD||"部门")} / 分组" oninput="filterMembers(this.value)">`+
     `<div id="memlist">${memListHtml(meId,"")}</div>`;
 }
@@ -378,7 +383,7 @@ function memListHtml(meId,q){
   q=(q||"").trim();
   const arr=state.people.filter(p=>{
     if(!q) return true;
-    const hay=[displayName(p),subLine(p),...GROUP_FIELDS.map(k=>valOf(p,k))].join(" ");
+    const hay=[displayName(p),subLine(p),...GF().map(k=>valOf(p,k))].join(" ");
     return hay.indexOf(q)>=0;
   }).map(p=>({
     name:displayName(p),
@@ -559,30 +564,106 @@ function addSchedItem(di){
 function delSchedItem(di,ii){confirmSheet('确定删除此时段？',()=>{state.schedule[di].items.splice(ii,1);persist();render();});}
 function delSchedDay(di){confirmSheet('确定删除该行程日？',()=>{state.schedule.splice(di,1);persist();render();});}
 
-/* ============== 分组（通用·按 GROUP_FIELDS） ============== */
+/* ============== 分组（通用·维度可增删改） ============== */
 function groupsView(){
   const isAdmin=ctx.role==="admin"; const me=isAdmin?null:findMe();
-  const gf=(GROUP_FIELDS||[]).filter(k=> state.people.some(p=>valOf(p,k)));
-  if(gf.length===0) return `<div class="empty-note">尚未设置分组字段（生成时未包含分组列）</div>`;
+  const all=GF().slice();
+  // 组织者看全部维度（含空维度，方便刚建就分人）；成员只看有内容的维度
+  const gf = isAdmin ? all : all.filter(k=> state.people.some(p=>valOf(p,k)));
+  if(gf.length===0){
+    if(isAdmin) return `<div class="empty-note">还没有任何分组维度。<br>你可以按任意方式分组（如房间、小队、饭桌、兴趣小组…）。</div>
+      <button class="btn" onclick="addGroupDim()">➕ 新增分组维度</button>`;
+    return `<div class="empty-note">组织者尚未设置分组。</div>`;
+  }
   if(ctx.groupIdx==null||ctx.groupIdx>=gf.length)ctx.groupIdx=0;
   const k=gf[ctx.groupIdx];
   const by={};
   state.people.forEach(p=>{const v=valOf(p,k)||"未分组";(by[v]=by[v]||[]).push(p);});
+  // 顶部维度标签（组织者末尾多一个"➕维度"）
   const tabs=`<div class="daytabs">`+gf.map((g,i)=>
-    `<div class="dtab ${ctx.groupIdx===i?'on':''}" onclick="goGroupTab(${i})"><div class="dw">${esc(g)}</div><div class="dd">${state.people.filter(p=>valOf(p,g)).length}人</div></div>`).join("")+`</div>`;
+    `<div class="dtab ${ctx.groupIdx===i?'on':''}" onclick="goGroupTab(${i})"><div class="dw">${esc(g)}</div><div class="dd">${state.people.filter(p=>valOf(p,g)).length}人</div></div>`).join("")
+    +(isAdmin?`<div class="dtab" onclick="addGroupDim()" style="border-style:dashed"><div class="dw">➕</div><div class="dd">新维度</div></div>`:"")
+    +`</div>`;
+  // 维度级操作条（改名 / 删除当前维度）
+  const dimBar = isAdmin?`<div style="display:flex;gap:8px;margin:8px 0 4px">
+      <button class="mini" onclick="renameGroupDim('${esc(k)}')">✏️ 改名维度「${esc(k)}」</button>
+      <button class="mini del" onclick="delGroupDim('${esc(k)}')">🗑 删除维度</button>
+    </div>`:"";
   const groupsHtml=Object.keys(by).sort().map(g=>`
     <div class="grp"><div class="gh">${g==='未分组'?g:esc(g)} (${by[g].length}人)</div>
     <div class="gm">${by[g].map(p=>{const id=state.people.indexOf(p);return `<span class="m ${!isAdmin&&me&&p._id===me._id?'me':''}" ${isAdmin?`onclick="editGroup(${id})" style="cursor:pointer"`:''}>${esc(displayName(p))}</span>`;}).join("")}</div>
-    ${isAdmin&&g!=='未分组'?`<div style="margin-top:6px"><button class="mini" onclick="editGroupMembers('${esc(k)}','${esc(g)}')">调整成员</button> <button class="mini del" onclick="delGroupCat('${esc(k)}','${esc(g)}')">删除分组</button></div>`:''}</div>`).join("");
-  const tip = isAdmin?`<div class="hint">组织者视角：点任意成员可调整其${gf.map(x=>"「"+x+"」").join("")}；每个分组可「修改」名称或「删除」（成员回到未分组）。切换上方标签查看不同分组维度。</div>`:"";
-  return tabs+tip+groupsHtml;
+    ${isAdmin&&g!=='未分组'?`<div style="margin-top:6px"><button class="mini" onclick="editGroupMembers('${esc(k)}','${esc(g)}')">调整成员</button> <button class="mini del" onclick="delGroupCat('${esc(k)}','${esc(g)}')">删除该组</button></div>`:''}</div>`).join("");
+  const addGrpBtn = isAdmin?`<button class="btn ghost" onclick="addGroupCat('${esc(k)}')">➕ 在「${esc(k)}」下新增一个分组</button>`:"";
+  const tip = isAdmin?`<div class="hint">组织者视角：<b>维度</b>=按什么分（车号/房间/小队…）；<b>分组</b>=维度下的一个个组。点成员可调整其归属；切换上方标签换维度，末尾「➕」可加新维度。</div>`:"";
+  return tabs+dimBar+tip+groupsHtml+(addGrpBtn?`<div style="height:8px"></div>`+addGrpBtn:"");
 }
 function goGroupTab(i){ctx.groupIdx=i;render();}
+/* ---- 维度（分组依据）增删改 ---- */
+function addGroupDim(){
+  const inner=`<h3>➕ 新增分组维度</h3>
+    <div class="hint">维度就是「按什么分组」。例如：房间、小队、饭桌、兴趣小组、值日组…</div>
+    <div class="f-item"><label>维度名称</label><input id="newdim" placeholder="如：房间分配"></div>
+    <button class="btn" onclick="saveNewDim()">创建</button>
+    <div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
+  showSheet(inner);
+}
+function saveNewDim(){
+  const v=($("#newdim").value||"").trim();
+  if(!v){toast("请填写维度名称");return;}
+  if(!state.groupFields) state.groupFields=(GROUP_FIELDS||[]).slice();
+  if(state.groupFields.includes(v)){toast("已存在同名维度");return;}
+  state.groupFields.push(v);
+  ctx.groupIdx=GF().filter(k=>ctx.role==="admin"||state.people.some(p=>valOf(p,k))).length; // 跳到新维度
+  persist();closeSheet();render();toast("已新增维度「"+v+"」✅");
+}
+function renameGroupDim(oldName){
+  const inner=`<h3>✏️ 维度改名</h3>
+    <div class="f-item"><label>把「${esc(oldName)}」改为</label><input id="dimname" value="${esc(oldName)}"></div>
+    <button class="btn" onclick="saveDimRename('${esc(oldName)}')">保存</button>
+    <div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
+  showSheet(inner);
+}
+function saveDimRename(oldName){
+  const nv=($("#dimname").value||"").trim();
+  if(!nv){toast("名称不能为空");return;}
+  if(nv===oldName){closeSheet();return;}
+  if(state.groupFields.includes(nv)){toast("已存在同名维度");return;}
+  const i=state.groupFields.indexOf(oldName); if(i>=0) state.groupFields[i]=nv;
+  // 把成员身上旧维度的值迁移到新维度名
+  state.people.forEach(p=>{ if(p[oldName]!==undefined){ p[nv]=p[oldName]; delete p[oldName]; } });
+  persist();closeSheet();render();toast("维度已改名 ✅");
+}
+function delGroupDim(name){
+  const cnt=state.people.filter(p=>valOf(p,name)).length;
+  confirmSheet('删除维度「'+name+'」？该维度下所有分组安排都会清空（涉及 '+cnt+' 人的该项分组，成员本身不会被删除）。',()=>{
+    const i=state.groupFields.indexOf(name); if(i>=0) state.groupFields.splice(i,1);
+    state.people.forEach(p=>{ if(p[name]!==undefined) delete p[name]; });
+    ctx.groupIdx=0;
+    persist();render();toast("已删除维度「"+name+"」✅");
+  });
+}
+/* ---- 在某维度下新增一个分组（组） ---- */
+function addGroupCat(field){
+  const inner=`<h3>➕ 在「${esc(field)}」下新增分组</h3>
+    <div class="f-item"><label>分组名称</label><input id="newcat" placeholder="如：1号房 / 第一小队"></div>
+    <div class="hint">创建后可在该组卡片点「调整成员」把人加进来。</div>
+    <button class="btn" onclick="saveNewCat('${esc(field)}')">创建</button>
+    <div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
+  showSheet(inner);
+}
+function saveNewCat(field){
+  const v=($("#newcat").value||"").trim();
+  if(!v){toast("请填写分组名称");return;}
+  if(v==="未分组"){toast("请换一个名称");return;}
+  if(state.people.some(p=>(valOf(p,field)||"未分组")===v)){toast("该组已存在");return;}
+  closeSheet();
+  editGroupMembers(field,v); // 直接进入"调整成员"把人加入新组
+}
 function editGroup(idx){
   const p=state.people[idx];
   const f=(k,label)=>`<div class="f-item"><label>${label}</label><input data-gk="${k}" value="${esc(valOf(p,k))}"></div>`;
   const inner=`<h3>调整分组：${esc(displayName(p))}</h3>`+
-    (GROUP_FIELDS||[]).map(k=>f(k,k)).join("")+
+    GF().map(k=>f(k,k)).join("")+
     `<button class="btn" onclick="saveGroup(${idx})">保存</button><div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
   showSheet(inner);
 }
@@ -769,7 +850,7 @@ const SYNC_API = "https://api.github.com/repos/" + SYNC_REPO + "/contents/" + SY
 async function genSyncLink(){
   const SENS=["手机号","身份证号","手机","电话","身份证"];
   const peopleForSync=state.people.map(p=>{const o=Object.assign({},p);SENS.forEach(k=>{ if(o[k]!==undefined) o[k]=""; });return o;});
-  const payload={people:peopleForSync, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview, _ts:Date.now()};
+  const payload={people:peopleForSync, schedule:state.schedule, notices:state.notices, tips:state.tips, overview:state.overview, groupFields:state.groupFields, _ts:Date.now()};
 
   showSheet(`
     <h3>📤 正在同步...</h3>
@@ -878,6 +959,7 @@ function mergeSyncData(data){
   if(data.notices && data.notices.length) state.notices=data.notices;
   if(data.tips && data.tips.length) state.tips=data.tips;
   if(data.overview && data.overview.length) state.overview=data.overview;
+  if(data.groupFields && data.groupFields.length) state.groupFields=data.groupFields;
   persist();
 }
 let _lastSyncTs=0;
