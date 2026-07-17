@@ -476,7 +476,9 @@ function _renderTipSheet(){
     inner+=`<button class="btn sm" data-add-block style="margin-top:8px">+ 添加正文</button>`;
   }
   inner+=`<button class="btn" onclick="saveTip()">保存</button><div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
-  showSheet(inner);
+  const m=$("#mask");
+  if(m){ m.querySelector(".sheet").innerHTML=inner; }
+  else { showSheet(inner); }
   document.querySelectorAll('[data-del-cat]').forEach(b=>b.onclick=()=>{_syncTipBuf();_tipBuf.groups.splice(+b.dataset.delCat,1);_renderTipSheet();});
   document.querySelectorAll('[data-del-item]').forEach(b=>b.onclick=()=>{_syncTipBuf();const a=b.dataset.delItem.split('-');_tipBuf.groups[+a[0]].items.splice(+a[1],1);_renderTipSheet();});
   document.querySelectorAll('[data-add-item]').forEach(b=>b.onclick=()=>{_syncTipBuf();_tipBuf.groups[+b.dataset.addItem].items.push({name:'',detail:''});_renderTipSheet();});
@@ -567,7 +569,7 @@ function groupsView(){
   const groupsHtml=Object.keys(by).sort().map(g=>`
     <div class="grp"><div class="gh">${g==='未分组'?g:esc(g)} (${by[g].length}人)</div>
     <div class="gm">${by[g].map(p=>{const id=state.people.indexOf(p);return `<span class="m ${!isAdmin&&me&&p._id===me._id?'me':''}" ${isAdmin?`onclick="editGroup(${id})" style="cursor:pointer"`:''}>${esc(displayName(p))}</span>`;}).join("")}</div>
-    ${isAdmin&&g!=='未分组'?`<div style="margin-top:6px"><button class="mini" onclick="editGroupCat('${esc(k)}','${esc(g)}')">修改</button> <button class="mini del" onclick="delGroupCat('${esc(k)}','${esc(g)}')">删除</button></div>`:''}</div>`).join("");
+    ${isAdmin&&g!=='未分组'?`<div style="margin-top:6px"><button class="mini" onclick="editGroupMembers('${esc(k)}','${esc(g)}')">调整成员</button> <button class="mini del" onclick="delGroupCat('${esc(k)}','${esc(g)}')">删除分组</button></div>`:''}</div>`).join("");
   const tip = isAdmin?`<div class="hint">组织者视角：点任意成员可调整其${gf.map(x=>"「"+x+"」").join("")}；每个分组可「修改」名称或「删除」（成员回到未分组）。切换上方标签查看不同分组维度。</div>`:"";
   return tabs+tip+groupsHtml;
 }
@@ -585,21 +587,35 @@ function saveGroup(idx){
   document.querySelectorAll('[data-gk]').forEach(el=>{o[el.dataset.gk]=el.value.trim();});
   persist();closeSheet();render();
 }
-function editGroupCat(field,oldName){
-  const cnt=state.people.filter(p=>(valOf(p,field)||"未分组")===oldName).length;
-  const inner=`<h3>修改分组</h3>`+
-    `<div class="hint">「${esc(field)}」维度下的「${esc(oldName)}」分组，共 ${cnt} 人。改名后该组所有成员一起更新。</div>`+
-    `<div class="f-item"><label>分组名称</label><input data-gcn value="${esc(oldName)}"></div>`+
-    `<button class="btn" onclick="saveGroupCat('${esc(field)}','${esc(oldName)}')">保存</button><div style="height:8px"></div>`+
-    `<button class="btn ghost" onclick="closeSheet()">取消</button>`;
+function editGroupMembers(field, groupName){
+  const inner=`<h3>调整分组：「${esc(groupName)}」</h3>
+    <div class="hint">点击下方成员可加入 / 移出本分组（高亮=已在本组）。改名请在下方输入后点保存。</div>
+    <div class="mtwrap" style="display:flex;flex-wrap:wrap;gap:8px;margin:10px 0">`+
+    state.people.map((p,idx)=>{
+       const inG=(valOf(p,field)||"未分组")===groupName;
+       return `<span class="mtoggle ${inG?'on':''}" data-pidx="${idx}" data-field="${esc(field)}" data-group="${esc(groupName)}" style="padding:6px 11px;border-radius:999px;border:1px solid var(--line);font-size:14px;cursor:pointer;${inG?'background:var(--brand);color:#fff;border-color:var(--brand)':''}">${esc(displayName(p))}</span>`;
+    }).join("")+`</div>
+    <div class="f-item" style="margin-top:4px"><label>改名此分组（可选）</label><input data-gcn3 value="${esc(groupName)}"></div>
+    <button class="btn sm" onclick="saveGroupRename('${esc(field)}','${esc(groupName)}')">保存改名</button>
+    <div style="height:10px"></div>
+    <button class="btn ghost" onclick="closeSheet()">完成</button>`;
   showSheet(inner);
+  document.querySelectorAll('.mtoggle').forEach(b=>b.onclick=()=>{
+    const idx=+b.dataset.pidx, f=b.dataset.field, g=b.dataset.group;
+    const p=state.people[idx];
+    if((valOf(p,f)||"未分组")===g){
+      p[f]=""; b.classList.remove('on'); b.style.background='';b.style.color='';b.style.borderColor='';
+    } else {
+      p[f]=g; b.classList.add('on'); b.style.background='var(--brand)';b.style.color='#fff';b.style.borderColor='var(--brand)';
+    }
+    persist();
+  });
 }
-function saveGroupCat(field,oldName){
-  const el=document.querySelector('[data-gcn]'); if(!el)return;
+function saveGroupRename(field, oldName){
+  const el=document.querySelector('[data-gcn3]'); if(!el)return;
   const nv=el.value.trim(); if(!nv){toast("名称不能为空");return;}
-  if(nv===oldName){closeSheet();return;}
-  state.people.forEach(p=>{if((valOf(p,field)||"未分组")===oldName)p[field]=nv;});
-  persist();closeSheet();render();toast("已更新分组名 ✅");
+  if(nv!==oldName) state.people.forEach(p=>{if((valOf(p,field)||"未分组")===oldName)p[field]=nv;});
+  persist();closeSheet();render();toast("已更新分组 ✅");
 }
 function delGroupCat(field,oldName){
   const cnt=state.people.filter(p=>(valOf(p,field)||"未分组")===oldName).length;
