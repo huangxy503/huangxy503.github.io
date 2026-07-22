@@ -316,7 +316,7 @@ function memberHome(){
   const me=findMe();
   const modules={};
   state.fields.filter(f=>f.key!=="身份证姓名").forEach(f=>{(modules[f.module]=modules[f.module]||[]).push(f);});
-  let cards=Object.keys(modules).map(m=>{
+  let cards=Object.keys(modules).filter(m=>m!=="人员基础").map(m=>{
     const rows=modules[m].map(f=>{
       let v=valOf(me,f.key);
       if(f.sensitive){ v = (f.key.indexOf("手机")>=0||f.key.indexOf("电话")>=0)?maskPhone(v):(v?"已加密·仅组织者可见":""); }
