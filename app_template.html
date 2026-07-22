@@ -46,6 +46,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .chip{background:var(--lock);color:var(--brand);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600}
 .sync-mini-btn{position:absolute;top:10px;right:10px;background:none;border:1px solid #e2e8f0;border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .sync-mini-btn:active{background:#f1f5f9;transform:scale(.9)}
+/* 航班特殊排版 */
+.flight-prefix{color:var(--sub);font-size:13px;font-weight:400;margin-right:4px}
+.flight-seg{display:block;font-size:13px;line-height:1.6}
+.row-flight .v{flex-direction:column;align-items:flex-start}
+/* 住宿特殊排版 */
+.hotel-mate{font-size:12px;color:#64748b;margin-top:2px}
+.row-hotel .v{flex-direction:column;align-items:flex-start}
 .btn{display:block;width:100%;background:var(--brand);color:#fff;border:none;padding:13px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
 .btn:active{background:var(--brand2)}
 .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
@@ -322,12 +329,43 @@ function memberHome(){
   const MEMBER_MODULE_ORDER = ["机酒预订","住宿安排"];
   const HIDE_KEYS = ["手机号","身份证号"];   // 机酒预订里的敏感字段：参与者端不展示
   let cards=MEMBER_MODULE_ORDER.filter(m=>modules[m]).map(m=>{
+
+  /* ── 特殊排版：机酒航班 ── */
+  function renderFlightRow(label, raw){
+    const t=String(raw||"").trim();
+    if(!t) return `<div class="row"><span class="k">${esc(label)}</span><span class="v empty">待定</span></div>`;
+    const parts=t.split(/\s*--\s*/);
+    const prefix=parts[0]||"";
+    const body=parts.slice(1).join("--").trim();
+    if(!body) return `<div class="row"><span class="k">${esc(label)}</span><span class="v">${esc(t)}</span></div>`;
+    const segs=body.split(/\s*\+\s*/);
+    const flightHtml=segs.map(s=>`<span class="flight-seg">${esc(s.trim())}</span>`).join("");
+    return `<div class="row row-flight"><span class="k">${esc(label)}</span><span class="v"><span class="flight-prefix">${esc(prefix)}</span> ${flightHtml}</span></div>`;
+  }
+
+  /* ── 特殊排版：住宿（去label日期、去值内冗余日期、酒店与室友分行）── */
+  function renderHotelRow(rawLabel, rawVal){
+    const label=rawLabel.replace(/\s*[\(\uFF08][^)\uFF09]+[\)\uFF09]\s*$/,"");
+    const v=String(rawVal||"").trim();
+    if(!v) return `<div class="row"><span class="k">${esc(label)}</span><span class="v empty">待定</span></div>`;
+    const mateMatch=v.match(/（室友[\uff1a:]\s*[^）]+）/);
+    const mate=mateMatch?mateMatch[1]:"";
+    const body=mateMatch?v.replace(mateMatch[0],"").trim():v;
+    const cleanBody=body.replace(/\s*\d+号\s*/g," ").replace(/\s{2,}/g," ").trim();
+    const mateHtml=mate?`<div class="hotel-mate">${esc(mate)}</div>`:"";
+    return `<div class="row row-hotel"><span class="k">${esc(label)}</span><span class="v">${esc(cleanBody)}${mateHtml}</span></div>`;
+  }
+
     const rows=modules[m].filter(f=>!(m==="机酒预订"&&HIDE_KEYS.includes(f.key))).map(f=>{
       let v=valOf(me,f.key);
       if(f.sensitive){ v = (f.key.indexOf("手机")>=0||f.key.indexOf("电话")>=0)?maskPhone(v):(v?"已加密·仅组织者可见":""); }
       const lock = f.editor==="admin" ? `<span class="lockicon">🔒只读</span>` : "";
       const sens = f.sensitive ? `<span class="sens-badge">脱敏</span>`:"";
-      // 空值显示「待定」，配合左侧 label（已含日期/晚次）即可看出是哪一处待定
+
+      /* 特殊字段走专用排版 */
+      if(f.key==="去程航班"||f.key==="返程航班") return renderFlightRow(f.label,v);
+      if(m==="住宿安排") return renderHotelRow(f.label,v);
+
       const shown = v ? esc(v) : "待定";
       return `<div class="row"><span class="k">${esc(f.label)}${lock}${sens}</span><span class="v ${v?'':'empty'}">${shown}</span></div>`;
     }).join("");
