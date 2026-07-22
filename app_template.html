@@ -288,7 +288,6 @@ function render(){
   else if(ctx.tab==="schedule") body = scheduleView();
   else if(ctx.tab==="groups") body = groupsView();
   else if(ctx.tab==="notice") body = noticeView();
-  else if(ctx.tab==="members") body = membersView();
   else if(ctx.tab==="tips") body = tipsView();
   else if(ctx.tab==="admin") body = adminTable();
   else if(ctx.tab==="me") body = memberHome();
@@ -305,7 +304,7 @@ function tabbar(){
   const isAdmin=ctx.role==="admin";
   const tabs = isAdmin
    ? [["admin","📋","数据后台"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","公告"],["tips","📖","贴士"]]
-   : [["home","🏠","我的"],["members","👥","成员"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","公告"],["tips","📖","贴士"]];
+   : [["home","🏠","我的"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","公告"],["tips","📖","贴士"]];
   return `<div class="tabbar">`+tabs.map(([k,ic,lb])=>
     `<div class="tab ${ctx.tab===k||(k==='home'&&ctx.tab==='edit')?'on':''}" onclick="go('${k}')"><span class="ic">${ic}</span>${lb}</div>`
   ).join("")+`</div>`;
@@ -409,40 +408,7 @@ async function pushMyRecord(){
   }
 }
 
-/* ============== MEMBER: 成员名单 ============== */
-function membersView(){
-  const me=findMe();
-  const meId=me?me._id:null;
-  return `<div class="hint">全部参与成员（共 ${state.people.length} 人）。${GF()&&GF().length?"点「分组」可按"+(GF().join("/"))+"查看；":""}带 <span style="color:var(--brand)">●</span> 的是「我」。</div>`+
-    `<input id="memsearch" class="search" placeholder="🔍 搜索姓名 / ${esc(SUB_FIELD||"部门")} / 分组" oninput="filterMembers(this.value)">`+
-    `<div id="memlist">${memListHtml(meId,"")}</div>`;
-}
-function memListHtml(meId,q){
-  q=(q||"").trim();
-  const arr=state.people.filter(p=>{
-    if(!q) return true;
-    const hay=[displayName(p),subLine(p),...GF().map(k=>valOf(p,k))].join(" ");
-    return hay.indexOf(q)>=0;
-  }).map(p=>({
-    name:displayName(p),
-    dept:subLine(p),
-    id:p._id
-  }));
-  const meItem=arr.filter(m=>m.id===meId);
-  const others=arr.filter(m=>m.id!==meId);
-  const final=meItem.concat(others);
-  if(final.length===0) return `<div class="empty-note">未找到匹配的成员</div>`;
-  return final.map(m=>`<div class="mem">
-      <div class="mi">
-        <div class="mn">${esc(m.name)} ${m.id===meId?'<span style="color:var(--brand)">●</span>':''}</div>
-        <div class="md">${esc(m.dept)}</div>
-      </div>
-    </div>`).join("");
-}
-function filterMembers(q){
-  const me=findMe(); const meId=me?me._id:null;
-  const el=$("#memlist"); if(el) el.innerHTML=memListHtml(meId,q);
-}
+/* ============== MEMBER: 成员名单（已移除，参与者无需查看全员名单） ============== */
 
 /* ============== 贴士 ============== */
 function _tipBody(t){
