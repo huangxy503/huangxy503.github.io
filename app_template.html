@@ -33,17 +33,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .page{padding:14px}
 .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 .card h3{font-size:15px;margin-bottom:10px;display:flex;align-items:center;gap:6px}
-.mod-tag{font-size:11px;padding:1px 8px;border-radius:6px;background:var(--lock);color:var(--brand);font-weight:600}
-.row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid #f1f3f5;gap:10px}
+.mod-tag{font-size:12px;padding:2px 9px;border-radius:6px;background:var(--lock);color:var(--brand);font-weight:700;letter-spacing:.5px}
+.row{display:flex;justify-content:space-between;align-items:flex-start;padding:10px 0;border-bottom:1px solid #f1f3f5;gap:12px}
 .row:last-child{border-bottom:none}
-.row .k{color:var(--sub);font-size:13px;flex-shrink:0}
-.row .v{font-weight:600;text-align:right;word-break:break-all;font-size:13px}
+.row .k{color:#475569;font-size:13px;font-weight:500;flex-shrink:0}
+.row .v{font-weight:600;text-align:right;word-break:break-word;font-size:14px;color:var(--ink);line-height:1.45}
 .row .v.empty{color:#cbd5e1;font-weight:400}
 .lockicon{font-size:10px;color:var(--brand);background:var(--lock);padding:1px 5px;border-radius:4px;margin-left:4px}
-.big-name{font-size:20px;font-weight:700;margin-bottom:2px}
-.dept{color:var(--sub);font-size:13px;margin-bottom:12px}
+.big-name{font-size:21px;font-weight:700;margin-bottom:3px;letter-spacing:-.3px}
+.dept{color:#475569;font-size:13px;margin-bottom:12px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
 .chip{background:var(--lock);color:var(--brand);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600}
+.sync-mini-btn{position:absolute;top:10px;right:10px;background:none;border:1px solid #e2e8f0;border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sync-mini-btn:active{background:#f1f5f9;transform:scale(.9)}
 .btn{display:block;width:100%;background:var(--brand);color:#fff;border:none;padding:13px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px}
 .btn:active{background:var(--brand2)}
 .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}
@@ -311,7 +313,7 @@ function tabbar(){
   ).join("")+`</div>`;
 }
 
-/* ============== MEMBER: 我的信息（通用·按模块分组） ============== */
+/* ============== MEMBER: 我的信息（紧凑·原版结构 + 字体协调微调） ============== */
 function memberHome(){
   const me=findMe();
   const modules={};
@@ -325,7 +327,9 @@ function memberHome(){
       if(f.sensitive){ v = (f.key.indexOf("手机")>=0||f.key.indexOf("电话")>=0)?maskPhone(v):(v?"已加密·仅组织者可见":""); }
       const lock = f.editor==="admin" ? `<span class="lockicon">🔒只读</span>` : "";
       const sens = f.sensitive ? `<span class="sens-badge">脱敏</span>`:"";
-      return `<div class="row"><span class="k">${esc(f.label)}${lock}${sens}</span><span class="v ${v?'':'empty'}">${v?esc(v):"未填写"}</span></div>`;
+      // 空值显示「待定」，配合左侧 label（已含日期/晚次）即可看出是哪一处待定
+      const shown = v ? esc(v) : "待定";
+      return `<div class="row"><span class="k">${esc(f.label)}${lock}${sens}</span><span class="v ${v?'':'empty'}">${shown}</span></div>`;
     }).join("");
     return `<div class="card"><h3><span class="mod-tag">${esc(m)}</span></h3>${rows}</div>`;
   }).join("");
@@ -333,15 +337,14 @@ function memberHome(){
   const chips=(CHIP_FIELDS||[]).filter(k=>valOf(me,k)).map(k=>`<span class="chip">${esc(k)}: ${esc(valOf(me,k))}</span>`).join("");
 
   return `
-  <div class="card">
+  <div class="card" style="position:relative">
+    ${SYNC_ENABLED?`<button class="sync-mini-btn" onclick="manualResync()" title="同步最新数据">🔄</button>`:""}
     <div class="big-name">${esc(displayName(me))}</div>
     ${subLine(me)?`<div class="dept">${esc(subLine(me))}</div>`:`<div style="height:8px"></div>`}
     ${chips?`<div class="chips">${chips}</div>`:""}
   </div>
   ${cards}
-  <button class="btn" onclick="go('edit')">✏️ 编辑我的资料</button>
-  <div style="height:8px"></div>
-  ${SYNC_ENABLED?`<div class="role-btn ghost" onclick="manualResync()"><b>🔄 重新同步最新数据</b></div>`:""}`;
+  <button class="btn" onclick="go('edit')">✏️ 编辑我的资料</button>`;
 }
 
 /* ============== MEMBER: 编辑表单 ============== */
