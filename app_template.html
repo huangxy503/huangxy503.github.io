@@ -349,7 +349,7 @@ function editForm(){
   const me=findMe();
   // 参与者编辑表单：不出现「自驾/出行」「特殊关怀」整块，也不出现敏感字段（手机号/身份证号）
   const editable = state.fields.filter(f=>f.editor==="member" && f.key!=="身份证姓名"
-      && !["自驾/出行","特殊关怀"].includes(f.module)
+      && !["人员基础","自驾/出行","特殊关怀"].includes(f.module)
       && !["手机号","身份证号"].includes(f.key));
   const bymod={};
   editable.forEach(f=>{(bymod[f.module]=bymod[f.module]||[]).push(f);});
@@ -527,7 +527,7 @@ function scheduleView(){
       <div style="padding:10px 14px"><button class="btn sm" onclick="addSchedItem(${ctx.schedDay})">+ 新增时段</button></div></div>`;
     return ovHtml+tabs+dayHtml+`<button class="btn" onclick="editSchedDay(-1)">+ 新增一天行程</button>`;
   }
-  return ovHtml+tabs+`<div class="day"><div class="dh">${esc(d.date)} ${esc(d.week)} · ${esc(d.title)}</div>${d.items.map(scheduleRow).join("")}${d.tip?`<div class="di"><div class="tip">⚠️ ${esc(d.tip)}</div></div>`:''}</div>`;
+  return ovHtml+tabs+`<div class="day"><div class="dh">${esc(d.date)} ${esc(d.week)} · ${esc(d.title)}</div>${d.items.map(scheduleRow).join("")}</div>`;
 }
 function editSchedDay(di){
   const d = di<0?{date:'',week:'',title:'',tip:''}:state.schedule[di];
