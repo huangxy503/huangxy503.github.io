@@ -587,14 +587,13 @@ function groupsView(){
     <div class="gm">${by[g].map(p=>{const id=state.people.indexOf(p);return `<span class="m ${!isAdmin&&me&&p._id===me._id?'me':''}" ${isAdmin?`onclick="editGroup(${id})" style="cursor:pointer"`:''}>${esc(displayName(p))}</span>`;}).join("")}</div>
     ${isAdmin&&g!=='未分组'?`<div style="margin-top:6px"><button class="mini" onclick="editGroupMembers('${esc(k)}','${esc(g)}')">调整成员</button> <button class="mini del" onclick="delGroupCat('${esc(k)}','${esc(g)}')">删除该组</button></div>`:''}</div>`).join("");
   const addGrpBtn = isAdmin?`<button class="btn ghost" onclick="addGroupCat('${esc(k)}')">➕ 在「${esc(k)}」下新增一个分组</button>`:"";
-  const tip = isAdmin?`<div class="hint">组织者视角：<b>维度</b>=按什么分（车号/房间/小队…）；<b>分组</b>=维度下的一个个组。点成员可调整其归属；切换上方标签换维度，末尾「➕」可加新维度。</div>`:"";
+  const tip = "";
   return tabs+dimBar+tip+groupsHtml+(addGrpBtn?`<div style="height:8px"></div>`+addGrpBtn:"");
 }
 function goGroupTab(i){ctx.groupIdx=i;render();}
 /* ---- 维度（分组依据）增删改 ---- */
 function addGroupDim(){
   const inner=`<h3>➕ 新增分组维度</h3>
-    <div class="hint">维度就是「按什么分组」。例如：房间、小队、饭桌、兴趣小组、值日组…</div>
     <div class="f-item"><label>维度名称</label><input id="newdim" placeholder="如：房间分配"></div>
     <button class="btn" onclick="saveNewDim()">创建</button>
     <div style="height:8px"></div><button class="btn ghost" onclick="closeSheet()">取消</button>`;
@@ -786,14 +785,11 @@ function adminTable(){
     tds+=`<td><button class="mini" onclick="editPerson(${idx})">改</button> <button class="mini del" onclick="delPerson(${idx})">删</button></td>`;
     return `<tr>${tds}</tr>`;
   }).join("");
-  const syncHint = SYNC_ENABLED
-    ? `<div class="hint">📡 改完信息后点右上角「📤 同步」按钮，把链接发到群，大家点开就自动同步你的最新安排（数据不经服务器、自动剔除敏感字段）。</div>`
-    : `<div class="hint">⚠️ 本小程序未配置同步后台，数据仅保存在本机。</div>`;
+  const syncHint = SYNC_ENABLED ? "" : `<div class="hint">⚠️ 本小程序未配置同步后台，数据仅保存在本机。</div>`;
   return `
   <div class="adm-top">
     <div class="stat"><div class="num">${total}</div><div class="lb">总人数</div></div>
   </div>
-  <div class="hint">组织者后台：每行一个人、每列一个字段，点「改」可编辑任意字段。横向可滑动查看全部列。</div>
   <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
     <button class="btn sm" onclick="editPerson(-1)">+ 新增人员</button>
   </div>
