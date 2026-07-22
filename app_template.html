@@ -63,7 +63,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .identity-arrow{margin-left:10px;font-size:26px;line-height:1;color:#0f6e56;font-weight:400}
 .organizer .identity-arrow{color:#854f0b}
 .home-footer{margin-top:22px;color:#77889a;font-size:12px;text-align:center}
-.home-splash #pwdbox .pwd{width:100%;margin-top:2px}.home-splash #pwdbox .role-btn{width:100%;background:#ef9f27;border-color:#ef9f27;margin:10px 0 0;color:#fff;box-shadow:none}.home-splash #pwdbox .role-btn b{font-size:15px}
+.inline-choice{margin:-2px 0 12px}.inline-member-picker{padding:13px 14px;border-radius:16px;background:#f5fbf9;border:1px solid #cdeadd}.inline-choice-label{font-size:12px;color:#3b6d5b;margin-bottom:8px}.home-splash .pick-search{width:100%;padding:11px 13px;border-radius:12px;border:1px solid #b8dfcc;background:#fff;color:var(--ink);font-size:14px;box-sizing:border-box}.home-splash .pick-search::placeholder{color:#8da99d}.home-splash .pick-list{max-height:190px;overflow:auto;margin-top:8px;background:#fff;border:1px solid #d9eee3;border-radius:12px;padding:2px}.home-splash .mem-pick{padding:10px 12px;color:#315247;font-size:14px;border-radius:8px;cursor:pointer}.home-splash .mem-pick:active{background:#e1f5ee}.home-splash .mem-pick.empty{color:#789086;text-align:center;font-size:13px}.home-splash #pwdbox .pwd{width:100%;margin:0 0 12px}.home-splash #pwdbox .pwd input{border:1px solid #f2c985;background:#fffaf0}.home-splash #pwdbox .role-btn{width:100%;background:#ef9f27;border-color:#ef9f27;margin:10px 0 0;color:#fff;box-shadow:none}.home-splash #pwdbox .role-btn b{font-size:15px}
 /* header */
 .hd{position:sticky;top:0;background:linear-gradient(135deg,#5a9fd4,#7ab8e2);color:#fff;padding:15px 16px;display:flex;align-items:center;justify-content:space-between;z-index:20;box-shadow:0 2px 14px rgba(90,159,212,.22)}
 .hd .t{font-size:18px;font-weight:600;letter-spacing:.3px}
@@ -367,6 +367,7 @@ function renderSplash(){
         <span class="identity-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18c2-5 5-7 8-7s6 2 8 7"/><path d="M8 8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M16 8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg></span>
         <span class="identity-copy"><span class="identity-title">我是参与者</span><span class="identity-desc">查看行程、任务与同行伙伴</span></span><span class="identity-arrow" aria-hidden="true">›</span>
       </button>
+      <div id="memberbox" class="inline-choice"></div>
       <button class="identity-card organizer" onclick="askAdmin()" aria-label="我是组织者，管理行程、签到与重要信息">
         <span class="identity-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5h10v15H6V7"/><path d="M8 5V3h6v2"/><path d="M9 10h6M9 14h6"/><path d="m4 12 1.5 1.5L8 11"/></svg></span>
         <span class="identity-copy"><span class="identity-title">我是组织者</span><span class="identity-desc">管理行程、签到与重要信息</span></span><span class="identity-arrow" aria-hidden="true">›</span>
@@ -377,23 +378,21 @@ function renderSplash(){
   </div>`;
 }
 function chooseMember(){
-  app.innerHTML = `
-  <div class="splash">
-    <h1>${esc(EVENT_TITLE)}</h1>
-    <p>请选择 / 输入你的姓名</p>
-    <div class="pwd">
-      <input id="memname" placeholder="可直接输入你的名字" autocomplete="off" oninput="filterPick()">
-      <div class="role-btn" style="margin-top:10px" onclick="setMember()"><b>进入</b></div>
-    </div>
-    <div class="hint" style="margin-top:12px;width:300px;max-width:86vw">请填写与报名表一致的姓名</div>
-    <div style="width:300px;max-width:86vw;margin:14px auto 0">
-      <input id="picksearch" class="pick-search" placeholder="🔍 搜索姓名" oninput="filterPick()">
-      <div id="picklist" class="pick-list"></div>
-    </div>
-    <div class="role-btn ghost" onclick="renderSplash()" style="margin-top:14px"><b>返回</b></div>
+  const box=$("#memberbox");
+  const adminBox=$("#pwdbox");
+  if(!box)return;
+  if(box.innerHTML.trim()){
+    box.innerHTML="";
+    return;
+  }
+  if(adminBox) adminBox.innerHTML="";
+  box.innerHTML=`<div class="inline-member-picker">
+    <div class="inline-choice-label">请选择或搜索你的姓名</div>
+    <input id="picksearch" class="pick-search" placeholder="输入姓名搜索" autocomplete="off" oninput="filterPick()">
+    <div id="picklist" class="pick-list"></div>
   </div>`;
   filterPick();
-  setTimeout(()=>{$("#memname")&&$("#memname").focus();},100);
+  setTimeout(()=>{$("#picksearch")&&$("#picksearch").focus();},100);
 }
 function filterPick(){
   const q=(($("#picksearch")&&$("#picksearch").value)||"").trim();
@@ -406,8 +405,7 @@ function filterPick(){
 function pickMember(id){
   const p=state.people.find(x=>x._id===id);
   if(!p)return;
-  $("#memname").value=displayName(p);
-  setMember();
+  ctx.role="member"; ctx.me=p._id; ctx.tab="home"; render();
 }
 function setMember(){
   const v=$("#memname").value.trim();
@@ -417,9 +415,17 @@ function setMember(){
   ctx.role="member"; ctx.me=p._id; ctx.tab="home"; render();
 }
 function askAdmin(){
-  $("#pwdbox").innerHTML = `<div class="pwd">
+  const box=$("#pwdbox");
+  const memberBox=$("#memberbox");
+  if(!box)return;
+  if(box.innerHTML.trim()){
+    box.innerHTML="";
+    return;
+  }
+  if(memberBox) memberBox.innerHTML="";
+  box.innerHTML = `<div class="pwd">
     <input id="pw" type="text" placeholder="输入组织者口令" autocomplete="off">
-    <div class="role-btn" style="margin-top:10px" onclick="checkAdmin()"><b>进入后台</b></div>
+    <div class="role-btn" onclick="checkAdmin()"><b>进入后台</b></div>
   </div>`;
   setTimeout(()=>$("#pw")&&$("#pw").focus(),100);
 }
