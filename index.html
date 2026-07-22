@@ -731,21 +731,24 @@ function infoView(){
     <div class="ct">${esc(n.content)}</div><div class="mt">${esc(n.author)} · ${esc(n.time)}</div></div>`).join("");
   }
 
-  // —— 贴士内容 ——
+  // —— 贴士内容 ——（"领队联系方式"置顶，保证显眼；组织者改/删索引仍正确）
+  const PIN_TITLE = "领队联系方式";
+  const tipOrder = (state.tips||[]).map((t,i)=>({t,i}))
+                    .sort((a,b)=> (b.t.title===PIN_TITLE) - (a.t.title===PIN_TITLE));
   let tipHtml;
   if(isAdmin){
-    if(!state.tips||!state.tips.length) tipHtml=`<div class="empty-note">暂无贴士内容</div><button class="btn" onclick="addTip()">+ 新增贴士</button>`;
+    if(!tipOrder.length) tipHtml=`<div class="empty-note">暂无贴士内容</div><button class="btn" onclick="addTip()">+ 新增贴士</button>`;
     else {
       let th='';
-      state.tips.forEach((t,i)=>{
+      tipOrder.forEach(({t,i})=>{
         th+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📌 ${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div>${_tipBody(t)}</div>`;
       });
       th+=`<button class="btn" onclick="addTip()">+ 新增贴士</button>`;
       tipHtml=th;
     }
   } else {
-    if(!state.tips||!state.tips.length) tipHtml=`<div class="empty-note">暂无贴士内容</div>`;
-    else tipHtml=(isAdmin?'':`<div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`)+state.tips.map(t=>`<div class="card"><h3>📌 ${esc(t.title)}</h3>${_tipBody(t)}</div>`).join("");
+    if(!tipOrder.length) tipHtml=`<div class="empty-note">暂无贴士内容</div>`;
+    else tipHtml=`<div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`+tipOrder.map(({t})=>`<div class="card"><h3>📌 ${esc(t.title)}</h3>${_tipBody(t)}</div>`).join("");
   }
 
   return tabs + (ctx.infoTab===0 ? noticeHtml : tipHtml);
