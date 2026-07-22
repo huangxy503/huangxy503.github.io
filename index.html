@@ -21,12 +21,12 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:transparent;color:var(--ink);font-size:15px;line-height:1.55}
 #app{max-width:430px;margin:0 auto;min-height:100vh;background:transparent;position:relative;z-index:1;padding-bottom:64px}
-/* splash */
-.splash{position:fixed;inset:0;background:rgba(20,60,80,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:50;padding:30px}
+/* splash — 青蓝沉浸式 */
+.splash{position:fixed;inset:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:50;padding:30px}
 .splash h1{font-size:26px;margin-bottom:6px;text-align:center}
 .splash p{opacity:.85;margin-bottom:40px;font-size:14px;text-align:center}
-.role-btn{width:260px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.5);color:#fff;padding:16px;border-radius:14px;font-size:17px;margin-bottom:14px;cursor:pointer;backdrop-filter:blur(4px);transition:.15s}
-.role-btn:active{transform:scale(.97)}
+.role-btn{width:260px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:16px;border-radius:14px;font-size:17px;margin-bottom:14px;cursor:pointer;backdrop-filter:blur(8px);transition:.2s}
+.role-btn:active{transform:scale(.97);background:rgba(255,255,255,.22)}
 .role-btn b{display:block;font-size:18px}
 .role-btn span{font-size:12px;opacity:.8}
 .pwd{width:260px;margin-top:6px}
@@ -44,8 +44,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .hd .sw:active{background:rgba(255,255,255,.32)}
 /* page */
 .page{padding:18px}
-.card{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 22px rgba(47,111,176,.10);transition:box-shadow .2s,transform .2s}
-.card:active{box-shadow:0 10px 28px rgba(47,111,176,.15)}
+.card{background:#ffffff;border:1px solid var(--line2);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04);transition:box-shadow .25s,transform .2s}
+.card:active{box-shadow:0 8px 26px rgba(47,111,176,.14),0 2px 6px rgba(0,0,0,.06)}
 .card h3{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:6px;color:var(--ink)}
 .mod-tag{font-size:12px;padding:3px 10px;border-radius:7px;background:var(--brand-soft);color:var(--brand);font-weight:700;letter-spacing:.5px}
 .row{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line2);gap:12px}
@@ -58,7 +58,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .dept{color:#5a6b82;font-size:13px;margin-bottom:12px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
 .chip{background:var(--brand-soft);color:var(--brand);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600}
-.sync-mini-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.7);border:1px solid rgba(47,111,176,.18);border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sync-mini-btn{position:absolute;top:10px;right:10px;background:#fff;border:1px solid var(--line2);border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .sync-mini-btn:active{background:var(--brand-soft);transform:scale(.9)}
 /* 航班特殊排版 */
 .flight-prefix{color:var(--sub);font-size:13px;font-weight:400;margin-right:4px}
@@ -79,8 +79,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .f-note{font-size:11px;color:#94a3b8;margin-top:3px}
 .sens-badge{font-size:10px;background:var(--redbg);color:var(--red);padding:1px 6px;border-radius:5px;margin-left:5px}
 /* schedule */
-.day{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 6px 22px rgba(47,111,176,.10)}
-.day .dh{background:var(--brand-soft);padding:12px 16px;font-weight:600;font-size:14px;color:var(--brand);border-bottom:1px solid #e7edf3}
+.day{background:#ffffff;border:1px solid var(--line2);border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
+.day .dh{background:var(--brand);padding:12px 16px;font-weight:600;font-size:14px;color:#fff;border-bottom:none}
 .day .di{padding:12px 16px;border-bottom:1px solid var(--line2)}
 .day .di:last-child{border-bottom:none}
 .di .tt{display:flex;flex-direction:column;gap:2px}
@@ -89,36 +89,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .di .meta{font-size:12px;color:var(--sub);margin-top:3px}
 .di .tip{font-size:12px;color:var(--warn);background:var(--warnbg);padding:5px 8px;border-radius:7px;margin-top:6px}
 /* notice */
-.nt{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 6px 22px rgba(47,111,176,.10)}
+.nt{background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
 .nt .th{font-weight:600;display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink)}
-.badge-u{font-size:10px;background:var(--warnbg);color:var(--warn);padding:1px 7px;border-radius:5px;font-weight:600}
+.badge-u{font-size:10px;background:var(--warn);color:#fff;padding:1px 8px;border-radius:5px;font-weight:600}
 .nt .ct{font-size:13px;color:#374151;margin:6px 0;line-height:1.6}
 .nt .mt{font-size:11px;color:var(--sub)}
 /* checkin */
-.ck{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 6px 22px rgba(47,111,176,.10)}
+.ck{display:flex;justify-content:space-between;align-items:center;background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
 .ck .info .n{font-weight:600;font-size:14px;color:var(--ink)}
 .ck .info .t{font-size:12px;color:var(--sub);margin-top:2px}
 .ck .st-done{background:var(--okbg);color:var(--ok);font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px}
 .ck .st-btn{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);color:#fff;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;cursor:pointer;border:none;box-shadow:0 3px 10px rgba(47,111,176,.25)}
 /* groups */
-.grp{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 6px 22px rgba(47,111,176,.10)}
+.grp{background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
 .grp .gh{font-weight:600;margin-bottom:8px;font-size:14px;color:var(--ink)}
 .grp .gm{display:flex;flex-wrap:wrap;gap:6px}
 .grp .m{background:var(--coralbg);padding:4px 10px;border-radius:16px;font-size:12px;color:#a23a59;transition:transform .15s}
 .grp .m.me{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);color:#fff;font-weight:600}
 /* members list */
-.mem{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:11px 13px;margin-bottom:9px;gap:10px;box-shadow:0 4px 16px rgba(47,111,176,.08)}
+.mem{display:flex;justify-content:space-between;align-items:center;background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:11px 13px;margin-bottom:9px;gap:10px;box-shadow:0 3px 12px rgba(47,111,176,.06),0 1px 2px rgba(0,0,0,.03)}
 .mem .mn{font-weight:700;font-size:14px;color:var(--ink)}
 .mem .md{font-size:11px;color:var(--sub);margin-top:2px}
 .mem .mtags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
 .mem .mtags .chip{font-size:11px;padding:3px 9px;background:var(--brand-soft);color:var(--brand)}
-.search{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px;background:#fff;margin-bottom:12px;box-sizing:border-box}
+.search{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px;background:#fff;margin-bottom:12px;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 /* admin table */
 .adm-top{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.stat{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:10px 14px;flex:1;text-align:center;box-shadow:0 4px 16px rgba(47,111,176,.08)}
+.stat{background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:10px 14px;flex:1;text-align:center;box-shadow:0 3px 12px rgba(47,111,176,.06),0 1px 2px rgba(0,0,0,.03)}
 .stat .num{font-size:22px;font-weight:700;color:var(--brand)}
 .stat .lb{font-size:11px;color:var(--sub)}
-.tbl-wrap{overflow-x:auto;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:14px;-webkit-overflow-scrolling:touch;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.tbl-wrap{overflow-x:auto;background:#ffffff;border:1px solid var(--line);border-radius:14px;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;font-size:12px;white-space:nowrap}
 th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
 th{background:var(--brand-soft);position:sticky;top:0;font-weight:600;color:var(--brand)}
@@ -134,13 +134,13 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .sheet h3{font-size:17px;margin-bottom:14px}
 .sheet .grpttl{font-size:12px;color:var(--brand);font-weight:700;margin:14px 0 6px}
 /* tabbar */
-.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(47,111,176,.12);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom)}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#ffffff;border-top:1px solid var(--line2);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 12px rgba(0,0,0,.05)}
 .tab{flex:1;text-align:center;padding:9px 0 8px;font-size:11px;color:#8a97a8;cursor:pointer;transition:color .2s}
 .tab.on{color:var(--brand)}
 .tab.on .ic{transform:translateY(-1px)}
 .tab .ic{font-size:19px;display:block;line-height:1.2;transition:transform .2s}
 .empty-note{text-align:center;color:#94a3b8;font-size:13px;padding:30px}
-.hint{font-size:12px;color:var(--sub);background:var(--warnbg);border:1px solid #fde68a;padding:9px 12px;border-radius:10px;margin-bottom:12px}
+.hint{font-size:12px;color:var(--sub);background:#fff; border:1px solid #fde68a;padding:9px 12px;border-radius:10px;margin-bottom:12px}
 /* tips */
 .tip-body{font-size:13px;color:#374151;line-height:1.7}
 .tip-p{display:flex;gap:8px;padding:5px 0}
@@ -152,81 +152,93 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .ti-name{font-size:13px;font-weight:600;color:var(--ink)}
 .ti-detail{font-size:12px;color:var(--sub);margin-top:3px}
 /* schedule overview + day tabs */
-.ov{background:linear-gradient(135deg,#eaf2fb,#f6fafd)}
+.ov{background:linear-gradient(135deg,#f0f6fc,#ffffff)}
 .ovh{font-weight:700;margin-bottom:8px;font-size:14px;color:var(--brand)}
-.ovr{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #eef2f7;align-items:flex-start}
+.ovr{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid #eef2f7;align-items:center}
 .ovr:last-child{border-bottom:none}
-.ovd{font-weight:700;color:var(--brand);flex-shrink:0;width:28px}
-.ovrt{flex:1;font-size:13px}
+.ovd{font-weight:700;color:#fff;flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:12px}
+.ovrt{flex:1;font-size:13px;color:var(--ink)}
 .ovk{font-size:11px;color:var(--sub);flex-shrink:0;background:var(--brand-soft);padding:2px 8px;border-radius:10px;white-space:nowrap}
 .daytabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch}
-.dtab{flex:1;min-width:60px;text-align:center;background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:14px;padding:9px 4px;cursor:pointer;flex-shrink:0;transition:.2s}
-.dtab.on{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(47,111,176,.25)}
+.dtab{flex:1;min-width:60px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 4px;cursor:pointer;flex-shrink:0;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.dtab.on{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(47,111,176,.3)}
 .dtab .dw{font-weight:700;font-size:14px}
 .dtab .dd{font-size:10px;opacity:.8;margin-top:2px}
 .sec-h{font-size:18px;font-weight:700;margin:20px 0 12px;color:var(--ink);display:flex;align-items:center;gap:6px}
 .sec-div{height:1px;background:var(--line);margin:22px 0 2px}
-/* ===================== 林芝山水 · 动态背景 ===================== */
-.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,#cdeef3 0%,#e3f4f2 45%,#f1faf4 100%)}
-.bg-glow{position:absolute;top:-14%;right:-10%;width:62%;height:48%;background:radial-gradient(circle,#fff7e0 0%,rgba(255,247,224,0) 70%);opacity:.7;animation:glowBreath 7s ease-in-out infinite}
-.bg-cloud{position:absolute;background:rgba(255,255,255,.9);border-radius:50%;filter:blur(2px);opacity:.9}
+/* ===================== 青蓝协奏 · 启动页动态背景 ===================== */
+.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(175deg,#1a3a5c 0%,#2f6fb0 35%,#4a8fc2 60%,#7eb8d8 100%)}
+/* 远山层（三层递进，品牌蓝色阶） */
+.bg-mtn{position:absolute;bottom:0;left:0;width:100%;height:46%}
+/* 光晕（青蓝+微琥珀暖调） */
+.bg-glow{position:absolute;top:-8%;right:-12%;width:58%;height:50%;background:radial-gradient(circle,rgba(47,111,176,.35) 0%,rgba(47,111,176,0) 70%);opacity:.9;animation:glowBreath 8s ease-in-out infinite}
+.bg-glow2{position:absolute;top:20%;left:-8%;width:44%;height:36%;background:radial-gradient(circle,rgba(47,158,143,.2) 0%,rgba(47,158,143,0) 70%);opacity:.7;animation:glowBreath2 10s ease-in-out infinite}
+/* 流云（青白色，柔和飘动） */
+.bg-cloud{position:absolute;background:rgba(255,255,255,.18);border-radius:50%;filter:blur(3px)}
 .bg-cloud::before,.bg-cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
-.bg-cloud.c1{width:90px;height:30px;top:13%;left:-30%;animation:drift 46s linear infinite}
-.bg-cloud.c1::before{width:46px;height:46px;top:-20px;left:14px}
-.bg-cloud.c1::after{width:34px;height:34px;top:-12px;left:46px}
-.bg-cloud.c2{width:64px;height:22px;top:25%;left:-30%;animation:drift 62s linear infinite;animation-delay:-22s;opacity:.72}
-.bg-cloud.c2::before{width:34px;height:34px;top:-14px;left:10px}
-.bg-cloud.c2::after{width:26px;height:26px;top:-8px;left:34px}
-.bg-cloud.c3{width:112px;height:34px;top:8%;left:-30%;animation:drift 80s linear infinite;animation-delay:-44s;opacity:.8}
-.bg-cloud.c3::before{width:54px;height:54px;top:-24px;left:18px}
-.bg-cloud.c3::after{width:40px;height:40px;top:-14px;left:56px}
-.bg-mtn{position:absolute;bottom:0;left:0;width:100%;height:44%}
-.bg-river{position:absolute;bottom:0;left:0;width:100%;height:13%;background:linear-gradient(180deg,rgba(150,214,222,.5),rgba(120,196,206,.32))}
-.bg-blossom{position:absolute;top:0;left:0;width:150px;height:150px;opacity:.95}
-#petals{position:absolute;inset:0;overflow:hidden}
-.petal{position:absolute;top:-24px;width:9px;height:9px;background:#ffc6d9;border-radius:62% 0 62% 0;opacity:.85;animation:fall linear infinite;box-shadow:0 0 4px rgba(255,198,217,.5)}
-@keyframes drift{from{transform:translateX(0)}to{transform:translateX(142vw)}}
-@keyframes fall{0%{transform:translateY(-24px) translateX(0) rotate(0)}100%{transform:translateY(106vh) translateX(46px) rotate(380deg)}}
-@keyframes glowBreath{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.85;transform:scale(1.08)}}
+.bg-cloud.c1{width:100px;height:32px;top:10%;left:-30%;animation:drift 52s linear infinite}
+.bg-cloud.c1::before{width:52px;height:52px;top:-22px;left:16px}
+.bg-cloud.c1::after{width:38px;height:38px;top:-14px:left:52px}
+.bg-cloud.c2{width:72px;height:24px;top:22%;left:-30%;animation:drift 68s linear infinite;animation-delay:-26s;opacity:.14}
+.bg-cloud.c2::before{width:38px;height:38px;top:-16px;left:12px}
+.bg-cloud.c2::after{width:28px;height:28px;top:-10px;left:38px}
+.bg-cloud.c3{width:120px;height:36px;top:6%;left:-30%;animation:drift 86s linear infinite;animation-delay:-48s;opacity:.18}
+.bg-cloud.c3::before{width:58px;height:58px;top:-26px;left:20px}
+.bg-cloud.c3::after{width:42px;height:42px;top:-16px;left:60px}
+/* 底部流动水波纹 */
+.bg-river{position:absolute;bottom:0;left:0;width:100%;height:15%;background:linear-gradient(180deg,rgba(74,143,194,.25),rgba(47,111,176,.18))}
+.bg-wave{position:absolute;bottom:0;left:0;width:200%;height:100%}
+/* 浮动光点（替代花瓣，青白几何感） */
+#particles{position:absolute;inset:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);animation:floatUp linear infinite}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(148vw)}}
+@keyframes glowBreath{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.06)}}
+@keyframes glowBreath2{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.75;transform:scale(1.05)}}
+@keyframes floatUp{0%{transform:translateY(106vh) translateX(0) scale(.5);opacity:0}15%{opacity:.6}85%{opacity:.4}100%{transform:translateY(-6vh) translateX(30px) scale(1);opacity:0}}
+@keyframes waveFlow{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){
-  .bg-glow,.bg-cloud,.petal{animation:none}
-  .bg-cloud,.petal{display:none}
+  .bg-glow,.bg-glow2,.bg-cloud,.particle{animation:none}
+  .bg-cloud,.particle{display:none}
 }
 /* ===================== 模块撞色（首页卡片 accent） ===================== */
+.card.accent-green{border-left:4px solid var(--ok)}
 .card.accent-green .mod-tag{background:var(--okbg);color:var(--ok)}
+.card.accent-purple{border-left:4px solid var(--purple)}
 .card.accent-purple .mod-tag{background:var(--purplebg);color:var(--purple)}
+.card.accent-coral{border-left:4px solid var(--coral)}
 .card.accent-coral .mod-tag{background:var(--coralbg);color:var(--coral)}
+.card.accent-blue{border-left:4px solid var(--brand)}
 .card.accent-blue .mod-tag{background:var(--brand-soft);color:var(--brand)}
-/* 进入小程序后：静态柔渐变背景（保留玻璃卡片，无动画不晃眼） */
+/* 进入小程序后：静态柔渐变背景（干净实底卡片，无动画） */
 .entered .hd{background:var(--brand)}
 </style>
 </head>
 <body>
 <div class="bg-layer" aria-hidden="true">
   <div class="bg-glow"></div>
+  <div class="bg-glow2"></div>
   <div class="bg-cloud c1"></div>
   <div class="bg-cloud c2"></div>
   <div class="bg-cloud c3"></div>
-  <svg class="bg-blossom" viewBox="0 0 150 150">
-    <path d="M2,8 C34,18 44,42 60,58 C72,70 90,72 116,66" stroke="#9c6b4f" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-    <path d="M44,34 C54,30 64,34 70,44" stroke="#9c6b4f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-    <path d="M88,58 C98,56 106,60 110,70" stroke="#9c6b4f" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-    <g>
-      <circle cx="60" cy="55" r="6.5" fill="#ffb3cd"/><circle cx="69" cy="59" r="6.5" fill="#ffb3cd"/><circle cx="64" cy="67" r="6.5" fill="#ffb3cd"/><circle cx="55" cy="64" r="6.5" fill="#ffb3cd"/><circle cx="72" cy="67" r="6.5" fill="#ffb3cd"/><circle cx="64" cy="61" r="2.6" fill="#ffe08a"/>
-      <circle cx="40" cy="40" r="5.6" fill="#ff9cbd"/><circle cx="48" cy="43" r="5.6" fill="#ff9cbd"/><circle cx="44" cy="50" r="5.6" fill="#ff9cbd"/><circle cx="36" cy="47" r="5.6" fill="#ff9cbd"/><circle cx="44" cy="45" r="2.3" fill="#ffe08a"/>
-      <circle cx="108" cy="68" r="5.2" fill="#ffb3cd"/><circle cx="115" cy="71" r="5.2" fill="#ffb3cd"/><circle cx="111" cy="77" r="5.2" fill="#ffb3cd"/><circle cx="104" cy="74" r="5.2" fill="#ffb3cd"/><circle cx="111" cy="72" r="2.1" fill="#ffe08a"/>
-    </g>
-  </svg>
   <svg class="bg-mtn" viewBox="0 0 390 200" preserveAspectRatio="xMidYMax slice">
-    <path d="M0,200 L0,118 L55,78 L110,108 L165,66 L230,112 L290,72 L345,108 L390,82 L390,200 Z" fill="#bfe0e4"/>
-    <path d="M0,200 L0,148 L45,108 L95,138 L150,92 L205,138 L260,98 L320,143 L390,112 L390,200 Z" fill="#dcefef"/>
-    <path d="M150,92 L168,126 L150,133 L132,126 Z" fill="#ffffff"/>
-    <path d="M260,98 L278,128 L260,135 L242,128 Z" fill="#ffffff"/>
-    <path d="M345,108 L361,136 L345,142 L329,136 Z" fill="#ffffff"/>
-    <path d="M0,200 L0,172 L70,148 L150,170 L230,146 L310,171 L390,152 L390,200 Z" fill="#a9dcc4"/>
+    <!-- 远山：最淡层 -->
+    <path d="M0,200 L0,130 L60,95 L120,125 L180,85 L250,120 L310,88 L370,115 L390,98 L390,200 Z" fill="rgba(74,143,194,.35)"/>
+    <!-- 中山：品牌蓝主色层 -->
+    <path d="M0,200 L0,155 L50,118 L105,148 L165,108 L225,150 L285,112 L345,146 L390,128 L390,200 Z" fill="rgba(47,111,176,.5)"/>
+    <!-- 近山：最深层 + 雪顶 -->
+    <path d="M0,200 L0,172 L70,148 L140,175 L210,142 L280,174 L350,150 L390,168 L390,200 Z" fill="rgba(26,58,92,.65)"/>
+    <!-- 雪顶点缀 -->
+    <path d="M165,108 L178,132 L165,138 L152,132 Z" fill="rgba(255,255,255,.55)"/>
+    <path d="M285,112 L298,134 L285,140 L272,134 Z" fill="rgba(255,255,255,.5)"/>
+    <path d="M105,148 L118,168 L105,173 L92,168 Z" fill="rgba(255,255,255,.4)"/>
   </svg>
-  <div class="bg-river"></div>
-  <div id="petals"></div>
+  <div class="bg-river">
+    <svg class="bg-wave" viewBox="0 0 800 40" preserveAspectRatio="none" style="animation:waveFlow 12s linear infinite">
+      <path d="M0,20 Q50,5 100,20 T200,20 T300,20 T400,20 T500,20 T600,20 T700,20 T800,20 V40 H0 Z" fill="rgba(255,255,255,.1)"/>
+      <path d="M0,25 Q50,12 100,25 T200,25 T300,25 T400,25 T500,25 T600,25 T700,25 T800,25 V40 H0 Z" fill="rgba(255,255,255,.07)"/>
+    </svg>
+  </div>
+  <div id="particles"></div>
 </div>
 <div id="app"></div>
 <script>
@@ -247,7 +259,7 @@ const _tk = [103,104,112,95,66,78,114,97,48,109,77,107,81,82,90,99,98,122,84,114
 const GITHUB_SYNC_TOKEN = _tk.map(c => String.fromCharCode(c)).join("");
 
 // 分享链接的版本号参数（每次部署会变，用于绕过微信网页缓存；平时就是同一个链接）
-let BUILD_QS = "?v=20260722-12";
+let BUILD_QS = "?v=20260722-13";
 
 const DATA = {"fields": [{"key": "企微ID", "label": "企微ID", "module": "人员基础", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "中文名", "label": "中文名", "module": "人员基础", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "身份证姓名", "label": "身份证姓名", "module": "人员基础", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "性别", "label": "性别", "module": "人员基础", "editor": "member", "type": "select", "sensitive": false, "options": ["", "男", "女"]}, {"key": "部门/中心", "label": "部门/中心", "module": "人员基础", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "常驻城市", "label": "常驻城市", "module": "人员基础", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "有无驾照", "label": "有无驾照", "module": "自驾/出行", "editor": "member", "type": "select", "sensitive": false, "options": ["", "是", "否"]}, {"key": "开车意愿", "label": "开车意愿", "module": "自驾/出行", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "带无人机", "label": "带无人机", "module": "自驾/出行", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "手机号", "label": "手机号", "module": "机酒预订", "editor": "member", "type": "text", "sensitive": true, "options": []}, {"key": "身份证号", "label": "身份证号", "module": "机酒预订", "editor": "member", "type": "text", "sensitive": true, "options": []}, {"key": "去程航班", "label": "去程航班", "module": "机酒预订", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "返程航班", "label": "返程航班", "module": "机酒预订", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "室友意向", "label": "室友意向", "module": "机酒预订", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "车号", "label": "车号", "module": "现场分组", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "游戏分组", "label": "游戏分组", "module": "现场分组", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "现场角色", "label": "现场角色", "module": "现场分组", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "重庆住宿(11.7)", "label": "重庆住宿(11.7)", "module": "住宿安排", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "索松村住宿(11.8)", "label": "索松村住宿(11.8)", "module": "住宿安排", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "巴松措住宿(11.9~10)", "label": "巴松措住宿(11.9~10)", "module": "住宿安排", "editor": "admin", "type": "text", "sensitive": false, "options": []}, {"key": "饮食忌口/过敏", "label": "饮食忌口/过敏", "module": "特殊关怀", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "高反情况", "label": "高反情况", "module": "特殊关怀", "editor": "member", "type": "select", "sensitive": false, "options": ["", "无", "轻微", "严重"]}, {"key": "打呼噜", "label": "打呼噜", "module": "特殊关怀", "editor": "member", "type": "text", "sensitive": false, "options": []}, {"key": "其他备注", "label": "其他备注", "module": "特殊关怀", "editor": "member", "type": "text", "sensitive": false, "options": []}], "modules": {}, "people": [{"_id": "huaweihuang", "企微ID": "huaweihuang", "中文名": "黄华伟", "身份证姓名": "黄华伟", "性别": "男", "部门/中心": "数据中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "15602311324", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "Tomtang", "车号": "2号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 17号 全景双床4（室友：唐韬）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 17号 二楼双床房（室友：唐韬）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "sogu", "企微ID": "sogu", "中文名": "古开元", "身份证姓名": "古开元", "性别": "男", "部门/中心": "运营平台部", "常驻城市": "", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "13421339745", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "无，随缘", "车号": "2号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 19号 正对大床（单人）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 19号 二楼大床房（单人）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "chenzzchen", "企微ID": "chenzzchen", "中文名": "陈壮志", "身份证姓名": "陈壮志", "性别": "男", "部门/中心": "云平台技术运营中心", "常驻城市": "", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "18910873099", "身份证号": "", "去程航班": "北京7号出发-- CA1449北京首都-重庆江北(18:45-22:05) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "北京首都11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CA1438 重庆江北-北京首都(15:55-18:30)", "室友意向": "无", "车号": "2号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 1号（室友：周啟彬）", "索松村住宿(11.8)": "索松村桃花韵酒店 3号 正对双床3（室友：李方源）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 3号 三楼双床房（室友：李方源）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": "打呼噜比较严重，希望对室友影响小一些"}, {"_id": "chaselli", "企微ID": "chaselli", "中文名": "李琛", "身份证姓名": "李琛", "性别": "男", "部门/中心": "多媒体技术中心", "常驻城市": "深圳", "有无驾照": "否", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "18600404576", "身份证号": "", "去程航班": "北京7号出发-- CA1449北京首都-重庆江北(18:45-22:05) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "无", "车号": "2号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 3号（室友：马子扬）", "索松村住宿(11.8)": "索松村桃花韵酒店 7号 正对双床7（室友：赵自翔）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 7号 三楼双床房（室友：赵自翔）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "joeyye", "企微ID": "joeyye", "中文名": "叶泽雄", "身份证姓名": "叶泽雄", "性别": "男", "部门/中心": "信息二组", "常驻城市": "", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "15012652482", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "wanpengxiao", "车号": "3号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 15号 全景双床2（室友：胡博杰）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 15号 二楼双床房（室友：胡博杰）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "nobleqiao", "企微ID": "nobleqiao", "中文名": "乔宁博", "身份证姓名": "乔宁博", "性别": "男", "部门/中心": "多媒体技术中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "13728748972", "身份证号": "", "去程航班": "深圳7号出发-- ZH9469深圳宝安-重庆江北(20:15-22:40) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "sidneyzhou", "车号": "3号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 5号（室友：陈培炫）", "索松村住宿(11.8)": "索松村桃花韵酒店 11号 正对双床11（室友：周煜）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 11号 二楼双床房（室友：周煜）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "yuetangdeng", "企微ID": "yuetangdeng", "中文名": "邓月堂", "身份证姓名": "邓月堂", "性别": "男", "部门/中心": "测试中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "18620398298", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "无", "车号": "3号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 9号 正对双床9（室友：郑吴杰）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 9号 三楼双床房（室友：郑吴杰）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "wujiezheng", "企微ID": "wujiezheng", "中文名": "郑吴杰", "身份证姓名": "郑吴杰", "性别": "男", "部门/中心": "测试中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "18665308423", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "无", "车号": "3号车", "游戏分组": "1", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 9号 正对双床9（室友：邓月堂）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 9号 三楼双床房（室友：邓月堂）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "mattzheng", "企微ID": "mattzheng", "中文名": "郑海兵", "身份证姓名": "郑海兵", "性别": "男", "部门/中心": "质量平台组", "常驻城市": "", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "13450418359", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "frankxia", "车号": "5号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 4号 正对双床4（室友：夏凡）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 4号 三楼双床房（室友：夏凡）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "drakezhang", "企微ID": "drakezhang", "中文名": "张鼓华", "身份证姓名": "张鼓华", "性别": "男", "部门/中心": "模式识别中心", "常驻城市": "北京", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "带了无人机，不过是个穿越机", "手机号": "18101051144", "身份证号": "", "去程航班": "北京7号出发-- CA1449北京首都-重庆江北(18:45-22:05) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "北京首都11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CA1438 重庆江北-北京首都(15:55-18:30)", "室友意向": "fandongmeng", "车号": "5号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 2号（室友：孟凡东）", "索松村住宿(11.8)": "索松村桃花韵酒店 18号 庭院双床1（室友：孟凡东）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 18号 二楼双床房（室友：孟凡东）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "biliypang", "企微ID": "biliypang", "中文名": "庞永杰", "身份证姓名": "庞永杰", "性别": "男", "部门/中心": "信息中心", "常驻城市": "", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "我带~", "手机号": "18503085615", "身份证号": "", "去程航班": "深圳7号出发-- ZH9469深圳宝安-重庆江北(20:15-22:40) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "无", "车号": "5号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 4号（室友：胡博杰）", "索松村住宿(11.8)": "索松村桃花韵酒店 12号 正对双床12（室友：文杰）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 12号 二楼双床房（室友：文杰）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "iotazhang", "企微ID": "iotazhang", "中文名": "张文瑞", "身份证姓名": "张文瑞", "性别": "男", "部门/中心": "后台开发中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "13316098590", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "无", "车号": "5号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 8号 正对双床8（室友：邓锦福）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 8号 三楼双床房（室友：邓锦福）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "bierhuang", "企微ID": "bierhuang", "中文名": "黄清", "身份证姓名": "黄清", "性别": "男", "部门/中心": "后台开发中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "13580466916", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "sarlmolchen", "车号": "6号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 6号 正对双床6（室友：陈国敏）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 6号 三楼双床房（室友：陈国敏）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "flashlin", "企微ID": "flashlin", "中文名": "林枫", "身份证姓名": "林枫", "性别": "男", "部门/中心": "基础架构中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "可带，但不太会", "手机号": "15902016024", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "rockzheng", "车号": "6号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 16号 全景双床3（室友：郑建军）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 16号 二楼双床房（室友：郑建军）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "jackliang", "企微ID": "jackliang", "中文名": "梁焯佳", "身份证姓名": "梁焯佳", "性别": "男", "部门/中心": "业务中心", "常驻城市": "", "有无驾照": "是", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "13826050582", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "elonqi", "车号": "6号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 13号 正对双床13（室友：祁麟）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 13号 二楼双床房（室友：祁麟）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "tomtang", "企微ID": "tomtang", "中文名": "唐韬", "身份证姓名": "唐韬", "性别": "男", "部门/中心": "机器学习平台中心", "常驻城市": "广州", "有无驾照": "", "开车意愿": "", "带无人机": "", "手机号": "18923881379", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "huaweihuang", "车号": "6号车", "游戏分组": "2", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 17号 全景双床4（室友：黄华伟）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 17号 二楼双床房（室友：黄华伟）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "ziyangma", "企微ID": "ziyangma", "中文名": "马子扬", "身份证姓名": "马子扬", "性别": "男", "部门/中心": "多媒体技术中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "15001232168", "身份证号": "", "去程航班": "北京7号出发-- CA1449北京首都-重庆江北(18:45-22:05) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "10号返程。川航U8030到重庆转CZ8816到北京，感谢", "室友意向": "fengyunrao", "车号": "7号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 3号（室友：李琛）", "索松村住宿(11.8)": "索松村桃花韵酒店 14号 全景双床1（室友：饶峰云）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 14号 二楼双床房（室友：饶峰云）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "fandongmeng", "企微ID": "fandongmeng", "中文名": "孟凡东", "身份证姓名": "孟凡东", "性别": "男", "部门/中心": "基础技术二组", "常驻城市": "", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "我带~", "手机号": "13810307890", "身份证号": "", "去程航班": "北京7号出发-- CA1449北京首都-重庆江北(18:45-22:05) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "北京首都11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CA1438 重庆江北-北京首都(15:55-18:30)", "室友意向": "drakezhang", "车号": "7号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 2号（室友：张鼓华）", "索松村住宿(11.8)": "索松村桃花韵酒店 18号 庭院双床1（室友：张鼓华）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 18号 二楼双床房（室友：张鼓华）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "austindeng", "企微ID": "austindeng", "中文名": "邓锦福", "身份证姓名": "邓锦福", "性别": "男", "部门/中心": "后台开发中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "18680532260", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "无", "车号": "7号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 8号 正对双床8（室友：张文瑞）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 8号 三楼双床房（室友：张文瑞）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": "室友最好不打呼噜"}, {"_id": "qibinzhou", "企微ID": "qibinzhou", "中文名": "周啟彬", "身份证姓名": "周啟彬", "性别": "男", "部门/中心": "云平台技术运营中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "15989019025", "身份证号": "", "去程航班": "深圳7号出发-- ZH9469深圳宝安-重庆江北(20:15-22:40) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "无，随机分配位靓仔（靓女也行）", "车号": "7号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 1号（室友：陈壮志）", "索松村住宿(11.8)": "索松村桃花韵酒店 5号 正对双床5（室友：林子皓）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 5号 三楼双床房（室友：林子皓）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "welkinwen", "企微ID": "welkinwen", "中文名": "文杰", "身份证姓名": "文杰", "性别": "男", "部门/中心": "机器学习平台中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "我带~", "手机号": "13510169303", "身份证号": "", "去程航班": "深圳7号出发-- ZH9469深圳宝安-重庆江北(20:15-22:40) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "无", "车号": "8号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 6号（室友：周煜）", "索松村住宿(11.8)": "索松村桃花韵酒店 12号 正对双床12（室友：庞永杰）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 12号 二楼双床房（室友：庞永杰）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "paulohuang", "企微ID": "paulohuang", "中文名": "黄皖湘", "身份证姓名": "黄皖湘", "性别": "男", "部门/中心": "接入组", "常驻城市": "", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "13760810412", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "fieldsxie", "车号": "8号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 10号 正对双床10（室友：陈培炫）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 10号 二楼双床房（室友：陈培炫）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "funnylin", "企微ID": "funnylin", "中文名": "林子皓", "身份证姓名": "林子皓", "性别": "男", "部门/中心": "云平台技术运营中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "18688820550", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "无", "车号": "8号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 5号 正对双床5（室友：周啟彬）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 5号 三楼双床房（室友：周啟彬）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "fengyunrao", "企微ID": "fengyunrao", "中文名": "饶峰云", "身份证姓名": "饶峰云", "性别": "男", "部门/中心": "多媒体技术中心", "常驻城市": "北京", "有无驾照": "是", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "13810626496", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "北京首都11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CA1438 重庆江北-北京首都(15:55-18:30)", "室友意向": "无", "车号": "8号车", "游戏分组": "3", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 14号 全景双床1（室友：马子扬）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 14号 二楼双床房（室友：马子扬）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "leiffyli", "企微ID": "leiffyli", "中文名": "李方源", "身份证姓名": "李方源", "性别": "男", "部门/中心": "云平台技术运营中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "可能会悄悄带，不太会玩，娱乐用的", "手机号": "15820243220", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "chenzzchen", "车号": "9号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 3号 正对双床3（室友：陈壮志）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 3号 三楼双床房（室友：陈壮志）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "sidneyzhou", "企微ID": "sidneyzhou", "中文名": "周煜", "身份证姓名": "周煜", "性别": "男", "部门/中心": "多媒体技术中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "18688752755", "身份证号": "", "去程航班": "深圳7号出发-- ZH9469深圳宝安-重庆江北(20:15-22:40) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "nobleqiao", "车号": "9号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 6号（室友：文杰）", "索松村住宿(11.8)": "索松村桃花韵酒店 11号 正对双床11（室友：乔宁博）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 11号 二楼双床房（室友：乔宁博）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "amyzhuang", "企微ID": "amyzhuang", "中文名": "庄少菀", "身份证姓名": "庄少菀", "性别": "女", "部门/中心": "QA组", "常驻城市": "广州", "有无驾照": "否", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "13763344251", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "candyxiong", "车号": "9号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 2号 正对双床2（室友：熊婷）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 2号 三楼双床房（室友：熊婷）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "candyxiong", "企微ID": "candyxiong", "中文名": "熊婷", "身份证姓名": "熊婷", "性别": "女", "部门/中心": "测试中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "15818693162", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "amyzhuang", "车号": "9号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 2号 正对双床2（室友：庄少菀）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 2号 三楼双床房（室友：庄少菀）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "botingwu", "企微ID": "botingwu", "中文名": "吴博婷", "身份证姓名": "吴博婷", "性别": "女", "部门/中心": "云平台技术运营中心", "常驻城市": "北京", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "18610184817", "身份证号": "", "去程航班": "北京7号出发-- CA1449北京首都-重庆江北(18:45-22:05) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "北京首都11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CA1438 重庆江北-北京首都(15:55-18:30)", "室友意向": "ireneyan", "车号": "10号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 7号（单人）", "索松村住宿(11.8)": "索松村桃花韵酒店 1号 正对双床1（室友：颜秋宇）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 1号 三楼双床房（室友：颜秋宇）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "noahchen", "企微ID": "noahchen", "中文名": "陈培炫", "身份证姓名": "陈培炫", "性别": "男", "部门/中心": "机器学习平台中心", "常驻城市": "深圳", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "18566206810", "身份证号": "", "去程航班": "深圳7号出发-- ZH9469深圳宝安-重庆江北(20:15-22:40) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "深圳11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CZ3456重庆江北-深圳宝安(15:35-17:55)", "室友意向": "无", "车号": "10号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 5号（室友：乔宁博）", "索松村住宿(11.8)": "索松村桃花韵酒店 10号 正对双床10（室友：黄皖湘）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 10号 二楼双床房（室友：黄皖湘）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "frankxia", "企微ID": "frankxia", "中文名": "夏凡", "身份证姓名": "夏凡", "性别": "男", "部门/中心": "测试中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "13631424013", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "mattzheng", "车号": "10号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 4号 正对双床4（室友：郑海兵）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 4号 三楼双床房（室友：郑海兵）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "ireneyan", "企微ID": "ireneyan", "中文名": "颜秋宇", "身份证姓名": "颜秋宇", "性别": "女", "部门/中心": "云平台技术运营中心", "常驻城市": "广州", "有无驾照": "否", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "13247638018", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "botingwu", "车号": "10号车", "游戏分组": "4", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 1号 正对双床1（室友：吴博婷）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 1号 三楼双床房（室友：吴博婷）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "sarlmolchen", "企微ID": "sarlmolchen", "中文名": "陈国敏", "身份证姓名": "陈国敏", "性别": "男", "部门/中心": "后台开发中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "非常可以", "带无人机": "木有无人机...", "手机号": "18026320799", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "bierhuang", "车号": "11号车", "游戏分组": "5", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 6号 正对双床6（室友：黄清）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 6号 三楼双床房（室友：黄清）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": "无"}, {"_id": "bojiehu", "企微ID": "bojiehu", "中文名": "胡博杰", "身份证姓名": "胡博杰", "性别": "男", "部门/中心": "信息六组", "常驻城市": "", "有无驾照": "是", "开车意愿": "我可以做替补", "带无人机": "木有无人机...", "手机号": "15501261098", "身份证号": "", "去程航班": "北京7号出发-- CA1449北京首都-重庆江北(18:45-22:05) + TV9983重庆江北-林芝米林(07:50-10:30)", "返程航班": "北京首都11号到达-- TV9984林芝米林-重庆江北(11:20-13:35) + CA1438 重庆江北-北京首都(15:55-18:30)", "室友意向": "无", "车号": "11号车", "游戏分组": "5", "现场角色": "", "重庆住宿(11.7)": "重庆诺富特酒店 4号（室友：庞永杰）", "索松村住宿(11.8)": "索松村桃花韵酒店 15号 全景双床2（室友：叶泽雄）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 15号 二楼双床房（室友：叶泽雄）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "rockzheng", "企微ID": "rockzheng", "中文名": "郑建军", "身份证姓名": "郑建军", "性别": "男", "部门/中心": "基础架构中心", "常驻城市": "广州", "有无驾照": "是", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "13926193165", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "flashlin", "车号": "11号车", "游戏分组": "5", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 16号 全景双床3（室友：林枫）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 16号 二楼双床房（室友：林枫）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "zixiangzhao", "企微ID": "zixiangzhao", "中文名": "赵自翔", "身份证姓名": "赵自翔", "性别": "男", "部门/中心": "信息一组", "常驻城市": "", "有无驾照": "否", "开车意愿": "还是算了吧", "带无人机": "木有无人机...", "手机号": "13428801396", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "chaselli", "车号": "11号车", "游戏分组": "5", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 7号 正对双床7（室友：李琛）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 7号 三楼双床房（室友：李琛）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}, {"_id": "elonqi", "企微ID": "elonqi", "中文名": "祁麟", "身份证姓名": "祁麟", "性别": "男", "部门/中心": "业务一组", "常驻城市": "", "有无驾照": "", "开车意愿": "", "带无人机": "", "手机号": "15824429931", "身份证号": "", "去程航班": "广州8号出发-- CZ3477广州白云-林芝米林(07:05-11:00)", "返程航班": "广州11号到达-- CZ3478林芝米林-广州白云(11:40-15:20)", "室友意向": "jackliang", "车号": "导游车 1号车", "游戏分组": "5", "现场角色": "", "重庆住宿(11.7)": "", "索松村住宿(11.8)": "索松村桃花韵酒店 13号 正对双床13（室友：梁焯佳）", "巴松措住宿(11.9~10)": "巴松措纳拉尕布民宿 13号 二楼双床房（室友：梁焯佳）", "饮食忌口/过敏": "", "高反情况": "", "打呼噜": "", "其他备注": ""}], "schedule": [{"week": "D1", "date": "11月08日", "title": "米林机场—佛掌沙丘—派镇吞白村—达林村—索松村", "tip": "", "items": [{"start": "07:50", "end": "10:30", "act": "TV9983 重庆江北-林芝米林(07:50-10:30)", "trans": "飞机"}, {"start": "07:05", "end": "11:00", "act": "CZ3477 广州白云-林芝米林(07:05-11:00)", "trans": "飞机"}, {"start": "11:00", "end": "11:30", "act": "接机，合影", "trans": ""}, {"start": "11:30", "end": "11:45", "act": "林芝米林机场—希尔顿酒店", "trans": "自驾（柏油路8KM）"}, {"start": "11:45", "end": "12:45", "act": "希尔顿午餐", "trans": ""}, {"start": "12:45", "end": "13:45", "act": "希尔顿酒店—佛掌沙丘", "trans": "自驾（柏油路60KM）"}, {"start": "13:45", "end": "14:35", "act": "佛掌沙丘游览、滑沙", "trans": ""}, {"start": "14:35", "end": "15:05", "act": "佛掌沙丘—吞白村古茹寺", "trans": "自驾（柏油路27KM）"}, {"start": "15:05", "end": "15:45", "act": "吞白村古茹寺登高远眺南迦巴瓦", "trans": ""}, {"start": "15:45", "end": "16:30", "act": "公尊德姆农庄观景（雅江沙滩拍照打卡）喝酥油茶", "trans": ""}, {"start": "16:30", "end": "17:00", "act": "吞白村—达林村", "trans": "自驾（柏油路13KM）"}, {"start": "17:00", "end": "17:30", "act": "达林村青稞田野漫步看双雪山（南迦巴瓦、加拉白垒）", "trans": ""}, {"start": "17:30", "end": "18:00", "act": "达林村—索松村桃花韵酒店", "trans": "自驾（柏油路9KM）"}, {"start": "18:00", "end": "19:00", "act": "索松村山谷秘境轻徒步，看南迦巴瓦日照金山", "trans": ""}, {"start": "19:00", "end": "19:30", "act": "入住酒店 桃花韵", "trans": ""}, {"start": "19:30", "end": "20:30", "act": "桃花韵酒店晚餐", "trans": ""}, {"start": "20:30", "end": "23:00", "act": "索松村自由活动", "trans": ""}]}, {"week": "D2", "date": "11月09日", "title": "索松村—尼洋河风光带—巴河镇—巴松措—新措", "tip": "", "items": [{"start": "07:30", "end": "09:30", "act": "桃花韵酒店早餐、退房", "trans": ""}, {"start": "09:30", "end": "11:00", "act": "索松村—尼洋河风光带", "trans": "自驾（柏油路62KM）"}, {"start": "11:00", "end": "11:50", "act": "尼洋河湿地栈道轻徒步赏西藏江南秋色", "trans": "徒步（栈道2KM）"}, {"start": "11:50", "end": "12:40", "act": "尼洋河风光带—百巴服务区", "trans": "自驾（柏油路83KM）"}, {"start": "12:40", "end": "12:50", "act": "百巴服务区加油", "trans": ""}, {"start": "12:50", "end": "13:10", "act": "百巴服务区—巴河镇巴蜀鱼村", "trans": "自驾（柏油路26KM）"}, {"start": "13:10", "end": "14:00", "act": "巴河镇巴蜀鱼村午餐", "trans": ""}, {"start": "14:00", "end": "14:30", "act": "巴河镇—巴松措售票处", "trans": "自驾（柏油路36KM）"}, {"start": "14:30", "end": "16:00", "act": "松措售票处—新措", "trans": "自驾（越野路39KM）"}, {"start": "16:00", "end": "17:00", "act": "新措秘境秋色越野摩托游览", "trans": "自驾越野摩托（土路8KM）"}, {"start": "17:00", "end": "18:00", "act": "新措—结巴村 江湖菜·石锅野生菌", "trans": "自驾（越野路30KM）"}, {"start": "19:00", "end": "20:00", "act": "江湖菜·石锅野生菌晚餐（暂定）", "trans": ""}, {"start": "20:00", "end": "20:30", "act": "入住巴松措 · 纳拉尕布酒店", "trans": ""}, {"start": "20:30", "end": "24:00", "act": "自由活动", "trans": ""}]}, {"week": "D3", "date": "11月10日", "title": "巴松措景区内", "tip": "", "items": [{"start": "07:30", "end": "09:30", "act": "纳拉尕布酒店早餐", "trans": ""}, {"start": "09:30", "end": "09:50", "act": "纳拉尕布酒店——湖心岛停车场", "trans": "自驾（柏油路8KM）"}, {"start": "09:50", "end": "11:50", "act": "达切拉观景台、湖心岛及湖边栈道游览", "trans": ""}, {"start": "11:50", "end": "12:00", "act": "湖心岛——结巴村 和川味轩餐厅", "trans": "自驾（柏油路7KM）"}, {"start": "12:00", "end": "13:00", "act": "结巴村和川味轩餐厅 午餐（暂定）", "trans": ""}, {"start": "13:00", "end": "13:20", "act": "结巴村——遗忘码头（停车）收车钥匙", "trans": "自驾（柏油路2KM）"}, {"start": "13:20", "end": "14:00", "act": "帆船游巴松措（遗忘码头-求子洞）", "trans": ""}, {"start": "14:00", "end": "17:00", "act": "巴松措秘境徒步（挂经幡、玛尼堆、大草甸摆拍）", "trans": "徒步（森林8KM）"}, {"start": "17:00", "end": "17:30", "act": "措高村——松赞巴松措林卡酒店", "trans": "自驾（柏油路10KM）"}, {"start": "18:30", "end": "20:30", "act": "松赞巴松措林卡酒店喜马拉雅餐厅晚宴（暂定）", "trans": "见晚宴rundown"}, {"start": "20:30", "end": "22:00", "act": "回纳拉尕布酒店自由活动", "trans": ""}]}, {"week": "D4", "date": "11月11日", "title": "巴松措—林芝米林机场", "tip": "", "items": [{"start": "06:00", "end": "08:00", "act": "早餐、退房", "trans": ""}, {"start": "08:00", "end": "10:20", "act": "松赞巴—林芝米林机场", "trans": "自驾（柏油路180KM）"}, {"start": "11:40", "end": "15:20", "act": "CZ3478 林芝米林-广州白云(11:40-15:20)", "trans": "飞机"}, {"start": "11:20", "end": "13:35", "act": "TV9984 林芝米林- 重庆江北(11:20-13:35)", "trans": "飞机"}]}], "notices": [{"title": "出发前必读·信息收集", "content": "请于11.7前在小程序提交身份证号与往返航班，用于统一订票", "time": "2025-11-01 10:00", "author": "组织者", "level": "重要"}, {"title": "高原出行提醒", "content": "林芝海拔约3000m，建议提前备好高反药物，避免剧烈运动", "time": "2025-11-03 14:00", "author": "组织者", "level": "普通"}, {"title": "天气与着装", "content": "昼夜温差大，务必带厚外套与防晒；建议徒步鞋", "time": "2025-11-05 09:30", "author": "组织者", "level": "普通"}], "tips": [{"title": "海拔参考", "type": "blocks", "groups": [], "blocks": [{"kind": "text", "text": "林芝平均海拔约 2900m\n林芝米林机场海拔 2949m\n索松村海拔 3012m\n巴松措  3478mm\n新措 3851m"}]}, {"title": "气温及着装建议\n（约0-10℃）", "type": "blocks", "groups": [], "blocks": [{"kind": "text", "text": "林芝：平均气温大约在-3°C至10°C之间，夜晚温度在0°C左右（下雨下雪气温-5°C）。\n白天：二至三件衣服（晴天：打底长袖+抓绒或羽绒；阴雨天：打底长袖+抓绒或羽绒+冲锋衣或防风外套），\n早晚：至少三件衣服（打底长袖+抓绒或羽绒+冲锋衣或防风外套）。\n个别地方海拔高温差更大，建议多带一件保暖衣物备用（羽绒服，毛衣之类），需按照约-5℃的极限温度准备。\n*其他换洗衣物看个人情况自备。"}]}, {"title": "个人物品建议", "type": "items", "groups": [{"name": "证件", "items": [{"name": "证件☆☆☆☆☆", "detail": "身份证"}]}, {"name": "日用", "items": [{"name": "保温杯☆☆☆☆☆", "detail": "常饮温开水，防止肠胃不适，有效预防高原反应，随身携带"}, {"name": "双肩背包☆☆☆☆☆", "detail": "随身携带，放置重要物品及应急物品，冲锋衣/外套/保暖衣物（冷了穿、热了放包里）、雨具、保温杯、零食、身份证等"}, {"name": "个人洗漱用品☆☆", "detail": "一晚是酒店、两晚是民宿，民宿洗浴用品一般，介意根据个人需要自带。"}, {"name": "墨镜/墨镜夹片☆☆☆", "detail": "防烈日眩光，防紫外线，防风"}, {"name": "帽子☆☆☆☆☆", "detail": "防风、防晒、保暖，棒球帽、渔夫帽、面线帽均可"}, {"name": "雨伞☆☆☆", "detail": "高原天气多变，雨具需随身携带，工作人员也将统一准备雨衣。"}]}, {"name": "防护保养", "items": [{"name": "防晒霜☆☆☆☆☆", "detail": "spf50+"}, {"name": "润唇膏☆☆☆☆☆", "detail": "高原天气干燥，防止嘴唇干裂"}, {"name": "护肤品、面膜☆☆☆", "detail": "高原天气干燥，容易晒伤，根据个人情况携带护肤品"}]}, {"name": "衣物", "items": [{"name": "外套☆☆☆☆☆", "detail": "风衣/冲锋衣"}, {"name": "保暖层☆☆☆☆☆", "detail": "抓绒/毛衣/中度填充羽绒服"}, {"name": "鞋子", "detail": "运动鞋/徒步登山鞋均可，路面较为平坦，着舒适运动鞋、徒步登山鞋均可以；防水最佳"}]}, {"name": "药品", "items": [{"name": "个人药品☆☆☆☆☆", "detail": "随队有急救药箱和药品，其他药品根据个人需要自行携带"}]}, {"name": "其他", "items": [{"name": "根据个人需要☆☆☆", "detail": "相机、充电器、充电宝、手环或手表（随时测量血氧心跳等身体数据）等根据个人需要携带"}]}], "blocks": []}, {"title": "预防高反相关事项", "type": "blocks", "groups": [], "blocks": [{"kind": "subtitle", "subtitle": "预防高原反应", "text": "1.初到高原，当晚及第二天早一定不要洗头洗澡，不建议熬夜、饮酒等行为\n2.高原预防高原反应的几个关键点，注意不要剧烈运动，保证充足睡眠，做好保暖，带上水杯或保温杯尽可能多喝热水；\n3.保持良好心态，初上高原，容易有其中一种或者多种反应：头痛、头昏、恶心呕吐、心慌气短、脉搏增快、胸闷胸痛、失眠、食欲减退等，我们也会携带备用氧气瓶。一般休息一晚即可适应高原环境。出现不舒服的情况，一定要及时告知领队；\n4.高反常见的诱发原因：剧烈运动、淋雨吹风受凉、过度紧张、熬夜睡眠不足、初到高原洗头洗澡、初到高原喝酒等行为；\n5.多喝酥油茶、热水可以有效预防高原反应。"}, {"kind": "subtitle", "subtitle": "行前准备", "text": "1.尽量在临行一周科学的调整作息时间，保证好的身体状态；（如不确定自身情况，如高血压，心脏病等，可提前做个高原体检，以医生建议为准）\n2.若有明显心、肺、肾等不适，高血压三期以上、重感冒者，均不宜进入高海拔地区。\n3.出发前，注意身体，谨防感冒、发烧等情况出现。"}, {"kind": "subtitle", "subtitle": "适应期", "text": "1.保持愉悦的心情（有些高原反应也是由于过度紧张引起），保证充分的休息和睡眠；\n2.第一天不要洗澡或者洗头；\n3.应注意多饮热水，多吃水果，保证饮食营养均衡，避免暴饮暴食，第一天尽量避免喝酒；\n4.高原昼夜温差大，注意保暖防寒，防止出现感冒诱发其他高原反应，车上应有多备衣服，可以准备帽子避免冷5.风直接吹头；\n6.如有高原反应，可根据反应的强度，适当的采取辅助治疗，如葡萄糖水剂、高原安、芬必得，或者吸氧等；\n7.尽量避免剧烈的运动和活动，少跑、跳，多休息；\n8.如有不适，请及时向领队反馈"}]}, {"title": "自驾须知", "type": "blocks", "groups": [], "blocks": [{"kind": "subtitle", "subtitle": "车辆介绍", "text": "【坦克300】专为追求硬派越野和豪华驾驶体验的消费者设计。这款车型结合了复古的外观与现代科技，拥有较高的越野能力和舒适性，非常适合长途自驾活动。下面是一些在自驾活动中比较常用的功能：\n四驱系统：坦克300配备了分时四驱系统，允许驾驶员根据路况选择两驱或四驱模式。\n越野模式：车辆内置多种驾驶模式，如雪地、沙地、岩石爬行等，可根据不同的地形选择最佳驾驶模式。\n车身稳定系统：在复杂路况下，车身稳定系统能够帮助维持车辆稳定，减少打滑的风险。\n倒车影像与雷达：在狭窄的道路上停车或倒车时，这些功能可以帮助驾驶员更安全地操控车辆。\n多媒体系统：集成导航、蓝牙音频流、电话等功能，提供娱乐和信息，使长途驾驶更加舒适。\n座椅加热与通风：长途驾驶中，这些功能可以提供额外的舒适性，特别是在不同季节的变换中。"}, {"kind": "subtitle", "subtitle": "安全驾驶", "text": "遵守交规：严格遵守当地的交通法规，注意限速标志。\n驾驶技巧：坦克300具有较好的越野性能，但在崎岖路面仍需缓慢行驶，避免损伤车辆。\n高原驾驶：西藏地区海拔高，车辆动力会有所下降，驾驶时留心观察车辆表现。\n疲劳驾驶：避免长时间连续驾驶，每两小时至少休息一次。\n适应海拔：初入高原，给身体足够的时间适应，避免剧烈运动。\n症状监测：注意高原反应症状，如头痛、恶心，必要时寻求医疗帮助。"}]}, {"title": "旅行须知", "type": "blocks", "groups": [], "blocks": [{"kind": "subtitle", "subtitle": "民俗及注意事项", "text": "1.宗教信仰：西藏主要是藏传佛教的信仰中心，藏民非常虔诚，尊重他们的宗教活动和场所。在参观寺庙时，不要触摸佛像、经书，避免在寺内大声喧哗，尊重僧侣和信徒。\n2.经幡与玛尼堆：沿途可见的彩色经幡和玛尼堆是藏民祈福的方式，不要随意破坏或踩踏，它们被认为是神圣的。\n3.转经与绕行：转经筒和绕行寺庙、佛塔时必须顺时针方向，逆向被视为不敬。\n4.服饰礼仪：参观寺庙时，穿着应保守，避免短裤、短裙，部分场合可能要求不戴墨镜。\n5.拍照许可：拍照前尤其是拍摄藏民、僧侣或宗教仪式时，务必获得许可，尊重他人隐私。"}, {"kind": "subtitle", "subtitle": "饮食", "text": "西藏地区，以川菜口味居多，活动中的用餐都是根据多年经验，筛选出符合内地人口味、口碑较好的餐厅。如有过敏、忌口或少数民族禁忌请提前告知，我们将会提醒餐厅注意"}, {"kind": "subtitle", "subtitle": "温馨提示", "text": "1、飞机进藏：建议登机牌选择左侧靠窗，这样左侧的喜马拉雅山脉一览无余。飞机离开的时候建议登机牌选择右侧靠窗，这样右侧可以看到诸多雪山！（部分时候会遇到特殊情况，飞机飞行过程中就不让打开遮光板了，此条仅作参考）\n2、出行前兑换一些一元的纸币（沿途上简易厕所，或者遇到一些诵经乞讨的人需要，或者进入寺庙朝拜祈福，当地不收硬币）（一些发达城市已经不发行1元纸币难以兑换到，可以换一些5元或10元的纸币带着，随身也带几百块钱的现金，预防信号不好或应急用）\n3、西藏全境没有4G/5G网络覆盖，网速较慢，建议选择移动和电信号码，网络相对较好。（西藏移动支付也很方便）\n4、藏区旅游时切勿私自行走，以免与当地藏狗、牦牛等发生冲突，产生意外！\n5、在活动过程中，如果需要短暂离开团队，需要征询导游、领队的同意方便团友等待。\n6、请记住约好的集合时间和地点。如在团队徒步过程迷路。请在原地等待领队，勿擅自行走并拨打领队电话。"}]}, {"title": "领队联系方式", "type": "blocks", "groups": [], "blocks": [{"kind": "text", "text": "子迁 18617061181、大胜 18823448331"}]}], "overview": [{"day": "D1", "route": "米林机场—佛掌沙丘—派镇吞白村—达林村—索松村", "km": "105公里"}, {"day": "D2", "route": "索松村—尼洋河风光带—巴河镇—巴松措—新措", "km": "247公里"}, {"day": "D3", "route": "巴松措景区内", "km": "30公里"}, {"day": "D4", "route": "巴松措—林芝米林机场", "km": "168公里"}], "groupFields": ["车号", "游戏分组", "现场角色"]};
 
@@ -471,10 +483,12 @@ function memberHome(){
   return `
   <div class="card" style="position:relative">
     ${SYNC_ENABLED?`<button class="sync-mini-btn" onclick="manualResync()" title="同步最新数据">🔄</button>`:""}
+    <div style="font-size:12px;color:var(--brand);font-weight:700;letter-spacing:.5px;margin-bottom:4px">${esc(EVENT_TITLE)}</div>
     <div class="big-name">${esc(displayName(me))}</div>
     ${subLine(me)?`<div class="dept">${esc(subLine(me))}</div>`:`<div style="height:8px"></div>`}
     ${chips?`<div class="chips">${chips}</div>`:""}
   </div>
+  ${cards ? `<div style="font-size:13px;font-weight:600;color:var(--ink);margin:16px 0 8px;display:flex;align-items:center;gap:6px"><span style="width:3px;height:14px;background:var(--brand);border-radius:2px"></span>快捷模块</div>` : ""}
   ${cards}
   <button class="btn" onclick="go('edit')">✏️ 编辑我的资料</button>`;
 }
@@ -1249,19 +1263,20 @@ async function init(){
   const handled = await tryBackendIdentify();
   if(!ctx.role) renderSplash();
 }
-// 生成飘落桃花瓣（动态背景）
+// 生成浮动光点（青蓝主题动态背景）
 (function(){
-  var pc=document.getElementById('petals');
+  var pc=document.getElementById('particles');
   if(!pc) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce) return;
-  for(var i=0;i<12;i++){
+  for(var i=0;i<16;i++){
     var p=document.createElement('div');
-    p.className='petal';
+    p.className='particle';
+    var size=2+Math.random()*4;
+    p.style.width=size+'px';p.style.height=size+'px';
     p.style.left=(Math.random()*100)+'%';
-    p.style.animationDelay=(-Math.random()*14)+'s';
-    p.style.animationDuration=(9+Math.random()*7)+'s';
-    p.style.transform='scale('+(0.6+Math.random()*0.8)+')';
+    p.style.animationDelay=(-Math.random()*18)+'s';
+    p.style.animationDuration=(12+Math.random()*10)+'s';
     pc.appendChild(p);
   }
 })();
