@@ -5,12 +5,12 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>__EVENT_TITLE__</title>
 <style>
-:root{--brand:#2563eb;--brand2:#1d4ed8;--bg:#f2f4f8;--card:#fff;--ink:#1f2937;--sub:#6b7280;--line:#e5e7eb;--ok:#059669;--okbg:#ecfdf5;--warn:#d97706;--warnbg:#fffbeb;--red:#dc2626;--redbg:#fef2f2;--lock:#eff6ff;}
+:root{--brand:#2c8ca8;--brand2:#1f6f86;--bg:#dff0f2;--card:#fff;--ink:#1f2937;--sub:#6b7280;--line:#e5e7eb;--ok:#059669;--okbg:#ecfdf5;--warn:#d97706;--warnbg:#fffbeb;--red:#dc2626;--redbg:#fef2f2;--lock:#e3f1f4;}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
-#app{max-width:430px;margin:0 auto;min-height:100vh;background:var(--bg);position:relative;padding-bottom:64px}
+#app{max-width:430px;margin:0 auto;min-height:100vh;background:transparent;position:relative;z-index:1;padding-bottom:64px}
 /* splash */
-.splash{position:fixed;inset:0;background:linear-gradient(160deg,#1e3a8a,#2563eb 60%,#3b82f6);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:50;padding:30px}
+.splash{position:fixed;inset:0;background:linear-gradient(160deg,#1f6f86,#2c8ca8 55%,#5bb8cf);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:50;padding:30px}
 .splash h1{font-size:26px;margin-bottom:6px;text-align:center}
 .splash p{opacity:.85;margin-bottom:40px;font-size:14px;text-align:center}
 .role-btn{width:260px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.5);color:#fff;padding:16px;border-radius:14px;font-size:17px;margin-bottom:14px;cursor:pointer;backdrop-filter:blur(4px);transition:.15s}
@@ -67,9 +67,11 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 /* schedule */
 .day{background:var(--card);border:1px solid var(--line);border-radius:14px;margin-bottom:12px;overflow:hidden}
 .day .dh{background:#f8fafc;padding:11px 14px;font-weight:600;font-size:14px;border-bottom:1px solid var(--line)}
-.day .di{padding:12px 14px;border-bottom:1px solid #f1f3f5}
+.day .di{padding:10px 14px;border-bottom:1px solid #f1f3f5}
 .day .di:last-child{border-bottom:none}
-.di .tt{font-weight:600;font-size:14px}
+.di .tt{display:flex;flex-direction:column;gap:2px}
+.di .sched-time{font-size:13px;color:var(--sub);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.3px}
+.di .sched-act{font-size:14px;line-height:1.35}
 .di .meta{font-size:12px;color:var(--sub);margin-top:3px}
 .di .tip{font-size:12px;color:var(--warn);background:var(--warnbg);padding:5px 8px;border-radius:7px;margin-top:6px}
 /* notice */
@@ -125,7 +127,9 @@ tr:nth-child(even) td.name-col{background:#fcfcfd}
 .empty-note{text-align:center;color:#94a3b8;font-size:13px;padding:30px}
 .hint{font-size:12px;color:var(--sub);background:var(--warnbg);border:1px solid #fde68a;padding:9px 12px;border-radius:10px;margin-bottom:12px}
 /* tips */
-.tip-body{font-size:13px;color:#374151;white-space:pre-wrap;line-height:1.7}
+.tip-body{font-size:13px;color:#374151;line-height:1.7}
+.tip-p{display:flex;gap:8px;padding:5px 0}
+.tip-bullet{color:var(--brand);flex-shrink:0;font-weight:700;margin-top:1px}
 .tip-sub{font-size:13px;color:var(--brand);font-weight:700;margin:12px 0 4px}
 .tip-cat{font-size:12px;color:var(--brand);font-weight:700;margin:10px 0 4px}
 .tip-item{padding:8px 0;border-bottom:1px solid #f1f3f5}
@@ -147,9 +151,66 @@ tr:nth-child(even) td.name-col{background:#fcfcfd}
 .dtab .dd{font-size:10px;opacity:.8;margin-top:2px}
 .sec-h{font-size:17px;font-weight:700;margin:18px 0 10px;color:var(--text);display:flex;align-items:center;gap:6px}
 .sec-div{height:1px;background:var(--line);margin:22px 0 2px}
+/* ===================== 林芝山水 · 动态背景 ===================== */
+.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,#cdeef3 0%,#e3f4f2 45%,#f1faf4 100%)}
+.bg-glow{position:absolute;top:-14%;right:-10%;width:62%;height:48%;background:radial-gradient(circle,#fff7e0 0%,rgba(255,247,224,0) 70%);opacity:.7;animation:glowBreath 7s ease-in-out infinite}
+.bg-cloud{position:absolute;background:rgba(255,255,255,.9);border-radius:50%;filter:blur(2px);opacity:.9}
+.bg-cloud::before,.bg-cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
+.bg-cloud.c1{width:90px;height:30px;top:13%;left:-30%;animation:drift 46s linear infinite}
+.bg-cloud.c1::before{width:46px;height:46px;top:-20px;left:14px}
+.bg-cloud.c1::after{width:34px;height:34px;top:-12px;left:46px}
+.bg-cloud.c2{width:64px;height:22px;top:25%;left:-30%;animation:drift 62s linear infinite;animation-delay:-22s;opacity:.72}
+.bg-cloud.c2::before{width:34px;height:34px;top:-14px;left:10px}
+.bg-cloud.c2::after{width:26px;height:26px;top:-8px;left:34px}
+.bg-cloud.c3{width:112px;height:34px;top:8%;left:-30%;animation:drift 80s linear infinite;animation-delay:-44s;opacity:.8}
+.bg-cloud.c3::before{width:54px;height:54px;top:-24px;left:18px}
+.bg-cloud.c3::after{width:40px;height:40px;top:-14px;left:56px}
+.bg-mtn{position:absolute;bottom:0;left:0;width:100%;height:44%}
+.bg-river{position:absolute;bottom:0;left:0;width:100%;height:13%;background:linear-gradient(180deg,rgba(150,214,222,.5),rgba(120,196,206,.32))}
+.bg-blossom{position:absolute;top:0;left:0;width:150px;height:150px;opacity:.95}
+#petals{position:absolute;inset:0;overflow:hidden}
+.petal{position:absolute;top:-24px;width:9px;height:9px;background:#ffc6d9;border-radius:62% 0 62% 0;opacity:.85;animation:fall linear infinite;box-shadow:0 0 4px rgba(255,198,217,.5)}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(142vw)}}
+@keyframes fall{0%{transform:translateY(-24px) translateX(0) rotate(0)}100%{transform:translateY(106vh) translateX(46px) rotate(380deg)}}
+@keyframes glowBreath{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.85;transform:scale(1.08)}}
+@media (prefers-reduced-motion: reduce){
+  .bg-glow,.bg-cloud,.petal{animation:none}
+  .bg-cloud,.petal{display:none}
+}
+/* ===================== 毛玻璃卡片质感 ===================== */
+.card,.day,.nt{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border:1px solid rgba(255,255,255,.65);box-shadow:0 4px 16px rgba(31,111,134,.10)}
+.day .dh{background:rgba(44,140,168,.10);border-bottom:1px solid rgba(44,140,168,.14)}
+.hd{background:rgba(44,140,168,.84);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
+.tabbar{background:rgba(255,255,255,.82);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-top:1px solid rgba(255,255,255,.6)}
 </style>
 </head>
 <body>
+<div class="bg-layer" aria-hidden="true">
+  <div class="bg-glow"></div>
+  <div class="bg-cloud c1"></div>
+  <div class="bg-cloud c2"></div>
+  <div class="bg-cloud c3"></div>
+  <svg class="bg-blossom" viewBox="0 0 150 150">
+    <path d="M2,8 C34,18 44,42 60,58 C72,70 90,72 116,66" stroke="#9c6b4f" stroke-width="3.2" fill="none" stroke-linecap="round"/>
+    <path d="M44,34 C54,30 64,34 70,44" stroke="#9c6b4f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M88,58 C98,56 106,60 110,70" stroke="#9c6b4f" stroke-width="2.2" fill="none" stroke-linecap="round"/>
+    <g>
+      <circle cx="60" cy="55" r="6.5" fill="#ffb3cd"/><circle cx="69" cy="59" r="6.5" fill="#ffb3cd"/><circle cx="64" cy="67" r="6.5" fill="#ffb3cd"/><circle cx="55" cy="64" r="6.5" fill="#ffb3cd"/><circle cx="72" cy="67" r="6.5" fill="#ffb3cd"/><circle cx="64" cy="61" r="2.6" fill="#ffe08a"/>
+      <circle cx="40" cy="40" r="5.6" fill="#ff9cbd"/><circle cx="48" cy="43" r="5.6" fill="#ff9cbd"/><circle cx="44" cy="50" r="5.6" fill="#ff9cbd"/><circle cx="36" cy="47" r="5.6" fill="#ff9cbd"/><circle cx="44" cy="45" r="2.3" fill="#ffe08a"/>
+      <circle cx="108" cy="68" r="5.2" fill="#ffb3cd"/><circle cx="115" cy="71" r="5.2" fill="#ffb3cd"/><circle cx="111" cy="77" r="5.2" fill="#ffb3cd"/><circle cx="104" cy="74" r="5.2" fill="#ffb3cd"/><circle cx="111" cy="72" r="2.1" fill="#ffe08a"/>
+    </g>
+  </svg>
+  <svg class="bg-mtn" viewBox="0 0 390 200" preserveAspectRatio="xMidYMax slice">
+    <path d="M0,200 L0,118 L55,78 L110,108 L165,66 L230,112 L290,72 L345,108 L390,82 L390,200 Z" fill="#bfe0e4"/>
+    <path d="M0,200 L0,148 L45,108 L95,138 L150,92 L205,138 L260,98 L320,143 L390,112 L390,200 Z" fill="#dcefef"/>
+    <path d="M150,92 L168,126 L150,133 L132,126 Z" fill="#ffffff"/>
+    <path d="M260,98 L278,128 L260,135 L242,128 Z" fill="#ffffff"/>
+    <path d="M345,108 L361,136 L345,142 L329,136 Z" fill="#ffffff"/>
+    <path d="M0,200 L0,172 L70,148 L150,170 L230,146 L310,171 L390,152 L390,200 Z" fill="#a9dcc4"/>
+  </svg>
+  <div class="bg-river"></div>
+  <div id="petals"></div>
+</div>
 <div id="app"></div>
 <script>
 /* ============== 配置（由生成器注入，每个活动不同） ============== */
@@ -470,13 +531,22 @@ function _tipBody(t){
   let body="";
   if(t.groups&&t.groups.length){
     body=t.groups.map(g=>`<div class="tip-cat">${esc(g.name)}</div>`+
-      (g.items||[]).map(it=>`<div class="tip-item"><div class="ti-name">${esc(it.name)}</div>${it.detail?`<div class="ti-detail">${esc(it.detail)}</div>`:''}</div>`).join("")).join("");
+      (g.items||[]).map(it=>`<div class="tip-item"><div class="ti-name">${esc(it.name.replace(/[\★\☆\*]+/g,''))}</div>${it.detail?`<div class="ti-detail">${esc(it.detail)}</div>`:''}</div>`).join("")).join("");
   } else if(t.blocks&&t.blocks.length){
     body=t.blocks.map(b=> b.kind==="subtitle"
-      ? `<div class="tip-sub">${esc(b.subtitle)}</div><div class="tip-body">${esc(b.text)}</div>`
-      : `<div class="tip-body">${esc(b.text)}</div>`).join("");
+      ? `<div class="tip-sub">${esc(b.subtitle)}</div><div class="tip-body">${_renderTipText(b.text)}</div>`
+      : `<div class="tip-body">${_renderTipText(b.text)}</div>`).join("");
   }
   return body;
+}
+function _renderTipText(text){
+  if(!text) return '';
+  // 按换行分段，每段前加圆点；空行跳过；清理段首 * 和数字编号
+  return text.split('\n').filter(s=>s.trim()).map(s=>{
+    let t = s.trim();
+    t = t.replace(/^[\*·\s]+/, '').replace(/^[①②③④⑤⑥⑦⑧⑨⑩]+\s*/,'').replace(/^\(?[（(]?\d+[）)．.、:\s]+/, '');
+    return `<div class="tip-p"><span class="tip-bullet">•</span>${esc(t)}</div>`;
+  }).join('');
 }
 /* ============== 贴士：组织者改写/删除/新增 ============== */
 let _tipBuf=null, _tipIdx=-1;
@@ -547,8 +617,16 @@ function saveTip(){
 }
 
 /* ============== 行程 ============== */
+function transIcon(trans){
+  if(!trans) return '';
+  if(trans.includes('飞机')) return '✈️';
+  if(trans.includes('自驾')) return '🚗';
+  if(trans.includes('徒步')) return '🥾';
+  return '🚗'; // 默认
+}
 function scheduleRow(it){
-  return `<div class="di"><div class="tt">${esc(it.start)}${it.end?'-'+esc(it.end):''} ${esc(it.act)}</div>${it.trans?`<div class="meta">🚗 ${esc(it.trans)}</div>`:""}</div>`;
+  const icon = transIcon(it.trans);
+  return `<div class="di"><div class="tt"><span class="sched-time">${esc(it.start)}${it.end?'–'+esc(it.end):''}</span><span class="sched-act">${esc(it.act)}</span></div>${it.trans?`<div class="meta">${icon} ${esc(it.trans)}</div>`:""}</div>`;
 }
 function dayTabs(){
   return `<div class="daytabs">`+state.schedule.map((d,i)=>
@@ -569,15 +647,12 @@ function scheduleView(){
   if(!d || !d.items) return ovHtml + `<div class="empty-note">行程数据异常</div>` + tabbar();
   const tabs=dayTabs();
   if(isAdmin){
-    const items=d.items.map((it,i)=>`<div class="di"><div class="tt">${esc(it.start)}${it.end?'-'+esc(it.end):''} ${esc(it.act)}</div>${it.trans?`<div class="meta">🚗 ${esc(it.trans)}</div>`:''}<div style="margin-top:6px"><button class="mini" onclick="editSchedItem(${ctx.schedDay},${i})">改</button> <button class="mini del" onclick="delSchedItem(${ctx.schedDay},${i})">删</button></div></div>`).join("");
-    const dayHtml=`<div class="day"><div class="dh">${esc(d.date)} ${esc(d.week)} · ${esc(d.title)}
-      <span style="float:right"><button class="mini" onclick="editSchedDay(${ctx.schedDay})">改整天</button>
-      <button class="mini del" onclick="delSchedDay(${ctx.schedDay})">删</button></span></div>
-      ${items}
+    const items=d.items.map((it,i)=>`<div class="di"><div class="tt"><span class="sched-time">${esc(it.start)}${it.end?'–'+esc(it.end):''}</span><span class="sched-act">${esc(it.act)}</span></div>${it.trans?`<div class="meta">${transIcon(it.trans)} ${esc(it.trans)}</div>`:''}<div style="margin-top:6px"><button class="mini" onclick="editSchedItem(${ctx.schedDay},${i})">改</button> <button class="mini del" onclick="delSchedItem(${ctx.schedDay},${i})">删</button></div></div>`).join("");
+    const dayHtml=`<div class="day">${items}
       <div style="padding:10px 14px"><button class="btn sm" onclick="addSchedItem(${ctx.schedDay})">+ 新增时段</button></div></div>`;
     return ovHtml+tabs+dayHtml+`<button class="btn" onclick="editSchedDay(-1)">+ 新增一天行程</button>`;
   }
-  return ovHtml+tabs+`<div class="day"><div class="dh">${esc(d.date)} ${esc(d.week)} · ${esc(d.title)}</div>${d.items.map(scheduleRow).join("")}</div>`;
+  return ovHtml+tabs+`<div class="day">${d.items.map(scheduleRow).join("")}</div>`;
 }
 function editSchedDay(di){
   const d = di<0?{date:'',week:'',title:'',tip:''}:state.schedule[di];
@@ -1150,6 +1225,22 @@ async function init(){
   const handled = await tryBackendIdentify();
   if(!ctx.role) renderSplash();
 }
+// 生成飘落桃花瓣（动态背景）
+(function(){
+  var pc=document.getElementById('petals');
+  if(!pc) return;
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce) return;
+  for(var i=0;i<12;i++){
+    var p=document.createElement('div');
+    p.className='petal';
+    p.style.left=(Math.random()*100)+'%';
+    p.style.animationDelay=(-Math.random()*14)+'s';
+    p.style.animationDuration=(9+Math.random()*7)+'s';
+    p.style.transform='scale('+(0.6+Math.random()*0.8)+')';
+    pc.appendChild(p);
+  }
+})();
 init();
 </script>
 </body>
