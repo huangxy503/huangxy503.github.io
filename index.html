@@ -484,8 +484,12 @@ function _tipBody(t){
 }
 function _renderTipText(text){
   if(!text) return '';
-  // 按换行分段，每段前加圆点；空行跳过
-  return text.split('\n').filter(s=>s.trim()).map(s=>`<div class="tip-p"><span class="tip-bullet">•</span>${esc(s.trim())}</div>`).join('');
+  // 按换行分段，每段前加圆点；空行跳过；清理段首 * 和数字编号
+  return text.split('\n').filter(s=>s.trim()).map(s=>{
+    let t = s.trim();
+    t = t.replace(/^[\*·\s]+/, '').replace(/^\d+[\.\、\:\s]+/, '');
+    return `<div class="tip-p"><span class="tip-bullet">•</span>${esc(t)}</div>`;
+  }).join('');
 }
 /* ============== 贴士：组织者改写/删除/新增 ============== */
 let _tipBuf=null, _tipIdx=-1;
