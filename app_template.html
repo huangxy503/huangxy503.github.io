@@ -7,14 +7,14 @@
 <style>
 :root{
   /* 主色：青蓝协奏 */
-  --brand:#2f6fb0;--brand2:#235a92;--brand-soft:#eaf2fb;
+  --brand:#3f8ed6;--brand2:#2f72b8;--brand-soft:#e6f1fc;
   /* 辅助色（小面积碰撞，制造生机） */
   --ok:#2f9e8f;--okbg:#e6f6f2;        /* 松绿：机酒/交通/已完成 */
   --purple:#6b5ca5;--purplebg:#efeaf8;/* 靛紫：资讯/公告/贴士 */
   --warn:#e0962e;--warnbg:#fdf3e3;    /* 琥珀：紧急/重要提醒 */
   --coral:#e06a8b;--coralbg:#fce8ef;  /* 珊瑚粉：互动/社交/分组 */
   /* 中性色 */
-  --bg:#eef3f9;--bg-grad:linear-gradient(165deg,#e8f1fb 0%,#f3f8fc 55%,#fbfdff 100%);
+  --bg:#eef5fc;--bg-grad:linear-gradient(165deg,#eaf3fc 0%,#f4f9fd 55%,#fcfdff 100%);
   --card:#ffffff;--ink:#16243d;--sub:#64748b;--line:#e7edf3;--line2:#eef2f7;
   --red:#e2483d;--redbg:#fdecea;--lock:#eaf2fb;
 }
@@ -38,7 +38,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .mem-pick:active{background:rgba(255,255,255,.25)}
 .mem-pick.empty{opacity:.6;cursor:default;text-align:center;font-size:13px}
 /* header */
-.hd{position:sticky;top:0;background:var(--brand);color:#fff;padding:15px 16px;display:flex;align-items:center;justify-content:space-between;z-index:20;box-shadow:0 2px 12px rgba(35,90,146,.18)}
+.hd{position:sticky;top:0;background:var(--brand);color:#fff;padding:15px 16px;display:flex;align-items:center;justify-content:space-between;z-index:20;box-shadow:0 2px 12px rgba(47,114,184,.15)}
 .hd .t{font-size:18px;font-weight:600;letter-spacing:.3px}
 .hd .sw{font-size:12px;background:rgba(255,255,255,.18);padding:5px 10px;border-radius:20px;cursor:pointer;transition:background .2s}
 .hd .sw:active{background:rgba(255,255,255,.32)}
@@ -67,7 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 /* 住宿特殊排版 */
 .hotel-mate{font-size:12px;color:#64748b;margin-top:2px}
 .row-hotel .v{flex-direction:column;align-items:flex-start}
-.btn{display:block;width:100%;background:linear-gradient(135deg,#3a7fc4,#2f6fb0);color:#fff;border:none;padding:13px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;box-shadow:0 4px 14px rgba(47,111,176,.28);transition:transform .15s,box-shadow .15s}
+.btn{display:block;width:100%;background:linear-gradient(135deg,#4f9bdb,#3f8ed6);color:#fff;border:none;padding:13px;border-radius:12px;font-size:15px;font-weight:600;cursor:pointer;margin-top:4px;box-shadow:0 4px 14px rgba(47,111,176,.28);transition:transform .15s,box-shadow .15s}
 .btn:active{transform:translateY(1px);box-shadow:0 2px 8px rgba(47,111,176,.25)}
 .btn.ghost{background:#fff;color:var(--brand);border:1.5px solid var(--brand);box-shadow:none}
 .btn.sm{width:auto;padding:6px 14px;font-size:13px;display:inline-block;margin:0}
@@ -99,13 +99,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .ck .info .n{font-weight:600;font-size:14px;color:var(--ink)}
 .ck .info .t{font-size:12px;color:var(--sub);margin-top:2px}
 .ck .st-done{background:var(--okbg);color:var(--ok);font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px}
-.ck .st-btn{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);color:#fff;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;cursor:pointer;border:none;box-shadow:0 3px 10px rgba(47,111,176,.25)}
+.ck .st-btn{background:linear-gradient(135deg,#4f9bdb,#3f8ed6);color:#fff;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;cursor:pointer;border:none;box-shadow:0 3px 10px rgba(47,111,176,.25)}
 /* groups */
 .grp{background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
 .grp .gh{font-weight:600;margin-bottom:8px;font-size:14px;color:var(--ink)}
 .grp .gm{display:flex;flex-wrap:wrap;gap:6px}
 .grp .m{background:var(--coralbg);padding:4px 10px;border-radius:16px;font-size:12px;color:#a23a59;transition:transform .15s}
-.grp .m.me{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);color:#fff;font-weight:600}
+.grp .m.me{background:linear-gradient(135deg,#4f9bdb,#3f8ed6);color:#fff;font-weight:600}
 /* members list */
 .mem{display:flex;justify-content:space-between;align-items:center;background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:11px 13px;margin-bottom:9px;gap:10px;box-shadow:0 3px 12px rgba(47,111,176,.06),0 1px 2px rgba(0,0,0,.03)}
 .mem .mn{font-weight:700;font-size:14px;color:var(--ink)}
@@ -161,13 +161,13 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .ovk{font-size:11px;color:var(--sub);flex-shrink:0;background:var(--brand-soft);padding:2px 8px;border-radius:10px;white-space:nowrap}
 .daytabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch}
 .dtab{flex:1;min-width:60px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 4px;cursor:pointer;flex-shrink:0;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
-.dtab.on{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(47,111,176,.3)}
+.dtab.on{background:linear-gradient(135deg,#4f9bdb,#3f8ed6);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(47,111,176,.3)}
 .dtab .dw{font-weight:700;font-size:14px}
 .dtab .dd{font-size:10px;opacity:.8;margin-top:2px}
 .sec-h{font-size:18px;font-weight:700;margin:20px 0 12px;color:var(--ink);display:flex;align-items:center;gap:6px}
 .sec-div{height:1px;background:var(--line);margin:22px 0 2px}
 /* ===================== 青蓝协奏 · 启动页动态背景 ===================== */
-.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(175deg,#1a3a5c 0%,#2f6fb0 35%,#4a8fc2 60%,#7eb8d8 100%)}
+.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(175deg,#2f5f8c 0%,#3f8ed6 35%,#5a9fce 60%,#9cc8e6 100%)}
 /* 远山层（三层递进，品牌蓝色阶） */
 .bg-mtn{position:absolute;bottom:0;left:0;width:100%;height:46%}
 /* 光晕（青蓝+微琥珀暖调） */
