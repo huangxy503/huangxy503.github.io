@@ -316,8 +316,11 @@ function memberHome(){
   const me=findMe();
   const modules={};
   state.fields.filter(f=>f.key!=="身份证姓名").forEach(f=>{(modules[f.module]=modules[f.module]||[]).push(f);});
-  let cards=Object.keys(modules).filter(m=>m!=="人员基础").map(m=>{
-    const rows=modules[m].map(f=>{
+  // 参与者首页只展示与其切身相关的模块，按固定顺序；其余（人员基础/自驾出行/特殊关怀）不显示
+  const MEMBER_MODULE_ORDER = ["机酒预订","住宿安排","现场分组"];
+  const HIDE_KEYS = ["手机号","身份证号"];   // 机酒预订里的敏感字段：参与者端不展示
+  let cards=MEMBER_MODULE_ORDER.filter(m=>modules[m]).map(m=>{
+    const rows=modules[m].filter(f=>!(m==="机酒预订"&&HIDE_KEYS.includes(f.key))).map(f=>{
       let v=valOf(me,f.key);
       if(f.sensitive){ v = (f.key.indexOf("手机")>=0||f.key.indexOf("电话")>=0)?maskPhone(v):(v?"已加密·仅组织者可见":""); }
       const lock = f.editor==="admin" ? `<span class="lockicon">🔒只读</span>` : "";
@@ -338,15 +341,16 @@ function memberHome(){
   ${cards}
   <button class="btn" onclick="go('edit')">✏️ 编辑我的资料</button>
   <div style="height:8px"></div>
-  <div class="hint">切换到「组织者」身份可看到全部人员的完整信息并统一安排${GF()&&GF().length?(" / "+GF().join(" / ")):""}。</div>
-  <div style="height:8px"></div>
   ${SYNC_ENABLED?`<div class="role-btn ghost" onclick="manualResync()"><b>🔄 重新同步最新数据</b></div>`:""}`;
 }
 
 /* ============== MEMBER: 编辑表单 ============== */
 function editForm(){
   const me=findMe();
-  const editable = state.fields.filter(f=>f.editor==="member" && f.key!=="身份证姓名");
+  // 参与者编辑表单：不出现「自驾/出行」「特殊关怀」整块，也不出现敏感字段（手机号/身份证号）
+  const editable = state.fields.filter(f=>f.editor==="member" && f.key!=="身份证姓名"
+      && !["自驾/出行","特殊关怀"].includes(f.module)
+      && !["手机号","身份证号"].includes(f.key));
   const bymod={};
   editable.forEach(f=>{(bymod[f.module]=bymod[f.module]||[]).push(f);});
   let html=`<div class="hint">这里只放「你自己要填」的字段；${GF()&&GF().length?GF().join(" / ")+" 等":""}由组织者统一安排，你在上一页只能看。</div>`;
