@@ -136,6 +136,8 @@ tr:nth-child(even) td.name-col{background:#fcfcfd}
 .dtab.on{background:var(--brand);border-color:var(--brand);color:#fff}
 .dtab .dw{font-weight:700;font-size:14px}
 .dtab .dd{font-size:10px;opacity:.8;margin-top:2px}
+.sec-h{font-size:17px;font-weight:700;margin:18px 0 10px;color:var(--text);display:flex;align-items:center;gap:6px}
+.sec-div{height:1px;background:var(--line);margin:22px 0 2px}
 </style>
 </head>
 <body>
@@ -287,8 +289,7 @@ function render(){
   else if(ctx.tab==="edit") body = editForm();
   else if(ctx.tab==="schedule") body = scheduleView();
   else if(ctx.tab==="groups") body = groupsView();
-  else if(ctx.tab==="notice") body = noticeView();
-  else if(ctx.tab==="tips") body = tipsView();
+  else if(ctx.tab==="notice") body = infoView();
   else if(ctx.tab==="admin") body = adminTable();
   else if(ctx.tab==="me") body = memberHome();
 
@@ -303,8 +304,8 @@ function go(t){ctx.tab=t;render();}
 function tabbar(){
   const isAdmin=ctx.role==="admin";
   const tabs = isAdmin
-   ? [["admin","📋","数据后台"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","公告"],["tips","📖","贴士"]]
-   : [["home","🏠","我的"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","公告"],["tips","📖","贴士"]];
+   ? [["admin","📋","数据后台"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","资讯"]]
+   : [["home","🏠","我的"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","资讯"]];
   return `<div class="tabbar">`+tabs.map(([k,ic,lb])=>
     `<div class="tab ${ctx.tab===k||(k==='home'&&ctx.tab==='edit')?'on':''}" onclick="go('${k}')"><span class="ic">${ic}</span>${lb}</div>`
   ).join("")+`</div>`;
@@ -423,22 +424,6 @@ function _tipBody(t){
   }
   return body;
 }
-function tipsView(){
-  const isAdmin=ctx.role==="admin";
-  if(isAdmin){
-    if(!state.tips||!state.tips.length) return `<div class="hint">组织者视角：可随时修改、删除贴士，或新增一条。</div><button class="btn" onclick="addTip()">+ 新增贴士</button>`;
-    let html=`<div class="hint">组织者视角：下方为贴士完整内容，每条可「改 / 删」，底部可新增。</div>`;
-    state.tips.forEach((t,i)=>{
-      html+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📌 ${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div>${_tipBody(t)}</div>`;
-    });
-    html+=`<button class="btn" onclick="addTip()">+ 新增贴士</button>`;
-    return html;
-  }
-  if(!state.tips||!state.tips.length) return `<div class="empty-note">暂无贴士内容</div>`;
-  return `<div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`+
-    state.tips.map(t=>`<div class="card"><h3>📌 ${esc(t.title)}</h3>${_tipBody(t)}</div>`).join("");
-}
-
 /* ============== 贴士：组织者改写/删除/新增 ============== */
 let _tipBuf=null, _tipIdx=-1;
 function delTip(i){confirmSheet('确定删除该贴士「'+(state.tips[i]?state.tips[i].title:'')+'」？',()=>{state.tips.splice(i,1);persist();render();});}
@@ -714,24 +699,43 @@ function delGroupCat(field,oldName){
   });
 }
 
-/* ============== 公告 ============== */
-function noticeView(){
+/* ============== 资讯（公告 + 贴士 合并呈现） ============== */
+function infoView(){
   const isAdmin=ctx.role==="admin";
+  // —— 公告区块 ——
+  let noticeHtml;
   if(isAdmin){
-    let html=`<div class="hint">组织者视角：可随时发布、修改或删除公告。</div>`;
+    let nh=`<div class="sec-h">📢 公告</div><div class="hint">组织者视角：可随时发布、修改或删除公告。</div>`;
     state.notices.forEach((n,i)=>{
-      html+=`<div class="nt"><div class="th">${n.level==="重要"?`<span class="badge-u">重要</span>`:""}${esc(n.title)}</div>
+      nh+=`<div class="nt"><div class="th">${n.level==="重要"?`<span class="badge-u">重要</span>`:""}${esc(n.title)}</div>
        <div class="ct">${esc(n.content)}</div><div class="mt">${esc(n.author)} · ${esc(n.time)}</div>
        <div style="margin-top:8px"><button class="mini" onclick="editNotice(${i})">改</button> <button class="mini del" onclick="delNotice(${i})">删</button></div></div>`;
     });
-    html+=`<button class="btn" onclick="editNotice(-1)">+ 发布公告</button>`;
-    return html;
-  }
-  if(!state.notices||!state.notices.length) return `<div class="empty-note">暂无公告</div>`;
-  return state.notices.map(n=>`
+    nh+=`<button class="btn" onclick="editNotice(-1)">+ 发布公告</button>`;
+    noticeHtml=nh;
+  } else {
+    if(!state.notices||!state.notices.length) noticeHtml=`<div class="sec-h">📢 公告</div><div class="empty-note">暂无公告</div>`;
+    else noticeHtml=`<div class="sec-h">📢 公告</div>`+state.notices.map(n=>`
     <div class="nt"><div class="th">${n.level==="重要"?`<span class="badge-u">重要</span>`:""}${esc(n.title)}</div>
-    <div class="ct">${esc(n.content)}</div>
-    <div class="mt">${esc(n.author)} · ${esc(n.time)}</div></div>`).join("");
+    <div class="ct">${esc(n.content)}</div><div class="mt">${esc(n.author)} · ${esc(n.time)}</div></div>`).join("");
+  }
+  // —— 贴士区块 ——
+  let tipHtml;
+  if(isAdmin){
+    if(!state.tips||!state.tips.length) tipHtml=`<div class="sec-h">📖 出行贴士</div><div class="hint">组织者视角：可随时修改、删除贴士，或新增一条。</div><button class="btn" onclick="addTip()">+ 新增贴士</button>`;
+    else {
+      let th=`<div class="sec-h">📖 出行贴士</div><div class="hint">组织者视角：下方为贴士完整内容，每条可「改 / 删」，底部可新增。</div>`;
+      state.tips.forEach((t,i)=>{
+        th+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📌 ${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div>${_tipBody(t)}</div>`;
+      });
+      th+=`<button class="btn" onclick="addTip()">+ 新增贴士</button>`;
+      tipHtml=th;
+    }
+  } else {
+    if(!state.tips||!state.tips.length) tipHtml=`<div class="sec-h">📖 出行贴士</div><div class="empty-note">暂无贴士内容</div>`;
+    else tipHtml=`<div class="sec-h">📖 出行贴士</div><div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`+state.tips.map(t=>`<div class="card"><h3>📌 ${esc(t.title)}</h3>${_tipBody(t)}</div>`).join("");
+  }
+  return noticeHtml + `<div class="sec-div"></div>` + tipHtml;
 }
 function editNotice(idx){
   const isNew=idx<0;
