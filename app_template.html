@@ -21,12 +21,12 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:transparent;color:var(--ink);font-size:15px;line-height:1.55}
 #app{max-width:430px;margin:0 auto;min-height:100vh;background:transparent;position:relative;z-index:1;padding-bottom:64px}
-/* splash */
-.splash{position:fixed;inset:0;background:rgba(20,60,80,.55);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:50;padding:30px}
+/* splash — 青蓝沉浸式 */
+.splash{position:fixed;inset:0;background:transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:50;padding:30px}
 .splash h1{font-size:26px;margin-bottom:6px;text-align:center}
 .splash p{opacity:.85;margin-bottom:40px;font-size:14px;text-align:center}
-.role-btn{width:260px;background:rgba(255,255,255,.15);border:1.5px solid rgba(255,255,255,.5);color:#fff;padding:16px;border-radius:14px;font-size:17px;margin-bottom:14px;cursor:pointer;backdrop-filter:blur(4px);transition:.15s}
-.role-btn:active{transform:scale(.97)}
+.role-btn{width:260px;background:rgba(255,255,255,.14);border:1.5px solid rgba(255,255,255,.4);color:#fff;padding:16px;border-radius:14px;font-size:17px;margin-bottom:14px;cursor:pointer;backdrop-filter:blur(8px);transition:.2s}
+.role-btn:active{transform:scale(.97);background:rgba(255,255,255,.22)}
 .role-btn b{display:block;font-size:18px}
 .role-btn span{font-size:12px;opacity:.8}
 .pwd{width:260px;margin-top:6px}
@@ -44,8 +44,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .hd .sw:active{background:rgba(255,255,255,.32)}
 /* page */
 .page{padding:18px}
-.card{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 6px 22px rgba(47,111,176,.10);transition:box-shadow .2s,transform .2s}
-.card:active{box-shadow:0 10px 28px rgba(47,111,176,.15)}
+.card{background:#ffffff;border:1px solid var(--line2);border-radius:16px;padding:18px;margin-bottom:14px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04);transition:box-shadow .25s,transform .2s}
+.card:active{box-shadow:0 8px 26px rgba(47,111,176,.14),0 2px 6px rgba(0,0,0,.06)}
 .card h3{font-size:16px;margin-bottom:12px;display:flex;align-items:center;gap:6px;color:var(--ink)}
 .mod-tag{font-size:12px;padding:3px 10px;border-radius:7px;background:var(--brand-soft);color:var(--brand);font-weight:700;letter-spacing:.5px}
 .row{display:flex;justify-content:space-between;align-items:flex-start;padding:11px 0;border-bottom:1px solid var(--line2);gap:12px}
@@ -58,7 +58,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .dept{color:#5a6b82;font-size:13px;margin-bottom:12px}
 .chips{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:6px}
 .chip{background:var(--brand-soft);color:var(--brand);padding:6px 12px;border-radius:20px;font-size:13px;font-weight:600}
-.sync-mini-btn{position:absolute;top:10px;right:10px;background:rgba(255,255,255,.7);border:1px solid rgba(47,111,176,.18);border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.sync-mini-btn{position:absolute;top:10px;right:10px;background:#fff;border:1px solid var(--line2);border-radius:50%;width:32px;height:32px;font-size:15px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;box-shadow:0 2px 8px rgba(0,0,0,.06)}
 .sync-mini-btn:active{background:var(--brand-soft);transform:scale(.9)}
 /* 航班特殊排版 */
 .flight-prefix{color:var(--sub);font-size:13px;font-weight:400;margin-right:4px}
@@ -79,8 +79,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .f-note{font-size:11px;color:#94a3b8;margin-top:3px}
 .sens-badge{font-size:10px;background:var(--redbg);color:var(--red);padding:1px 6px;border-radius:5px;margin-left:5px}
 /* schedule */
-.day{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 6px 22px rgba(47,111,176,.10)}
-.day .dh{background:var(--brand-soft);padding:12px 16px;font-weight:600;font-size:14px;color:var(--brand);border-bottom:1px solid #e7edf3}
+.day{background:#ffffff;border:1px solid var(--line2);border-radius:16px;margin-bottom:14px;overflow:hidden;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
+.day .dh{background:var(--brand);padding:12px 16px;font-weight:600;font-size:14px;color:#fff;border-bottom:none}
 .day .di{padding:12px 16px;border-bottom:1px solid var(--line2)}
 .day .di:last-child{border-bottom:none}
 .di .tt{display:flex;flex-direction:column;gap:2px}
@@ -89,36 +89,36 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .di .meta{font-size:12px;color:var(--sub);margin-top:3px}
 .di .tip{font-size:12px;color:var(--warn);background:var(--warnbg);padding:5px 8px;border-radius:7px;margin-top:6px}
 /* notice */
-.nt{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 6px 22px rgba(47,111,176,.10)}
+.nt{background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
 .nt .th{font-weight:600;display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink)}
-.badge-u{font-size:10px;background:var(--warnbg);color:var(--warn);padding:1px 7px;border-radius:5px;font-weight:600}
+.badge-u{font-size:10px;background:var(--warn);color:#fff;padding:1px 8px;border-radius:5px;font-weight:600}
 .nt .ct{font-size:13px;color:#374151;margin:6px 0;line-height:1.6}
 .nt .mt{font-size:11px;color:var(--sub)}
 /* checkin */
-.ck{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 6px 22px rgba(47,111,176,.10)}
+.ck{display:flex;justify-content:space-between;align-items:center;background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
 .ck .info .n{font-weight:600;font-size:14px;color:var(--ink)}
 .ck .info .t{font-size:12px;color:var(--sub);margin-top:2px}
 .ck .st-done{background:var(--okbg);color:var(--ok);font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px}
 .ck .st-btn{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);color:#fff;font-size:13px;font-weight:600;padding:6px 16px;border-radius:20px;cursor:pointer;border:none;box-shadow:0 3px 10px rgba(47,111,176,.25)}
 /* groups */
-.grp{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 6px 22px rgba(47,111,176,.10)}
+.grp{background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:14px 16px;margin-bottom:12px;box-shadow:0 4px 18px rgba(47,111,176,.08),0 1px 3px rgba(0,0,0,.04)}
 .grp .gh{font-weight:600;margin-bottom:8px;font-size:14px;color:var(--ink)}
 .grp .gm{display:flex;flex-wrap:wrap;gap:6px}
 .grp .m{background:var(--coralbg);padding:4px 10px;border-radius:16px;font-size:12px;color:#a23a59;transition:transform .15s}
 .grp .m.me{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);color:#fff;font-weight:600}
 /* members list */
-.mem{display:flex;justify-content:space-between;align-items:center;background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:11px 13px;margin-bottom:9px;gap:10px;box-shadow:0 4px 16px rgba(47,111,176,.08)}
+.mem{display:flex;justify-content:space-between;align-items:center;background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:11px 13px;margin-bottom:9px;gap:10px;box-shadow:0 3px 12px rgba(47,111,176,.06),0 1px 2px rgba(0,0,0,.03)}
 .mem .mn{font-weight:700;font-size:14px;color:var(--ink)}
 .mem .md{font-size:11px;color:var(--sub);margin-top:2px}
 .mem .mtags{display:flex;gap:5px;flex-wrap:wrap;justify-content:flex-end}
 .mem .mtags .chip{font-size:11px;padding:3px 9px;background:var(--brand-soft);color:var(--brand)}
-.search{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px;background:#fff;margin-bottom:12px;box-sizing:border-box}
+.search{width:100%;padding:11px 14px;border:1px solid var(--line);border-radius:12px;font-size:14px;background:#fff;margin-bottom:12px;box-sizing:border-box;box-shadow:0 1px 3px rgba(0,0,0,.04)}
 /* admin table */
 .adm-top{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
-.stat{background:rgba(255,255,255,.72);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.7);border-radius:14px;padding:10px 14px;flex:1;text-align:center;box-shadow:0 4px 16px rgba(47,111,176,.08)}
+.stat{background:#ffffff;border:1px solid var(--line2);border-radius:14px;padding:10px 14px;flex:1;text-align:center;box-shadow:0 3px 12px rgba(47,111,176,.06),0 1px 2px rgba(0,0,0,.03)}
 .stat .num{font-size:22px;font-weight:700;color:var(--brand)}
 .stat .lb{font-size:11px;color:var(--sub)}
-.tbl-wrap{overflow-x:auto;background:rgba(255,255,255,.85);border:1px solid var(--line);border-radius:14px;-webkit-overflow-scrolling:touch;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+.tbl-wrap{overflow-x:auto;background:#ffffff;border:1px solid var(--line);border-radius:14px;-webkit-overflow-scrolling:touch}
 table{border-collapse:collapse;font-size:12px;white-space:nowrap}
 th,td{border:1px solid var(--line);padding:7px 9px;text-align:left}
 th{background:var(--brand-soft);position:sticky;top:0;font-weight:600;color:var(--brand)}
@@ -134,13 +134,13 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .sheet h3{font-size:17px;margin-bottom:14px}
 .sheet .grpttl{font-size:12px;color:var(--brand);font-weight:700;margin:14px 0 6px}
 /* tabbar */
-.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:rgba(255,255,255,.85);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-top:1px solid rgba(47,111,176,.12);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom)}
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#ffffff;border-top:1px solid var(--line2);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 12px rgba(0,0,0,.05)}
 .tab{flex:1;text-align:center;padding:9px 0 8px;font-size:11px;color:#8a97a8;cursor:pointer;transition:color .2s}
 .tab.on{color:var(--brand)}
 .tab.on .ic{transform:translateY(-1px)}
 .tab .ic{font-size:19px;display:block;line-height:1.2;transition:transform .2s}
 .empty-note{text-align:center;color:#94a3b8;font-size:13px;padding:30px}
-.hint{font-size:12px;color:var(--sub);background:var(--warnbg);border:1px solid #fde68a;padding:9px 12px;border-radius:10px;margin-bottom:12px}
+.hint{font-size:12px;color:var(--sub);background:#fff; border:1px solid #fde68a;padding:9px 12px;border-radius:10px;margin-bottom:12px}
 /* tips */
 .tip-body{font-size:13px;color:#374151;line-height:1.7}
 .tip-p{display:flex;gap:8px;padding:5px 0}
@@ -152,81 +152,93 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .ti-name{font-size:13px;font-weight:600;color:var(--ink)}
 .ti-detail{font-size:12px;color:var(--sub);margin-top:3px}
 /* schedule overview + day tabs */
-.ov{background:linear-gradient(135deg,#eaf2fb,#f6fafd)}
+.ov{background:linear-gradient(135deg,#f0f6fc,#ffffff)}
 .ovh{font-weight:700;margin-bottom:8px;font-size:14px;color:var(--brand)}
-.ovr{display:flex;gap:8px;padding:6px 0;border-bottom:1px solid #eef2f7;align-items:flex-start}
+.ovr{display:flex;gap:8px;padding:8px 0;border-bottom:1px solid #eef2f7;align-items:center}
 .ovr:last-child{border-bottom:none}
-.ovd{font-weight:700;color:var(--brand);flex-shrink:0;width:28px}
-.ovrt{flex:1;font-size:13px}
+.ovd{font-weight:700;color:#fff;flex-shrink:0;width:28px;height:28px;border-radius:50%;background:var(--brand);display:flex;align-items:center;justify-content:center;font-size:12px}
+.ovrt{flex:1;font-size:13px;color:var(--ink)}
 .ovk{font-size:11px;color:var(--sub);flex-shrink:0;background:var(--brand-soft);padding:2px 8px;border-radius:10px;white-space:nowrap}
 .daytabs{display:flex;gap:6px;overflow-x:auto;padding:2px 0 12px;-webkit-overflow-scrolling:touch}
-.dtab{flex:1;min-width:60px;text-align:center;background:rgba(255,255,255,.7);border:1px solid var(--line);border-radius:14px;padding:9px 4px;cursor:pointer;flex-shrink:0;transition:.2s}
-.dtab.on{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);border-color:transparent;color:#fff;box-shadow:0 4px 12px rgba(47,111,176,.25)}
+.dtab{flex:1;min-width:60px;text-align:center;background:#fff;border:1px solid var(--line);border-radius:14px;padding:9px 4px;cursor:pointer;flex-shrink:0;transition:.2s;box-shadow:0 1px 3px rgba(0,0,0,.04)}
+.dtab.on{background:linear-gradient(135deg,#3a7fc4,#2f6fb0);border-color:transparent;color:#fff;box-shadow:0 4px 14px rgba(47,111,176,.3)}
 .dtab .dw{font-weight:700;font-size:14px}
 .dtab .dd{font-size:10px;opacity:.8;margin-top:2px}
 .sec-h{font-size:18px;font-weight:700;margin:20px 0 12px;color:var(--ink);display:flex;align-items:center;gap:6px}
 .sec-div{height:1px;background:var(--line);margin:22px 0 2px}
-/* ===================== 林芝山水 · 动态背景 ===================== */
-.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(180deg,#cdeef3 0%,#e3f4f2 45%,#f1faf4 100%)}
-.bg-glow{position:absolute;top:-14%;right:-10%;width:62%;height:48%;background:radial-gradient(circle,#fff7e0 0%,rgba(255,247,224,0) 70%);opacity:.7;animation:glowBreath 7s ease-in-out infinite}
-.bg-cloud{position:absolute;background:rgba(255,255,255,.9);border-radius:50%;filter:blur(2px);opacity:.9}
+/* ===================== 青蓝协奏 · 启动页动态背景 ===================== */
+.bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(175deg,#1a3a5c 0%,#2f6fb0 35%,#4a8fc2 60%,#7eb8d8 100%)}
+/* 远山层（三层递进，品牌蓝色阶） */
+.bg-mtn{position:absolute;bottom:0;left:0;width:100%;height:46%}
+/* 光晕（青蓝+微琥珀暖调） */
+.bg-glow{position:absolute;top:-8%;right:-12%;width:58%;height:50%;background:radial-gradient(circle,rgba(47,111,176,.35) 0%,rgba(47,111,176,0) 70%);opacity:.9;animation:glowBreath 8s ease-in-out infinite}
+.bg-glow2{position:absolute;top:20%;left:-8%;width:44%;height:36%;background:radial-gradient(circle,rgba(47,158,143,.2) 0%,rgba(47,158,143,0) 70%);opacity:.7;animation:glowBreath2 10s ease-in-out infinite}
+/* 流云（青白色，柔和飘动） */
+.bg-cloud{position:absolute;background:rgba(255,255,255,.18);border-radius:50%;filter:blur(3px)}
 .bg-cloud::before,.bg-cloud::after{content:"";position:absolute;background:inherit;border-radius:50%}
-.bg-cloud.c1{width:90px;height:30px;top:13%;left:-30%;animation:drift 46s linear infinite}
-.bg-cloud.c1::before{width:46px;height:46px;top:-20px;left:14px}
-.bg-cloud.c1::after{width:34px;height:34px;top:-12px;left:46px}
-.bg-cloud.c2{width:64px;height:22px;top:25%;left:-30%;animation:drift 62s linear infinite;animation-delay:-22s;opacity:.72}
-.bg-cloud.c2::before{width:34px;height:34px;top:-14px;left:10px}
-.bg-cloud.c2::after{width:26px;height:26px;top:-8px;left:34px}
-.bg-cloud.c3{width:112px;height:34px;top:8%;left:-30%;animation:drift 80s linear infinite;animation-delay:-44s;opacity:.8}
-.bg-cloud.c3::before{width:54px;height:54px;top:-24px;left:18px}
-.bg-cloud.c3::after{width:40px;height:40px;top:-14px;left:56px}
-.bg-mtn{position:absolute;bottom:0;left:0;width:100%;height:44%}
-.bg-river{position:absolute;bottom:0;left:0;width:100%;height:13%;background:linear-gradient(180deg,rgba(150,214,222,.5),rgba(120,196,206,.32))}
-.bg-blossom{position:absolute;top:0;left:0;width:150px;height:150px;opacity:.95}
-#petals{position:absolute;inset:0;overflow:hidden}
-.petal{position:absolute;top:-24px;width:9px;height:9px;background:#ffc6d9;border-radius:62% 0 62% 0;opacity:.85;animation:fall linear infinite;box-shadow:0 0 4px rgba(255,198,217,.5)}
-@keyframes drift{from{transform:translateX(0)}to{transform:translateX(142vw)}}
-@keyframes fall{0%{transform:translateY(-24px) translateX(0) rotate(0)}100%{transform:translateY(106vh) translateX(46px) rotate(380deg)}}
-@keyframes glowBreath{0%,100%{opacity:.45;transform:scale(1)}50%{opacity:.85;transform:scale(1.08)}}
+.bg-cloud.c1{width:100px;height:32px;top:10%;left:-30%;animation:drift 52s linear infinite}
+.bg-cloud.c1::before{width:52px;height:52px;top:-22px;left:16px}
+.bg-cloud.c1::after{width:38px;height:38px;top:-14px:left:52px}
+.bg-cloud.c2{width:72px;height:24px;top:22%;left:-30%;animation:drift 68s linear infinite;animation-delay:-26s;opacity:.14}
+.bg-cloud.c2::before{width:38px;height:38px;top:-16px;left:12px}
+.bg-cloud.c2::after{width:28px;height:28px;top:-10px;left:38px}
+.bg-cloud.c3{width:120px;height:36px;top:6%;left:-30%;animation:drift 86s linear infinite;animation-delay:-48s;opacity:.18}
+.bg-cloud.c3::before{width:58px;height:58px;top:-26px;left:20px}
+.bg-cloud.c3::after{width:42px;height:42px;top:-16px;left:60px}
+/* 底部流动水波纹 */
+.bg-river{position:absolute;bottom:0;left:0;width:100%;height:15%;background:linear-gradient(180deg,rgba(74,143,194,.25),rgba(47,111,176,.18))}
+.bg-wave{position:absolute;bottom:0;left:0;width:200%;height:100%}
+/* 浮动光点（替代花瓣，青白几何感） */
+#particles{position:absolute;inset:0;overflow:hidden}
+.particle{position:absolute;border-radius:50%;background:rgba(255,255,255,.45);animation:floatUp linear infinite}
+@keyframes drift{from{transform:translateX(0)}to{transform:translateX(148vw)}}
+@keyframes glowBreath{0%,100%{opacity:.55;transform:scale(1)}50%{opacity:.95;transform:scale(1.06)}}
+@keyframes glowBreath2{0%,100%{opacity:.4;transform:scale(1)}50%{opacity:.75;transform:scale(1.05)}}
+@keyframes floatUp{0%{transform:translateY(106vh) translateX(0) scale(.5);opacity:0}15%{opacity:.6}85%{opacity:.4}100%{transform:translateY(-6vh) translateX(30px) scale(1);opacity:0}}
+@keyframes waveFlow{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
 @media (prefers-reduced-motion: reduce){
-  .bg-glow,.bg-cloud,.petal{animation:none}
-  .bg-cloud,.petal{display:none}
+  .bg-glow,.bg-glow2,.bg-cloud,.particle{animation:none}
+  .bg-cloud,.particle{display:none}
 }
 /* ===================== 模块撞色（首页卡片 accent） ===================== */
+.card.accent-green{border-left:4px solid var(--ok)}
 .card.accent-green .mod-tag{background:var(--okbg);color:var(--ok)}
+.card.accent-purple{border-left:4px solid var(--purple)}
 .card.accent-purple .mod-tag{background:var(--purplebg);color:var(--purple)}
+.card.accent-coral{border-left:4px solid var(--coral)}
 .card.accent-coral .mod-tag{background:var(--coralbg);color:var(--coral)}
+.card.accent-blue{border-left:4px solid var(--brand)}
 .card.accent-blue .mod-tag{background:var(--brand-soft);color:var(--brand)}
-/* 进入小程序后：静态柔渐变背景（保留玻璃卡片，无动画不晃眼） */
+/* 进入小程序后：静态柔渐变背景（干净实底卡片，无动画） */
 .entered .hd{background:var(--brand)}
 </style>
 </head>
 <body>
 <div class="bg-layer" aria-hidden="true">
   <div class="bg-glow"></div>
+  <div class="bg-glow2"></div>
   <div class="bg-cloud c1"></div>
   <div class="bg-cloud c2"></div>
   <div class="bg-cloud c3"></div>
-  <svg class="bg-blossom" viewBox="0 0 150 150">
-    <path d="M2,8 C34,18 44,42 60,58 C72,70 90,72 116,66" stroke="#9c6b4f" stroke-width="3.2" fill="none" stroke-linecap="round"/>
-    <path d="M44,34 C54,30 64,34 70,44" stroke="#9c6b4f" stroke-width="2.4" fill="none" stroke-linecap="round"/>
-    <path d="M88,58 C98,56 106,60 110,70" stroke="#9c6b4f" stroke-width="2.2" fill="none" stroke-linecap="round"/>
-    <g>
-      <circle cx="60" cy="55" r="6.5" fill="#ffb3cd"/><circle cx="69" cy="59" r="6.5" fill="#ffb3cd"/><circle cx="64" cy="67" r="6.5" fill="#ffb3cd"/><circle cx="55" cy="64" r="6.5" fill="#ffb3cd"/><circle cx="72" cy="67" r="6.5" fill="#ffb3cd"/><circle cx="64" cy="61" r="2.6" fill="#ffe08a"/>
-      <circle cx="40" cy="40" r="5.6" fill="#ff9cbd"/><circle cx="48" cy="43" r="5.6" fill="#ff9cbd"/><circle cx="44" cy="50" r="5.6" fill="#ff9cbd"/><circle cx="36" cy="47" r="5.6" fill="#ff9cbd"/><circle cx="44" cy="45" r="2.3" fill="#ffe08a"/>
-      <circle cx="108" cy="68" r="5.2" fill="#ffb3cd"/><circle cx="115" cy="71" r="5.2" fill="#ffb3cd"/><circle cx="111" cy="77" r="5.2" fill="#ffb3cd"/><circle cx="104" cy="74" r="5.2" fill="#ffb3cd"/><circle cx="111" cy="72" r="2.1" fill="#ffe08a"/>
-    </g>
-  </svg>
   <svg class="bg-mtn" viewBox="0 0 390 200" preserveAspectRatio="xMidYMax slice">
-    <path d="M0,200 L0,118 L55,78 L110,108 L165,66 L230,112 L290,72 L345,108 L390,82 L390,200 Z" fill="#bfe0e4"/>
-    <path d="M0,200 L0,148 L45,108 L95,138 L150,92 L205,138 L260,98 L320,143 L390,112 L390,200 Z" fill="#dcefef"/>
-    <path d="M150,92 L168,126 L150,133 L132,126 Z" fill="#ffffff"/>
-    <path d="M260,98 L278,128 L260,135 L242,128 Z" fill="#ffffff"/>
-    <path d="M345,108 L361,136 L345,142 L329,136 Z" fill="#ffffff"/>
-    <path d="M0,200 L0,172 L70,148 L150,170 L230,146 L310,171 L390,152 L390,200 Z" fill="#a9dcc4"/>
+    <!-- 远山：最淡层 -->
+    <path d="M0,200 L0,130 L60,95 L120,125 L180,85 L250,120 L310,88 L370,115 L390,98 L390,200 Z" fill="rgba(74,143,194,.35)"/>
+    <!-- 中山：品牌蓝主色层 -->
+    <path d="M0,200 L0,155 L50,118 L105,148 L165,108 L225,150 L285,112 L345,146 L390,128 L390,200 Z" fill="rgba(47,111,176,.5)"/>
+    <!-- 近山：最深层 + 雪顶 -->
+    <path d="M0,200 L0,172 L70,148 L140,175 L210,142 L280,174 L350,150 L390,168 L390,200 Z" fill="rgba(26,58,92,.65)"/>
+    <!-- 雪顶点缀 -->
+    <path d="M165,108 L178,132 L165,138 L152,132 Z" fill="rgba(255,255,255,.55)"/>
+    <path d="M285,112 L298,134 L285,140 L272,134 Z" fill="rgba(255,255,255,.5)"/>
+    <path d="M105,148 L118,168 L105,173 L92,168 Z" fill="rgba(255,255,255,.4)"/>
   </svg>
-  <div class="bg-river"></div>
-  <div id="petals"></div>
+  <div class="bg-river">
+    <svg class="bg-wave" viewBox="0 0 800 40" preserveAspectRatio="none" style="animation:waveFlow 12s linear infinite">
+      <path d="M0,20 Q50,5 100,20 T200,20 T300,20 T400,20 T500,20 T600,20 T700,20 T800,20 V40 H0 Z" fill="rgba(255,255,255,.1)"/>
+      <path d="M0,25 Q50,12 100,25 T200,25 T300,25 T400,25 T500,25 T600,25 T700,25 T800,25 V40 H0 Z" fill="rgba(255,255,255,.07)"/>
+    </svg>
+  </div>
+  <div id="particles"></div>
 </div>
 <div id="app"></div>
 <script>
@@ -471,10 +483,12 @@ function memberHome(){
   return `
   <div class="card" style="position:relative">
     ${SYNC_ENABLED?`<button class="sync-mini-btn" onclick="manualResync()" title="同步最新数据">🔄</button>`:""}
+    <div style="font-size:12px;color:var(--brand);font-weight:700;letter-spacing:.5px;margin-bottom:4px">${esc(EVENT_TITLE)}</div>
     <div class="big-name">${esc(displayName(me))}</div>
     ${subLine(me)?`<div class="dept">${esc(subLine(me))}</div>`:`<div style="height:8px"></div>`}
     ${chips?`<div class="chips">${chips}</div>`:""}
   </div>
+  ${cards ? `<div style="font-size:13px;font-weight:600;color:var(--ink);margin:16px 0 8px;display:flex;align-items:center;gap:6px"><span style="width:3px;height:14px;background:var(--brand);border-radius:2px"></span>快捷模块</div>` : ""}
   ${cards}
   <button class="btn" onclick="go('edit')">✏️ 编辑我的资料</button>`;
 }
@@ -1249,19 +1263,20 @@ async function init(){
   const handled = await tryBackendIdentify();
   if(!ctx.role) renderSplash();
 }
-// 生成飘落桃花瓣（动态背景）
+// 生成浮动光点（青蓝主题动态背景）
 (function(){
-  var pc=document.getElementById('petals');
+  var pc=document.getElementById('particles');
   if(!pc) return;
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(reduce) return;
-  for(var i=0;i<12;i++){
+  for(var i=0;i<16;i++){
     var p=document.createElement('div');
-    p.className='petal';
+    p.className='particle';
+    var size=2+Math.random()*4;
+    p.style.width=size+'px';p.style.height=size+'px';
     p.style.left=(Math.random()*100)+'%';
-    p.style.animationDelay=(-Math.random()*14)+'s';
-    p.style.animationDuration=(9+Math.random()*7)+'s';
-    p.style.transform='scale('+(0.6+Math.random()*0.8)+')';
+    p.style.animationDelay=(-Math.random()*18)+'s';
+    p.style.animationDuration=(12+Math.random()*10)+'s';
     pc.appendChild(p);
   }
 })();
