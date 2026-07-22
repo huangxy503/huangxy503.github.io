@@ -317,7 +317,7 @@ function memberHome(){
   const modules={};
   state.fields.filter(f=>f.key!=="身份证姓名").forEach(f=>{(modules[f.module]=modules[f.module]||[]).push(f);});
   // 参与者首页只展示与其切身相关的模块，按固定顺序；其余（人员基础/自驾出行/特殊关怀）不显示
-  const MEMBER_MODULE_ORDER = ["机酒预订","住宿安排","现场分组"];
+  const MEMBER_MODULE_ORDER = ["机酒预订","住宿安排"];
   const HIDE_KEYS = ["手机号","身份证号"];   // 机酒预订里的敏感字段：参与者端不展示
   let cards=MEMBER_MODULE_ORDER.filter(m=>modules[m]).map(m=>{
     const rows=modules[m].filter(f=>!(m==="机酒预订"&&HIDE_KEYS.includes(f.key))).map(f=>{
