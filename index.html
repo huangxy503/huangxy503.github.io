@@ -71,7 +71,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .day .di:last-child{border-bottom:none}
 .di .tt{display:flex;flex-direction:column;gap:2px}
 .di .sched-time{font-size:13px;color:var(--sub);font-weight:500;font-variant-numeric:tabular-nums;letter-spacing:.3px}
-.di .sched-act{font-weight:600;font-size:14px;line-height:1.35}
+.di .sched-act{font-size:14px;line-height:1.35}
 .di .meta{font-size:12px;color:var(--sub);margin-top:3px}
 .di .tip{font-size:12px;color:var(--warn);background:var(--warnbg);padding:5px 8px;border-radius:7px;margin-top:6px}
 /* notice */
@@ -472,7 +472,7 @@ function _tipBody(t){
   let body="";
   if(t.groups&&t.groups.length){
     body=t.groups.map(g=>`<div class="tip-cat">${esc(g.name)}</div>`+
-      (g.items||[]).map(it=>`<div class="tip-item"><div class="ti-name">${esc(it.name)}</div>${it.detail?`<div class="ti-detail">${esc(it.detail)}</div>`:''}</div>`).join("")).join("");
+      (g.items||[]).map(it=>`<div class="tip-item"><div class="ti-name">${esc(it.name.replace(/[\★\☆\*]+/g,''))}</div>${it.detail?`<div class="ti-detail">${esc(it.detail)}</div>`:''}</div>`).join("")).join("");
   } else if(t.blocks&&t.blocks.length){
     body=t.blocks.map(b=> b.kind==="subtitle"
       ? `<div class="tip-sub">${esc(b.subtitle)}</div><div class="tip-body">${esc(b.text)}</div>`
@@ -567,24 +567,24 @@ function dayTabs(){
 function goSchedDay(i){ctx.schedDay=i;render();}
 function scheduleView(){
   const isAdmin=ctx.role==="admin";
+  const ov=(state.overview||[]);
+  const ovHtml = ov.length ? `<div class="card ov"><div class="ovh">🧭 行程概述 · 全程总览</div>`+
+    ov.map(o=>`<div class="ovr"><span class="ovd">${esc(o.day)}</span><span class="ovrt">${esc(o.route)}</span><span class="ovk">${esc(o.km)}</span></div>`).join("")+`</div>` : "";
   // 防崩溃：行程为空或数据异常时给出友好提示，而非整页卡死
   if(!state.schedule || !state.schedule.length){
-    return `<div class="empty-note" style="padding:40px 20px">📭 暂无行程数据<br><span style="font-size:12px;color:#94a3b8">组织者可在后台「数据后台」手动添加，或重新生成时上传行程表。</span></div>` + tabbar();
+    return ovHtml + `<div class="empty-note" style="padding:40px 20px">📭 暂无行程数据<br><span style="font-size:12px;color:#94a3b8">组织者可在后台「数据后台」手动添加，或重新生成时上传行程表。</span></div>` + tabbar();
   }
   if(ctx.schedDay==null||ctx.schedDay>=state.schedule.length)ctx.schedDay=0;
   const d=state.schedule[ctx.schedDay];
-  if(!d || !d.items) return `<div class="empty-note">行程数据异常</div>` + tabbar();
+  if(!d || !d.items) return ovHtml + `<div class="empty-note">行程数据异常</div>` + tabbar();
   const tabs=dayTabs();
   if(isAdmin){
     const items=d.items.map((it,i)=>`<div class="di"><div class="tt"><span class="sched-time">${esc(it.start)}${it.end?'–'+esc(it.end):''}</span><span class="sched-act">${esc(it.act)}</span></div>${it.trans?`<div class="meta">${transIcon(it.trans)} ${esc(it.trans)}</div>`:''}<div style="margin-top:6px"><button class="mini" onclick="editSchedItem(${ctx.schedDay},${i})">改</button> <button class="mini del" onclick="delSchedItem(${ctx.schedDay},${i})">删</button></div></div>`).join("");
-    const dayHtml=`<div class="day"><div class="dh">${esc(d.date)} ${esc(d.week)} · ${esc(d.title)}
-      <span style="float:right"><button class="mini" onclick="editSchedDay(${ctx.schedDay})">改整天</button>
-      <button class="mini del" onclick="delSchedDay(${ctx.schedDay})">删</button></span></div>
-      ${items}
+    const dayHtml=`<div class="day">${items}
       <div style="padding:10px 14px"><button class="btn sm" onclick="addSchedItem(${ctx.schedDay})">+ 新增时段</button></div></div>`;
-    return tabs+dayHtml+`<button class="btn" onclick="editSchedDay(-1)">+ 新增一天行程</button>`;
+    return ovHtml+tabs+dayHtml+`<button class="btn" onclick="editSchedDay(-1)">+ 新增一天行程</button>`;
   }
-  return tabs+`<div class="day"><div class="dh">${esc(d.date)} ${esc(d.week)} · ${esc(d.title)}</div>${d.items.map(scheduleRow).join("")}</div>`;
+  return ovHtml+tabs+`<div class="day">${d.items.map(scheduleRow).join("")}</div>`;
 }
 function editSchedDay(di){
   const d = di<0?{date:'',week:'',title:'',tip:''}:state.schedule[di];
