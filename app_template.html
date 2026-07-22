@@ -345,14 +345,23 @@ function memberHome(){
 
   /* ── 特殊排版：住宿（去label日期、去值内冗余日期、酒店与室友分行）── */
   function renderHotelRow(rawLabel, rawVal){
-    const label=rawLabel.replace(/\s*[\(\uFF08][^)\uFF09]+[\)\uFF09]\s*$/,"");
+    // label 去掉末尾日期括号：如「重庆住宿(11.7)」→「重庆住宿」
+    const label=rawLabel.replace(/[\(（].*$/,"").trim();
     const v=String(rawVal||"").trim();
-    if(!v) return `<div class="row"><span class="k">${esc(label)}</span><span class="v empty">待定</span></div>`;
-    const mateMatch=v.match(/（室友[\uff1a:]\s*[^）]+）/);
-    const mate=mateMatch?mateMatch[1]:"";
-    const body=mateMatch?v.replace(mateMatch[0],"").trim():v;
+    if(!v) return `<div class="row row-hotel"><span class="k">${esc(label)}</span><span class="v empty">待定</span></div>`;
+    // 用 indexOf 提取室友（避免脆弱的 unicode 正则）
+    let mate="", body=v;
+    const mi=v.indexOf("室友");
+    if(mi>=0){
+      let after=v.slice(mi+2).replace(/^[\s：:]+/,"");   // 去「室友」后的冒号/空格
+      const stops=["）",")","。"];
+      let end=after.length;
+      stops.forEach(s=>{ const i=after.indexOf(s); if(i>=0 && i<end) end=i; });
+      mate=after.slice(0,end).trim();
+      body=v.slice(0,mi).replace(/[\(（]\s*$/,"").trim();
+    }
     const cleanBody=body.replace(/\s*\d+号\s*/g," ").replace(/\s{2,}/g," ").trim();
-    const mateHtml=mate?`<div class="hotel-mate">${esc(mate)}</div>`:"";
+    const mateHtml=mate?`<div class="hotel-mate">👤 室友：${esc(mate)}</div>`:"";
     return `<div class="row row-hotel"><span class="k">${esc(label)}</span><span class="v">${esc(cleanBody)}${mateHtml}</span></div>`;
   }
 
