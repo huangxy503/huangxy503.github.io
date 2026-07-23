@@ -224,6 +224,15 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .dtab .dd{font-size:10px;opacity:.8;margin-top:2px}
 .sec-h{font-size:18px;font-weight:700;margin:20px 0 12px;color:var(--ink);display:flex;align-items:center;gap:6px}
 .sec-div{height:1px;background:var(--line);margin:22px 0 2px}
+/* ===================== 全局轻量旅行标题带 ===================== */
+.travel-hd{position:relative;top:auto;height:118px;padding:18px;display:flex;align-items:flex-start;justify-content:space-between;overflow:hidden;background:#378add;box-shadow:none}
+.travel-header-copy,.travel-actions{position:relative;z-index:1}.travel-header-copy{min-width:0;display:flex;flex-direction:column;gap:4px}.travel-hd .t{font-size:19px;font-weight:700;letter-spacing:.2px}.travel-subtitle{font-size:12px;color:rgba(255,255,255,.82);line-height:1.35}.travel-actions{display:flex;align-items:center;gap:8px;flex-shrink:0}.travel-hd .sw{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.38);padding:5px 9px;font-size:12px}.header-sync{border:1px solid rgba(255,255,255,.65);border-radius:999px;background:#fff;color:#378add;padding:5px 10px;font:inherit;font-size:12px;font-weight:700;cursor:pointer}.travel-hills{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:68px;pointer-events:none}.travel-page{position:relative;z-index:21;margin-top:-24px;padding:0 18px 22px;background:transparent}
+/* 分组：同行伙伴名册 */
+.group-page .group-tabs{display:flex;gap:8px;overflow-x:auto;margin:0 -2px 16px;padding:2px;-webkit-overflow-scrolling:touch}.group-tab{min-width:92px;padding:10px 11px;border:1px solid #dce6ec;border-radius:14px;background:#fff;color:#718397;font-size:12px;text-align:center;cursor:pointer;flex-shrink:0}.group-tab strong{display:block;font-size:14px;color:#40556a;line-height:1.25}.group-tab span{display:block;margin-top:2px;font-size:11px}.group-tab.on{background:#378add;border-color:#378add;color:#fff}.group-tab.on strong{color:#fff}.group-page .grp{border:.5px solid #e0e0e0;border-radius:16px;padding:16px;margin-bottom:14px;box-shadow:none}.group-page .grp .gh{font-size:15px;color:#294256;margin-bottom:10px}.group-page .grp .m{background:#fceef0;color:#aa5268;padding:5px 10px;font-size:12px}.group-page .grp .m.me{background:#e86a6a;color:#fff}.group-page .mini{border-radius:8px}.group-dim-actions{display:flex;gap:8px;margin:0 0 12px}.group-page .btn.ghost{border-color:#bcd8ed;background:#fff;color:#378add}
+/* 资讯：旅途提示卡 */
+.info-page .info-tabs{display:flex;gap:8px;margin:0 0 16px}.info-tab{flex:1;padding:10px 12px;border:1px solid #dce6ec;border-radius:14px;background:#fff;color:#718397;font-size:13px;text-align:center;cursor:pointer}.info-tab small{font-size:11px}.info-tab.on{background:#378add;border-color:#378add;color:#fff}.info-page .nt,.info-page .card{border:.5px solid #e0e0e0;border-radius:16px;box-shadow:none}.info-page .nt{padding:16px;margin-bottom:14px}.info-page .card{padding:16px;margin-bottom:14px}.info-page .card h3{font-size:15px}.info-page .hint{background:#fffdf8;border-color:#f0e3c8}
+/* 组织者：旅行工作台 */
+.admin-page .admin-summary{display:flex;gap:12px;margin-bottom:16px}.admin-page .stat{min-width:112px;flex:0 0 112px;background:#fff;border:.5px solid #e0e0e0;border-radius:16px;padding:14px 16px;box-shadow:none;text-align:left}.admin-page .stat .num{font-size:24px;color:#378add}.admin-page .stat .lb{font-size:11px;color:#888;margin-top:2px}.admin-section-title{font-size:15px;color:#243b53;font-weight:700;margin:0 0 10px}.admin-toolbar{display:flex;gap:8px;margin-bottom:12px}.admin-toolbar .btn{margin:0;width:auto;padding:9px 14px;border-radius:12px;background:#378add;box-shadow:none}.admin-page .tbl-wrap{border:.5px solid #e0e0e0;border-radius:16px;box-shadow:none}.admin-page th{background:#e6f1fb;color:#185fa5}.admin-page tr:nth-child(even) td,.admin-page tr:nth-child(even) td.name-col{background:#fafcff}
 /* ===================== 我的页 · 高原旅行资料册 ===================== */
 .my-hd{position:relative;top:auto;height:184px;padding:22px 18px;background:#378add;align-items:flex-start;overflow:hidden;box-shadow:none}
 .my-hd .t,.my-hd .sw{position:relative;z-index:1}
@@ -488,7 +497,7 @@ function checkAdmin(){
 /* ============== MAIN RENDER ============== */
 function render(){
   if(!ctx.role){renderSplash();return;}
-  app.style.background='linear-gradient(175deg,#d4ebf5 0%,#e0f0fa 40%,#eaf5fc 70%,#f5fafd 100%)';
+  app.style.background='#fafbfc';
   app.classList.add('entered');
   const bg=document.querySelector('.bg-layer'); if(bg) bg.style.display='none';
   const isAdmin = ctx.role==="admin";
@@ -503,11 +512,24 @@ function render(){
   else if(ctx.tab==="me") body = memberHome();
 
   const isMemberHome=!isAdmin && (ctx.tab==="home"||ctx.tab==="me");
+  const meta={
+    schedule:isAdmin?{title:"行程管理",sub:"掌握每一段旅途节奏"}:{title:"行程",sub:"把每一段路，走成共同记忆"},
+    groups:isAdmin?{title:"分组管理",sub:"让每位伙伴安心同行"}:{title:"同行伙伴",sub:"同车、同组，一起出发"},
+    notice:isAdmin?{title:"资讯管理",sub:"重要提醒与出行信息"}:{title:"旅途资讯",sub:"重要提醒与出行贴士"},
+    admin:{title:"组织者后台",sub:"安排已就绪，旅程从容推进"},
+    home:{title:"组织者后台",sub:"安排已就绪，旅程从容推进"},
+    edit:{title:"编辑我的资料",sub:"补充并确认你的出行信息"}
+  };
+  const top=meta[ctx.tab] || {title,sub:"林芝团建同行助手"};
   const sw = `<span class="sw" onclick="switchRole()">${isAdmin?"切换为参与者":"切换身份"}</span>`;
   const gearBtn = "";
-  const syncBtn = (isAdmin && SYNC_ENABLED) ? `<button class="btn sm ghost" style="margin-left:auto;font-size:12px;padding:4px 10px;white-space:nowrap" onclick="genSyncLink()">同步</button>` : "";
-  const mountains=isMemberHome?`<svg class="my-hills" viewBox="0 0 430 112" preserveAspectRatio="none" aria-hidden="true"><path d="M0 112V73l66-37 48 31 58-53 81 70 51-36 126 58v6Z" fill="#85b7eb"/><path d="M0 112V89l61-41 49 33 61-51 75 65 63-39 121 59v7Z" fill="#185fa5"/><path d="M0 112c54-17 103-8 152-19 55-13 104-19 278-3v22Z" fill="#fafbfc"/></svg>`:"";
-  app.innerHTML = `<div class="hd ${isMemberHome?'my-hd':''}"><span class="t">${title}</span>${sw}${gearBtn}${syncBtn}${mountains}</div><div class="page ${isMemberHome?'my-page':''}">${body}</div>${tabbar()}`;
+  const syncBtn = (isAdmin && SYNC_ENABLED) ? `<button class="header-sync" onclick="genSyncLink()">同步</button>` : "";
+  const myMountains=`<svg class="my-hills" viewBox="0 0 430 112" preserveAspectRatio="none" aria-hidden="true"><path d="M0 112V73l66-37 48 31 58-53 81 70 51-36 126 58v6Z" fill="#85b7eb"/><path d="M0 112V89l61-41 49 33 61-51 75 65 63-39 121 59v7Z" fill="#185fa5"/><path d="M0 112c54-17 103-8 152-19 55-13 104-19 278-3v22Z" fill="#fafbfc"/></svg>`;
+  const travelMountains=`<svg class="travel-hills" viewBox="0 0 430 68" preserveAspectRatio="none" aria-hidden="true"><path d="M0 68V47l66-26 44 20 58-34 75 45 64-28 123 39v5Z" fill="#85b7eb"/><path d="M0 68V57l63-27 45 19 62-32 70 41 67-28 123 34v4Z" fill="#185fa5"/><path d="M0 68c74-12 139-3 203-12 63-9 125-8 227 3v9Z" fill="#fafbfc"/></svg>`;
+  const header=isMemberHome
+    ? `<div class="hd my-hd"><span class="t">${title}</span>${sw}${gearBtn}${myMountains}</div>`
+    : `<div class="hd travel-hd"><div class="travel-header-copy"><span class="t">${esc(top.title)}</span><span class="travel-subtitle">${esc(top.sub)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${travelMountains}</div>`;
+  app.innerHTML = `${header}<div class="page ${isMemberHome?'my-page':'travel-page'}">${body}</div>${tabbar()}`;
 }
 function switchRole(){ctx.role=null;ctx.tab="home";render();}
 function go(t){ctx.tab=t;render();}
@@ -870,23 +892,23 @@ function groupsView(){
   const k=gf[ctx.groupIdx];
   const by={};
   state.people.forEach(p=>{const v=valOf(p,k)||"未分组";(by[v]=by[v]||[]).push(p);});
-  // 顶部维度标签（组织者末尾多一个"➕维度"）
-  const tabs=`<div class="daytabs">`+gf.map((g,i)=>
-    `<div class="dtab ${ctx.groupIdx===i?'on':''}" onclick="goGroupTab(${i})"><div class="dw">${esc(g)}</div><div class="dd">${state.people.filter(p=>valOf(p,g)).length}人</div></div>`).join("")
-    +(isAdmin?`<div class="dtab" onclick="addGroupDim()" style="border-style:dashed"><div class="dw">➕</div><div class="dd">新维度</div></div>`:"")
+  // 顶部维度标签（组织者末尾多一个“新维度”）
+  const tabs=`<div class="group-tabs">`+gf.map((g,i)=>
+    `<button class="group-tab ${ctx.groupIdx===i?'on':''}" onclick="goGroupTab(${i})"><strong>${esc(g)}</strong><span>${state.people.filter(p=>valOf(p,g)).length}人</span></button>`).join("")
+    +(isAdmin?`<button class="group-tab" onclick="addGroupDim()" style="border-style:dashed"><strong>新增</strong><span>分组维度</span></button>`:"")
     +`</div>`;
   // 维度级操作条（改名 / 删除当前维度）
-  const dimBar = isAdmin?`<div style="display:flex;gap:8px;margin:8px 0 4px">
-      <button class="mini" onclick="renameGroupDim('${esc(k)}')">✏️ 改名维度「${esc(k)}」</button>
-      <button class="mini del" onclick="delGroupDim('${esc(k)}')">🗑 删除维度</button>
+  const dimBar = isAdmin?`<div class="group-dim-actions">
+      <button class="mini" onclick="renameGroupDim('${esc(k)}')">改名「${esc(k)}」</button>
+      <button class="mini del" onclick="delGroupDim('${esc(k)}')">删除维度</button>
     </div>`:"";
   const groupsHtml=Object.keys(by).sort().map(g=>`
     <div class="grp"><div class="gh">${g==='未分组'?g:esc(g)} (${by[g].length}人)</div>
     <div class="gm">${by[g].map(p=>{const id=state.people.indexOf(p);return `<span class="m ${!isAdmin&&me&&p._id===me._id?'me':''}" ${isAdmin?`onclick="editGroup(${id})" style="cursor:pointer"`:''}>${esc(displayName(p))}</span>`;}).join("")}</div>
     ${isAdmin&&g!=='未分组'?`<div style="margin-top:6px"><button class="mini" onclick="editGroupMembers('${esc(k)}','${esc(g)}')">调整成员</button> <button class="mini del" onclick="delGroupCat('${esc(k)}','${esc(g)}')">删除该组</button></div>`:''}</div>`).join("");
-  const addGrpBtn = isAdmin?`<button class="btn ghost" onclick="addGroupCat('${esc(k)}')">➕ 在「${esc(k)}」下新增一个分组</button>`:"";
+  const addGrpBtn = isAdmin?`<button class="btn ghost" onclick="addGroupCat('${esc(k)}')">在「${esc(k)}」下新增分组</button>`:"";
   const tip = "";
-  return tabs+dimBar+tip+groupsHtml+(addGrpBtn?`<div style="height:8px"></div>`+addGrpBtn:"");
+  return `<div class="group-page">${tabs}${dimBar}${tip}${groupsHtml}${addGrpBtn?`<div style="height:8px"></div>`+addGrpBtn:""}</div>`;
 }
 function goGroupTab(i){ctx.groupIdx=i;render();}
 /* ---- 维度（分组依据）增删改 ---- */
@@ -1006,9 +1028,9 @@ function infoView(){
   if(ctx.infoTab==null) ctx.infoTab=0;
 
   // —— Tab 栏（公告 / 贴士）——
-  const tabs = `<div class="daytabs">
-    <div class="dtab ${ctx.infoTab===0?'on':''}" onclick="goInfoTab(0)"><div class="dw">📢 公告</div><div class="dd">${(state.notices||[]).length} 条</div></div>
-    <div class="dtab ${ctx.infoTab===1?'on':''}" onclick="goInfoTab(1)"><div class="dw">📖 贴士</div><div class="dd">${(state.tips||[]).length} 条</div></div>
+  const tabs = `<div class="info-tabs">
+    <button class="info-tab ${ctx.infoTab===0?'on':''}" onclick="goInfoTab(0)">公告 <small>${(state.notices||[]).length}条</small></button>
+    <button class="info-tab ${ctx.infoTab===1?'on':''}" onclick="goInfoTab(1)">贴士 <small>${(state.tips||[]).length}条</small></button>
   </div>`;
 
   // —— 公告内容 ——
@@ -1039,17 +1061,17 @@ function infoView(){
     else {
       let th='';
       tipOrder.forEach(({t,i})=>{
-        th+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">📌 ${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div>${_tipBody(t)}</div>`;
+        th+=`<div class="card"><div style="display:flex;justify-content:space-between;align-items:center"><h3 style="margin:0">${esc(t.title)}</h3><div><button class="mini" onclick="editTip(${i})">改</button> <button class="mini del" onclick="delTip(${i})">删</button></div></div>${_tipBody(t)}</div>`;
       });
       th+=`<button class="btn" onclick="addTip()">+ 新增贴士</button>`;
       tipHtml=th;
     }
   } else {
     if(!tipOrder.length) tipHtml=`<div class="empty-note">暂无贴士内容</div>`;
-    else tipHtml=`<div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`+tipOrder.map(({t})=>`<div class="card"><h3>📌 ${esc(t.title)}</h3>${_tipBody(t)}</div>`).join("");
+    else tipHtml=`<div class="hint">出行必看小贴士。建议出发前通读一遍。</div>`+tipOrder.map(({t})=>`<div class="card"><h3>${esc(t.title)}</h3>${_tipBody(t)}</div>`).join("");
   }
 
-  return tabs + (ctx.infoTab===0 ? noticeHtml : tipHtml);
+  return `<div class="info-page">${tabs}${ctx.infoTab===0 ? noticeHtml : tipHtml}</div>`;
 }
 function goInfoTab(i){ctx.infoTab=i;render();}
 function editNotice(idx){
@@ -1087,15 +1109,13 @@ function adminTable(){
     return `<tr>${tds}</tr>`;
   }).join("");
   const syncHint = SYNC_ENABLED ? "" : `<div class="hint">⚠️ 本小程序未配置同步后台，数据仅保存在本机。</div>`;
-  return `
-  <div class="adm-top">
-    <div class="stat"><div class="num">${total}</div><div class="lb">总人数</div></div>
-  </div>
-  <div style="margin-bottom:10px;display:flex;gap:8px;flex-wrap:wrap">
-    <button class="btn sm" onclick="editPerson(-1)">+ 新增人员</button>
-  </div>
-  ${syncHint}
-  <div class="tbl-wrap"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>`;
+  return `<div class="admin-page">
+    <div class="admin-summary"><div class="stat"><div class="num">${total}</div><div class="lb">总人数</div></div></div>
+    <div class="admin-section-title">成员管理</div>
+    <div class="admin-toolbar"><button class="btn" onclick="editPerson(-1)">新增人员</button></div>
+    ${syncHint}
+    <div class="tbl-wrap"><table><thead><tr>${head}</tr></thead><tbody>${rows}</tbody></table></div>
+  </div>`;
 }
 function delPerson(idx){
   confirmSheet('确定删除 '+(displayName(state.people[idx])||"该人员")+'？',()=>{state.people.splice(idx,1);persist();render();});
