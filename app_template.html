@@ -105,16 +105,47 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sheet textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;min-height:60px;font-family:inherit;margin-top:6px;box-sizing:border-box}
 .f-note{font-size:11px;color:#94a3b8;margin-top:3px}
 .sens-badge{font-size:10px;background:var(--redbg);color:var(--red);padding:1px 6px;border-radius:5px;margin-left:5px}
-/* schedule */
-.day{background:#ffffff;border:1px solid var(--line2);border-radius:20px;margin-bottom:15px;overflow:hidden;box-shadow:0 3px 20px rgba(90,159,212,.07),0 1px 4px rgba(0,0,0,.03)}
-.day .dh{background:linear-gradient(135deg,#5a9fd4,#7ab8e2);padding:13px 16px;font-weight:600;font-size:14px;color:#fff;border-bottom:none}
-.day .di{padding:12px 16px;border-bottom:1px solid var(--line2)}
-.day .di:last-child{border-bottom:none}
-.di .tt{display:flex;flex-direction:column;gap:2px}
-.di .sched-time{font-size:13px;color:var(--sub);font-weight:600;font-variant-numeric:tabular-nums;letter-spacing:.3px}
-.di .sched-act{font-size:14px;line-height:1.4;color:var(--ink)}
-.di .meta{font-size:12px;color:var(--sub);margin-top:3px}
-.di .tip{font-size:12px;color:var(--warn);background:var(--warnbg);padding:5px 8px;border-radius:7px;margin-top:6px}
+/* schedule · 旅行日程册 */
+.schedule-page{padding-bottom:4px}
+.route-summary{background:#fffdf8;border:1px solid #dfeaf1;border-radius:16px;padding:16px;margin-bottom:14px}
+.route-title{font-size:22px;line-height:1.25;color:#243b53;font-weight:700;letter-spacing:.1px}
+.route-subtitle{margin-top:6px;font-size:13px;line-height:1.55;color:#6b7f94}
+.route-toggle{display:inline-flex;align-items:center;margin-top:12px;padding:0;border:0;background:transparent;color:var(--brand);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
+.route-toggle::after{content:"›";margin-left:4px;font-size:16px;line-height:1}
+.route-drawer{margin:-3px 0 14px;padding:4px 15px 8px;background:#fff;border:1px solid #dfeaf1;border-radius:14px}
+.route-drawer-title{padding:10px 0 7px;font-size:12px;color:#6b7f94;font-weight:700}
+.route-stop{display:flex;gap:10px;padding:10px 0;border-top:1px solid #edf2f5;align-items:flex-start}
+.route-stop-day{display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;height:22px;border-radius:8px;background:#e3f0fb;color:#3776ae;font-size:11px;font-weight:700}
+.route-stop-main{flex:1;min-width:0;font-size:13px;line-height:1.45;color:#354b61}
+.route-stop-km{flex:0 0 auto;font-size:11px;color:#7b8fa1}
+.sched-tabs{display:flex;gap:8px;overflow-x:auto;margin:0 -2px 16px;padding:2px;-webkit-overflow-scrolling:touch}
+.sched-tab{display:flex;align-items:center;justify-content:center;gap:6px;min-width:74px;padding:10px 9px;border:1px solid #d9e4eb;border-radius:14px;background:#fff;color:#728394;font-size:12px;cursor:pointer;flex-shrink:0;transition:background .18s,color .18s,border-color .18s}
+.sched-tab .sched-day{font-size:14px;font-weight:700;color:#40556a}
+.sched-tab .sched-date{font-size:11px}
+.sched-tab.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.sched-tab.on .sched-day{color:#fff}
+.schedule-timeline{position:relative;margin:0;padding:0}
+.timeline-item{display:grid;grid-template-columns:48px 20px minmax(0,1fr);gap:9px;position:relative;min-height:78px}
+.timeline-time{padding-top:12px;font-size:12px;line-height:1;color:#57718a;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.timeline-rail{position:relative;display:flex;justify-content:center}
+.timeline-rail::before{content:"";position:absolute;top:0;bottom:0;width:1px;background:#cfe0eb}
+.timeline-item:first-child .timeline-rail::before{top:20px}
+.timeline-item:last-child .timeline-rail::before{bottom:calc(100% - 20px)}
+.timeline-dot{position:relative;z-index:1;width:11px;height:11px;margin-top:12px;border:2px solid #fff;border-radius:50%;background:#6aaee0;box-shadow:0 0 0 1px #b9d9ed}
+.timeline-item.kind-transport .timeline-dot{background:#6aaee0;box-shadow:0 0 0 1px #b9d9ed}
+.timeline-item.kind-gathering .timeline-dot{background:#68b992;box-shadow:0 0 0 1px #b9e0c8}
+.timeline-item.kind-meal .timeline-dot{background:#e7a34e;box-shadow:0 0 0 1px #f2d5a4}
+.timeline-item.kind-stay .timeline-dot{background:#998ac8;box-shadow:0 0 0 1px #d7d0ee}
+.timeline-item.kind-activity .timeline-dot{background:#7da6bd;box-shadow:0 0 0 1px #ccdde6}
+.timeline-card{min-width:0;margin-bottom:14px;padding:12px 13px;background:#fff;border:1px solid #dfeaf1;border-radius:14px}
+.timeline-event{font-size:15px;line-height:1.45;color:#294256;font-weight:700;word-break:break-word}
+.timeline-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
+.timeline-note{min-width:0;font-size:12px;line-height:1.4;color:#718397;word-break:break-word}
+.event-tag{display:inline-flex;align-items:center;flex:0 0 auto;padding:3px 8px;border-radius:999px;font-size:11px;line-height:1.2;font-weight:700}
+.event-tag.transport{background:#e3f0fb;color:#3776ae}.event-tag.gathering{background:#e4f7f1;color:#357e62}.event-tag.meal{background:#fdf3e3;color:#a76719}.event-tag.stay{background:#f0ecf9;color:#6f5da5}.event-tag.activity{background:#eef3f6;color:#607686}
+.timeline-admin-actions{display:flex;gap:6px;margin-top:9px}.timeline-admin-actions .mini{padding:3px 8px}
+.schedule-admin-add{margin:0 0 14px;padding-left:77px}.schedule-admin-add .btn,.schedule-add-day{margin:0;background:var(--brand);border-radius:12px;padding:10px;font-size:13px;box-shadow:none}.schedule-add-day{display:block;width:100%;margin-top:2px}
+.schedule-empty{padding:38px 18px;text-align:center;color:#7b8fa1;font-size:13px;background:#fff;border:1px solid #dfeaf1;border-radius:14px}
 /* notice */
 .nt{background:#ffffff;border:1px solid var(--line2);border-radius:18px;padding:15px 18px;margin-bottom:13px;box-shadow:0 3px 20px rgba(90,159,212,.07),0 1px 4px rgba(0,0,0,.03)}
 .nt .th{font-weight:600;display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink)}
@@ -716,35 +747,65 @@ function transIcon(trans){
   if(trans.includes('徒步')) return '🥾';
   return '🚗'; // 默认
 }
-function scheduleRow(it){
-  const icon = transIcon(it.trans);
-  return `<div class="di"><div class="tt"><span class="sched-time">${esc(it.start)}${it.end?'–'+esc(it.end):''}</span><span class="sched-act">${esc(it.act)}</span></div>${it.trans?`<div class="meta">${icon} ${esc(it.trans)}</div>`:""}</div>`;
+function compactScheduleDate(date){
+  const s=String(date||"");
+  const m=s.match(/(\d{1,2})月(\d{1,2})日?/);
+  return m ? String(m[1]).padStart(2,"0")+"."+String(m[2]).padStart(2,"0") : s;
 }
-function dayTabs(){
-  return `<div class="daytabs">`+state.schedule.map((d,i)=>
-    `<div class="dtab ${ctx.schedDay===i?'on':''}" onclick="goSchedDay(${i})"><div class="dw">${esc(d.week)}</div><div class="dd">${esc(d.date)}</div></div>`).join("")+`</div>`;
+function scheduleStory(day){
+  const copy={D1:"初到林芝",D2:"深入山林",D3:"漫游巴松措",D4:"满载返程"};
+  return copy[day.week] || "今日行程";
+}
+function scheduleRoute(day){
+  const found=(state.overview||[]).find(o=>o.day===day.week)||{};
+  return {route:found.route||day.title||"路线待定",km:found.km||""};
+}
+function scheduleEventType(it){
+  const text=((it.act||"")+" "+(it.trans||"")).toLowerCase();
+  if((it.trans||"") || /航班|机场|起飞|抵达|自驾|车辆|车程|接送/.test(text)) return "transport";
+  if(/午餐|晚餐|早餐|用餐|吃饭|茶/.test(text)) return "meal";
+  if(/入住|酒店|民宿|住宿|休息/.test(text)) return "stay";
+  if(/集合|接机|合影|签到|出发|团建/.test(text)) return "gathering";
+  return "activity";
+}
+function scheduleEventLabel(kind){return {transport:"交通",gathering:"集合",meal:"用餐",stay:"住宿",activity:"活动"}[kind]||"活动";}
+function scheduleTimelineItem(it,index,isAdmin){
+  const kind=scheduleEventType(it);
+  const note=[it.end?"至 "+it.end:"",it.trans||""].filter(Boolean).join(" · ");
+  const controls=isAdmin?`<div class="timeline-admin-actions"><button class="mini" onclick="editSchedItem(${ctx.schedDay},${index})">改</button><button class="mini del" onclick="delSchedItem(${ctx.schedDay},${index})">删</button></div>`:"";
+  return `<article class="timeline-item kind-${kind}">
+    <time class="timeline-time">${esc(it.start||"—")}</time>
+    <div class="timeline-rail" aria-hidden="true"><span class="timeline-dot"></span></div>
+    <div class="timeline-card"><div class="timeline-event">${esc(it.act||"待定行程")}</div>
+      <div class="timeline-foot"><span class="timeline-note">${esc(note||"当日行程")}</span><span class="event-tag ${kind}">${scheduleEventLabel(kind)}</span></div>${controls}
+    </div>
+  </article>`;
+}
+function scheduleTabs(){
+  return `<div class="sched-tabs" aria-label="行程日期切换">`+state.schedule.map((d,i)=>
+    `<button class="sched-tab ${ctx.schedDay===i?'on':''}" onclick="goSchedDay(${i})"><span class="sched-day">${esc(d.week)}</span><span class="sched-date">${esc(compactScheduleDate(d.date))}</span></button>`).join("")+`</div>`;
 }
 function goSchedDay(i){ctx.schedDay=i;render();}
+function toggleRouteOverview(){ctx.routeOverview=!ctx.routeOverview;render();}
+function scheduleRouteDrawer(){
+  const ov=state.overview||[];
+  if(!ctx.routeOverview || !ov.length) return "";
+  return `<section class="route-drawer" aria-label="全程路线"> <div class="route-drawer-title">D1—D4 全程路线</div>`+
+    ov.map(o=>`<div class="route-stop"><span class="route-stop-day">${esc(o.day)}</span><span class="route-stop-main">${esc(o.route)}</span><span class="route-stop-km">${esc(o.km)}</span></div>`).join("")+`</section>`;
+}
 function scheduleView(){
   const isAdmin=ctx.role==="admin";
-  const ov=(state.overview||[]);
-  const ovHtml = ov.length ? `<div class="card ov"><div class="ovh">🧭 行程概述 · 全程总览</div>`+
-    ov.map(o=>`<div class="ovr"><span class="ovd">${esc(o.day)}</span><span class="ovrt">${esc(o.route)}</span><span class="ovk">${esc(o.km)}</span></div>`).join("")+`</div>` : "";
-  // 防崩溃：行程为空或数据异常时给出友好提示，而非整页卡死
   if(!state.schedule || !state.schedule.length){
-    return ovHtml + `<div class="empty-note" style="padding:40px 20px">📭 暂无行程数据<br><span style="font-size:12px;color:#94a3b8">组织者可在后台「数据后台」手动添加，或重新生成时上传行程表。</span></div>` + tabbar();
+    return `<div class="schedule-empty">暂无行程数据<br><span style="font-size:12px">组织者可在数据后台补充行程。</span></div>`;
   }
   if(ctx.schedDay==null||ctx.schedDay>=state.schedule.length)ctx.schedDay=0;
   const d=state.schedule[ctx.schedDay];
-  if(!d || !d.items) return ovHtml + `<div class="empty-note">行程数据异常</div>` + tabbar();
-  const tabs=dayTabs();
-  if(isAdmin){
-    const items=d.items.map((it,i)=>`<div class="di"><div class="tt"><span class="sched-time">${esc(it.start)}${it.end?'–'+esc(it.end):''}</span><span class="sched-act">${esc(it.act)}</span></div>${it.trans?`<div class="meta">${transIcon(it.trans)} ${esc(it.trans)}</div>`:''}<div style="margin-top:6px"><button class="mini" onclick="editSchedItem(${ctx.schedDay},${i})">改</button> <button class="mini del" onclick="delSchedItem(${ctx.schedDay},${i})">删</button></div></div>`).join("");
-    const dayHtml=`<div class="day">${items}
-      <div style="padding:10px 14px"><button class="btn sm" onclick="addSchedItem(${ctx.schedDay})">+ 新增时段</button></div></div>`;
-    return ovHtml+tabs+dayHtml+`<button class="btn" onclick="editSchedDay(-1)">+ 新增一天行程</button>`;
-  }
-  return ovHtml+tabs+`<div class="day">${d.items.map(scheduleRow).join("")}</div>`;
+  if(!d || !d.items) return `<div class="schedule-empty">行程数据异常</div>`;
+  const r=scheduleRoute(d);
+  const routeBtn=(state.overview||[]).length?`<button class="route-toggle" onclick="toggleRouteOverview()">${ctx.routeOverview?'收起全程路线':'查看全程路线'}</button>`:"";
+  const timeline=`<section class="schedule-timeline" aria-label="${esc(d.week)} 当日时间线">${d.items.map((it,i)=>scheduleTimelineItem(it,i,isAdmin)).join("")}</section>`;
+  const adminControls=isAdmin?`<div class="schedule-admin-add"><button class="btn" onclick="addSchedItem(${ctx.schedDay})">新增时段</button></div><button class="btn schedule-add-day" onclick="editSchedDay(-1)">新增一天行程</button>`:"";
+  return `<div class="schedule-page"><section class="route-summary"><div class="route-title">${esc(d.week)} · ${scheduleStory(d)}</div><div class="route-subtitle">${esc(d.date)}｜${esc(r.route)}${r.km?'｜'+esc(r.km):''}</div>${routeBtn}</section>${scheduleRouteDrawer()}${scheduleTabs()}${timeline}${adminControls}</div>`;
 }
 function editSchedDay(di){
   const d = di<0?{date:'',week:'',title:'',tip:''}:state.schedule[di];
