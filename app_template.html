@@ -19,6 +19,11 @@
   --bg:#dcebf6;--bg-grad:linear-gradient(175deg,#d4ebf5 0%,#e0f0fa 40%,#eaf5fc 70%,#f5fafd 100%);
   --card:#ffffff;--ink:#2c3e50;--sub:#6b7f94;--line:#d4e3ef;--line2:#e2eff8;
   --red:#e05555;--redbg:#fdecea;--lock:#e3f0fb;
+  /* 林芝晴日 · 统一设计变量（逐页接入，不直接覆盖旧页面） */
+  --sun-atmosphere:#e9f9d9;--sun-surface:#ffffff;--sun-blue:#3c9cc7;--sun-blue-deep:#24789d;--sun-blue-soft:#dff1f7;
+  --sun-purple:#7e6bdd;--sun-purple-soft:#f0edff;--sun-pink:#f19abc;--sun-pink-soft:#fff0f6;--sun-green:#80c977;--sun-orange:#f1a06f;
+  --sun-text:#27352e;--sun-sub:#66766c;--sun-muted:#979d98;--sun-border:#e4e8e3;
+  --sun-radius-card:16px;--sun-radius-focus:22px;--sun-space:16px;--sun-border-thin:.5px solid var(--sun-border);
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
@@ -163,10 +168,10 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .sheet{background:#fff;width:100%;max-width:430px;max-height:88vh;overflow-y:auto;border-radius:22px 22px 0 0;padding:20px}
 .sheet h3{font-size:17px;margin-bottom:14px}
 .sheet .grpttl{font-size:12px;color:var(--brand);font-weight:700;margin:14px 0 6px}
-/* tabbar · 统一线性图标 */
-.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:.5px solid #e0e0e0;display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:none}
-.tab{flex:1;text-align:center;padding:8px 0 7px;font-size:11px;color:#888;cursor:pointer;transition:color .2s}
-.tab.on{color:#378add}
+/* tabbar · 林芝晴日统一线性图标 */
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:var(--sun-surface);border-top:var(--sun-border-thin);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:none}
+.tab{flex:1;text-align:center;padding:8px 0 7px;font-size:11px;color:var(--sun-muted);cursor:pointer;transition:color .2s}
+.tab.on{color:var(--sun-blue)}
 .tab .ic{width:24px;height:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1px;line-height:1}
 .tab .ic svg{width:24px;height:24px;display:block;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .empty-note{text-align:center;color:#94a3b8;font-size:13px;padding:30px}
@@ -207,25 +212,15 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .admin-page .admin-summary{display:flex;gap:12px;margin-bottom:16px}.admin-page .stat{min-width:112px;flex:0 0 112px;background:#fff;border:.5px solid #e0e0e0;border-radius:16px;padding:14px 16px;box-shadow:none;text-align:left}.admin-page .stat .num{font-size:24px;color:#378add}.admin-page .stat .lb{font-size:11px;color:#888;margin-top:2px}.admin-section-title{font-size:15px;color:#243b53;font-weight:700;margin:0 0 10px}.admin-toolbar{display:flex;gap:8px;margin-bottom:12px}.admin-toolbar .btn{margin:0;width:auto;padding:9px 14px;border-radius:12px;background:#378add;box-shadow:none}.admin-page .tbl-wrap{border:.5px solid #e0e0e0;border-radius:16px;box-shadow:none}.admin-page th{background:#e6f1fb;color:#185fa5}.admin-page tr:nth-child(even) td,.admin-page tr:nth-child(even) td.name-col{background:#fafcff}
 /* 行程页专属浅青柠绿头图：不影响其他页面 */
 .travel-hd.schedule-hd{height:194px;background:#e9f9d9;color:#27352e;padding:18px}.schedule-hd .travel-header-copy{gap:5px}.schedule-hd .t{font-size:12px;font-weight:500;color:#5c6f63}.schedule-hd .travel-subtitle{font-size:22px;line-height:1.25;font-weight:700;color:#27352e}.schedule-hd .schedule-header-meta{font-size:12px;line-height:1.4;color:#66766c}.schedule-hd .sw{background:#fff;border-color:#fff;color:#6651bd;padding:6px 10px}.schedule-hd .travel-hills{height:84px}.schedule-hd .header-sync{border-color:#fff;color:#24789d}.schedule-hd .travel-actions{align-items:flex-start}
-/* ===================== 我的页 · 高原旅行资料册 ===================== */
-.my-hd{position:relative;top:auto;height:184px;padding:22px 18px;background:#378add;align-items:flex-start;overflow:hidden;box-shadow:none}
-.my-hd .t,.my-hd .sw{position:relative;z-index:1}
-.my-hd .t{font-size:18px;font-weight:700;letter-spacing:.2px}
-.my-hd .sw{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);padding:5px 10px;font-size:12px}
-.my-hills{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:112px;pointer-events:none}
-.my-page{position:relative;z-index:21;margin-top:-70px;padding:0 18px 22px;background:transparent}
-.profile-home{padding-bottom:4px}
-.profile-card{position:relative;background:#fff;border:.5px solid #e0e0e0;border-radius:16px;padding:18px 16px;margin-bottom:22px;display:flex;align-items:center;gap:13px}
-.profile-avatar{width:50px;height:50px;flex:0 0 50px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#e6f1fb;color:#185fa5;font-size:19px;font-weight:700}
-.profile-copy{min-width:0;flex:1}.profile-name{font-size:20px;line-height:1.2;color:#243b53;font-weight:700;letter-spacing:.1px}.profile-dept{margin-top:4px;color:#888;font-size:12px;line-height:1.35}
-.profile-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.profile-chip{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;line-height:1.2}.profile-chip.vehicle{background:#e6f1fb;color:#185fa5}.profile-chip.game{background:#e1f5ee;color:#0f6e56}.profile-chip.default{background:#f0ecf9;color:#534ab7}
-.profile-sync{position:absolute;right:12px;top:12px;width:auto;height:auto;padding:4px 7px;border-radius:8px;background:#fff;border:.5px solid #dbe6ee;color:#378add;font-size:11px;box-shadow:none}
-.profile-section-title{font-size:15px;font-weight:700;color:#243b53;margin:0 0 10px}
-.profile-module{position:relative;overflow:hidden;background:#fff;border:.5px solid #e0e0e0;border-radius:16px;margin-bottom:16px;padding:20px 16px 10px}
-.profile-module::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0;background:#378add}.profile-module.stay::before{background:#1d9e75}
-.profile-module-title{font-size:15px;line-height:1.3;font-weight:700;color:#243b53;margin-bottom:6px}
-.profile-module .row{display:block;padding:11px 0;border-color:#edf0f2}.profile-module .row .k{display:block;color:#888;font-size:11px;font-weight:400;margin-bottom:4px}.profile-module .row .v{display:block;text-align:left;color:#445566;font-size:13px;font-weight:400;line-height:1.6;word-break:break-word}.profile-module .row .v.empty{color:#a9b1b9}.profile-module .flight-prefix{display:block;color:#888;font-size:11px;margin:0 0 2px}.profile-module .flight-seg{font-size:13px;line-height:1.6}.profile-module .hotel-mate{font-size:12px;color:#657786;margin-top:4px}
-.profile-edit{margin-top:2px;border-radius:14px;background:#378add;box-shadow:none}
+/* ===================== 我的页 · 林芝晴日资料册 ===================== */
+#app .my-hd{position:relative;top:auto;height:184px;padding:22px 18px;background:var(--sun-atmosphere);color:var(--sun-text);align-items:flex-start;overflow:hidden;box-shadow:none}
+.my-hd .t,.my-hd .sw{position:relative;z-index:1}.my-hd .t{font-size:18px;font-weight:700;letter-spacing:.2px;color:var(--sun-text)}.my-hd .sw{background:var(--sun-surface);border:var(--sun-border-thin);color:var(--sun-purple);padding:6px 10px;font-size:12px}
+.my-hills{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:112px;pointer-events:none}.my-page{position:relative;z-index:21;margin-top:-70px;padding:0 18px 22px;background:transparent}.profile-home{padding-bottom:4px}
+.profile-card{position:relative;background:var(--sun-surface);border:var(--sun-border-thin);border-radius:var(--sun-radius-card);padding:18px 16px;margin-bottom:22px;display:flex;align-items:center;gap:13px}.profile-avatar{width:50px;height:50px;flex:0 0 50px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--sun-blue-soft);color:var(--sun-blue-deep);font-size:19px;font-weight:700}
+.profile-copy{min-width:0;flex:1}.profile-name{font-size:20px;line-height:1.2;color:var(--sun-text);font-weight:700;letter-spacing:.1px}.profile-dept{margin-top:4px;color:var(--sun-sub);font-size:12px;line-height:1.35}.profile-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.profile-chip{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;line-height:1.2}.profile-chip.vehicle{background:var(--sun-blue-soft);color:var(--sun-blue-deep)}.profile-chip.game{background:var(--sun-purple-soft);color:#6651bd}.profile-chip.default{background:var(--sun-pink-soft);color:#a84970}
+.profile-sync{position:absolute;right:12px;top:12px;width:auto;height:auto;padding:4px 8px;border-radius:999px;background:var(--sun-surface);border:var(--sun-border-thin);color:var(--sun-blue-deep);font-size:11px;box-shadow:none}.profile-section-title{font-size:15px;font-weight:700;color:var(--sun-text);margin:0 0 10px}
+.profile-module{position:relative;overflow:hidden;background:var(--sun-surface);border:var(--sun-border-thin);border-radius:var(--sun-radius-card);margin-bottom:16px;padding:20px 16px 10px}.profile-module::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0;background:var(--sun-blue)}.profile-module.stay::before{background:var(--sun-pink)}.profile-module-title{font-size:15px;line-height:1.3;font-weight:700;color:var(--sun-text);margin-bottom:6px}
+.profile-module .row{display:block;padding:11px 0;border-color:var(--sun-border)}.profile-module .row .k{display:block;color:var(--sun-muted);font-size:11px;font-weight:400;margin-bottom:4px}.profile-module .row .v{display:block;text-align:left;color:var(--sun-sub);font-size:13px;font-weight:400;line-height:1.6;word-break:break-word}.profile-module .row .v.empty{color:var(--sun-muted)}.profile-module .flight-prefix{display:block;color:var(--sun-muted);font-size:11px;margin:0 0 2px}.profile-module .flight-seg{font-size:13px;line-height:1.6}.profile-module .hotel-mate{font-size:12px;color:var(--sun-sub);margin-top:4px}.profile-edit{margin-top:2px;border-radius:20px;background:var(--sun-blue);box-shadow:none}
 /* ===================== 天蓝童话 · 启动页动态背景 ===================== */
 .bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(175deg,#4a8ac4 0%,#6aaddd 35%,#8fc5ea 60%,#b8ddf0 100%)}
 /* 远山层（三层递进，品牌蓝色阶） */
@@ -505,7 +500,7 @@ function render(){
   const sw = `<span class="sw" onclick="switchRole()">${isAdmin?"切换为参与者":"切换身份"}</span>`;
   const gearBtn = "";
   const syncBtn = (isAdmin && SYNC_ENABLED) ? `<button class="header-sync" onclick="genSyncLink()">同步</button>` : "";
-  const myMountains=`<svg class="my-hills" viewBox="0 0 430 112" preserveAspectRatio="none" aria-hidden="true"><path d="M0 112V73l66-37 48 31 58-53 81 70 51-36 126 58v6Z" fill="#85b7eb"/><path d="M0 112V89l61-41 49 33 61-51 75 65 63-39 121 59v7Z" fill="#185fa5"/><path d="M0 112c54-17 103-8 152-19 55-13 104-19 278-3v22Z" fill="#fafbfc"/></svg>`;
+  const myMountains=`<svg class="my-hills" viewBox="0 0 430 112" preserveAspectRatio="none" aria-hidden="true"><circle cx="338" cy="27" r="16" fill="#ffe28a"/><path d="M0 112V73l66-37 48 31 58-53 81 70 51-36 126 58v6Z" fill="#b9d59f"/><path d="M0 112V89l61-41 49 33 61-51 75 65 63-39 121 59v7Z" fill="#80c977"/><path d="M0 112c54-17 103-8 152-19 55-13 104-19 278-3v22Z" fill="#f1a06f"/></svg>`;
   const travelMountains=`<svg class="travel-hills" viewBox="0 0 430 68" preserveAspectRatio="none" aria-hidden="true"><path d="M0 68V47l66-26 44 20 58-34 75 45 64-28 123 39v5Z" fill="#85b7eb"/><path d="M0 68V57l63-27 45 19 62-32 70 41 67-28 123 34v4Z" fill="#185fa5"/><path d="M0 68c74-12 139-3 203-12 63-9 125-8 227 3v9Z" fill="#fafbfc"/></svg>`;
   const scheduleMountains=`<svg class="travel-hills" viewBox="0 0 430 84" preserveAspectRatio="none" aria-hidden="true"><path d="M0 84V58l67-30 48 25 59-38 80 48 58-29 118 45v5Z" fill="#b9d59f"/><path d="M0 84V67l66-29 48 22 60-34 75 42 61-25 120 36v5Z" fill="#80c977"/><path d="M0 84c74-13 135-5 198-14 72-10 147-6 232 4v10Z" fill="#f1a06f"/></svg>`;
   const scheduleMeta=activeSchedule?`${activeSchedule.date} · ${activeSchedule.week}${activeRoute.km?' · '+activeRoute.km:''}`:"行程已安排";
