@@ -28,47 +28,25 @@
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;background:var(--bg);color:var(--ink);font-size:15px;line-height:1.55}
 #app{max-width:430px;margin:0 auto;min-height:100vh;background:var(--bg-grad);position:relative;z-index:1;padding-bottom:64px}
-/* splash：高原旅行手帐首页 + 身份选择页 */
-.splash{position:fixed;inset:0;background:#6aaddd;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;z-index:50;padding:30px}
-.splash h1{font-size:26px;margin-bottom:6px;text-align:center}
-.splash p{opacity:.9;margin-bottom:40px;font-size:14px;text-align:center}
-.role-btn{width:260px;background:rgba(255,255,255,.22);border:1px solid rgba(255,255,255,.5);color:#fff;padding:16px;border-radius:20px;font-size:17px;margin-bottom:14px;cursor:pointer;transition:.2s;box-shadow:0 4px 16px rgba(0,0,0,.08)}
-.role-btn:active{transform:scale(.97);background:rgba(255,255,255,.32)}
-.role-btn b{display:block;font-size:18px}
-.role-btn span{font-size:12px;opacity:.8}
-.pwd{width:260px;margin-top:6px}
-.pwd input{width:100%;padding:12px;border-radius:12px;border:none;font-size:15px;text-align:center}
-.pick-search{width:100%;padding:11px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.4);background:rgba(255,255,255,.12);color:#fff;font-size:14px;box-sizing:border-box}
-.pick-search::placeholder{color:rgba(255,255,255,.65)}
-.pick-list{max-height:230px;overflow:auto;margin-top:8px;background:rgba(255,255,255,.1);border-radius:12px;padding:4px}
-.mem-pick{padding:11px 14px;color:#fff;font-size:15px;border-radius:8px;cursor:pointer;transition:.12s}
-.mem-pick:active{background:rgba(255,255,255,.25)}
-.mem-pick.empty{opacity:.6;cursor:default;text-align:center;font-size:13px}
-/* 首页：上方山景只负责氛围，下方暖白面板只负责行动 */
-.home-splash{display:block;overflow-y:auto;padding:0;background:var(--bg);color:var(--ink)}
-.home-hero{height:36vh;min-height:252px;max-height:330px;position:relative;overflow:hidden;background:#5a9fd4;color:#fff;padding:28px 22px}
-.hero-kicker{font-size:13px;letter-spacing:.5px;opacity:.94;margin-bottom:10px}
-.hero-title{font-size:26px;line-height:1.25;font-weight:700;letter-spacing:.2px}
-.hero-meta{display:inline-flex;align-items:center;margin-top:16px;padding:5px 11px;border-radius:999px;background:#eaf3de;color:#27500a;font-size:12px;font-weight:600}
-.hero-mountains{position:absolute;left:0;right:0;bottom:0;width:100%;height:48%;display:block}
-.home-panel{position:relative;margin-top:-28px;min-height:calc(64vh + 28px);padding:28px 20px 34px;background:#fffdf8;border-radius:28px 28px 0 0}
-.home-eyebrow{display:inline-block;margin-bottom:10px;padding:4px 11px;border-radius:999px;background:#eaf3de;color:#3b6d11;font-size:12px;font-weight:700}
-.home-heading{font-size:23px;line-height:1.3;color:#243b53;font-weight:700;margin-bottom:21px;letter-spacing:.1px}
-.identity-card{display:flex;align-items:center;width:100%;padding:16px;border:1px solid transparent;border-radius:18px;text-align:left;font:inherit;cursor:pointer;margin-bottom:12px;transition:transform .15s,background .15s}
-.identity-card:active{transform:scale(.985)}
-.identity-card.member{background:#e1f5ee;border-color:#9fe1cb}
-.identity-card.organizer{background:#faeeda;border-color:#fac775}
-.identity-icon{width:44px;height:44px;display:flex;align-items:center;justify-content:center;flex:0 0 44px;border-radius:50%;margin-right:12px}
-.member .identity-icon{background:#5dcaa5;color:#fff}
-.organizer .identity-icon{background:#ef9f27;color:#fff}
-.identity-copy{min-width:0;flex:1}
-.identity-title{display:block;font-size:18px;line-height:1.25;color:#243b53;font-weight:700}
-.identity-desc{display:block;margin-top:3px;font-size:12px;line-height:1.45;color:#567067}
-.organizer .identity-desc{color:#7d6431}
-.identity-arrow{margin-left:10px;font-size:26px;line-height:1;color:#0f6e56;font-weight:400}
-.organizer .identity-arrow{color:#854f0b}
-.home-footer{margin-top:22px;color:#77889a;font-size:12px;text-align:center}
-.inline-choice{margin:-2px 0 12px}.inline-member-picker{padding:13px 14px;border-radius:16px;background:#f5fbf9;border:1px solid #cdeadd}.inline-choice-label{font-size:12px;color:#3b6d5b;margin-bottom:8px}.home-splash .pick-search{width:100%;padding:11px 13px;border-radius:12px;border:1px solid #b8dfcc;background:#fff;color:var(--ink);font-size:14px;box-sizing:border-box}.home-splash .pick-search::placeholder{color:#8da99d}.home-splash .pick-list{max-height:190px;overflow:auto;margin-top:8px;background:#fff;border:1px solid #d9eee3;border-radius:12px;padding:2px}.home-splash .mem-pick{padding:10px 12px;color:#315247;font-size:14px;border-radius:8px;cursor:pointer}.home-splash .mem-pick:active{background:#e1f5ee}.home-splash .mem-pick.empty{color:#789086;text-align:center;font-size:13px}.home-splash #pwdbox .pwd{width:100%;margin:0 0 12px}.home-splash #pwdbox .pwd input{border:1px solid #f2c985;background:#fffaf0}.home-splash #pwdbox .role-btn{width:100%;background:#ef9f27;border-color:#ef9f27;margin:10px 0 0;color:#fff;box-shadow:none}.home-splash #pwdbox .role-btn b{font-size:15px}
+/* 入口页：手绘笑脸同行证 */
+.splash{position:fixed;inset:0;z-index:50;overflow-y:auto;background:#fff;color:var(--sun-text);padding:0;-webkit-overflow-scrolling:touch}
+.ticket-splash{min-height:100dvh;background:#fff}
+.ticket-poster{position:relative;height:43svh;min-height:288px;max-height:410px;overflow:hidden;padding:calc(max(16px, env(safe-area-inset-top)) + 4px) 20px 0;background:var(--sun-atmosphere)}
+.ticket-brand{position:relative;z-index:2;font-size:12px;font-weight:700;letter-spacing:.2px;color:var(--sun-blue-deep)}
+.ticket-poster-title{position:relative;z-index:2;margin-top:18px;font-size:26px;line-height:1.22;letter-spacing:.2px;color:var(--sun-text);font-weight:700}
+.ticket-poster-sub{position:relative;z-index:2;margin-top:7px;font-size:12px;color:var(--sun-sub)}
+.ticket-art{position:absolute;z-index:1;left:0;right:0;bottom:0;width:100%;height:63%;pointer-events:none}
+.ticket-count{position:absolute;z-index:3;bottom:18px;left:20px;display:inline-flex;align-items:center;padding:5px 10px;border-radius:999px;background:var(--sun-blue);color:#fff;font-size:11px;font-weight:700;letter-spacing:.1px}
+.ticket-panel{position:relative;z-index:5;min-height:calc(57svh + 24px);margin-top:-24px;padding:28px 20px calc(28px + env(safe-area-inset-bottom));border-radius:28px 28px 0 0;background:#fff}
+.ticket-panel-kicker{font-size:12px;color:var(--sun-blue-deep);font-weight:700;letter-spacing:.2px}.ticket-panel-title{margin:5px 0 20px;font-size:22px;line-height:1.28;color:var(--sun-text);font-weight:700}
+.ticket-entry{position:relative;display:grid;grid-template-columns:minmax(0,1fr) 82px;min-height:128px;width:100%;margin:0 0 14px;padding:16px 0 16px 16px;border:var(--sun-border-thin);border-radius:20px;text-align:left;cursor:pointer;outline:none;transition:transform .15s,filter .15s;user-select:none;-webkit-user-select:none}
+.ticket-entry:active{transform:scale(.98);filter:brightness(.98)}.ticket-entry:focus-visible{outline:2px solid var(--sun-blue);outline-offset:3px}
+.ticket-entry.member-ticket{background:var(--sun-blue-soft);transform:rotate(-1.1deg)}.ticket-entry.organizer-ticket{background:var(--sun-purple-soft);transform:rotate(1.1deg)}.ticket-entry.member-ticket:active{transform:rotate(-1.1deg) scale(.98)}.ticket-entry.organizer-ticket:active{transform:rotate(1.1deg) scale(.98)}
+.ticket-main{display:flex;flex-direction:column;justify-content:center;min-width:0;padding-right:12px}.ticket-role{font-size:18px;line-height:1.25;font-weight:700;color:var(--sun-text)}.ticket-desc{margin-top:5px;font-size:12px;line-height:1.45;color:var(--sun-sub)}.ticket-cta{display:inline-flex;align-items:center;justify-content:center;align-self:flex-start;margin-top:13px;padding:7px 12px;border-radius:999px;color:#fff;font-size:12px;font-weight:700}.member-ticket .ticket-cta{background:var(--sun-blue)}.organizer-ticket .ticket-cta{background:var(--sun-purple)}
+.ticket-stub{position:relative;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;border-left:1.5px dashed rgba(39,53,46,.28);color:var(--sun-blue-deep)}.organizer-ticket .ticket-stub{color:var(--sun-purple)}.ticket-stub-date{font-size:12px;font-weight:700}.ticket-stub-city{font-size:10px;letter-spacing:1px;font-weight:700}.ticket-smile{width:31px;height:31px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}.ticket-foot{margin:7px 0 0;color:var(--sun-muted);font-size:11px;text-align:center}
+.inline-choice{margin:-2px 0 14px}.ticket-splash .inline-member-picker{padding:14px;border:var(--sun-border-thin);border-radius:16px;background:#fff}.ticket-splash .inline-choice-label{font-size:12px;color:var(--sun-sub);margin-bottom:9px}.ticket-splash .pick-search{width:100%;padding:11px 13px;border-radius:12px;border:var(--sun-border-thin);background:#fff;color:var(--sun-text);font-size:14px;box-sizing:border-box}.ticket-splash .pick-search::placeholder{color:var(--sun-muted)}.ticket-splash .pick-list{max-height:190px;overflow:auto;margin-top:8px;background:#fff;border:var(--sun-border-thin);border-radius:12px;padding:2px}.ticket-splash .mem-pick{padding:10px 12px;color:var(--sun-text);font-size:14px;border-radius:8px}.ticket-splash .mem-pick:active{background:var(--sun-blue-soft)}.ticket-splash .mem-pick.empty{color:var(--sun-muted);text-align:center;font-size:13px}.ticket-splash #pwdbox .pwd{width:100%;margin:0 0 14px}.ticket-splash #pwdbox .pwd input{border:var(--sun-border-thin);background:#fff;padding:12px;border-radius:12px;color:var(--sun-text);font-size:14px;text-align:left}.ticket-splash #pwdbox .role-btn{width:100%;margin:10px 0 0;padding:11px;border:0;border-radius:999px;background:var(--sun-purple);color:#fff;box-shadow:none;text-align:center}.ticket-splash #pwdbox .role-btn b{font-size:14px}.ticket-splash #pwdbox .role-btn:active{transform:scale(.98)}
+@media (max-height:640px){.ticket-poster{height:40svh;min-height:265px}.ticket-poster-title{margin-top:12px;font-size:24px}.ticket-art{height:60%}.ticket-panel{padding-top:24px}.ticket-panel-title{margin-bottom:15px}.ticket-entry{min-height:114px;margin-bottom:11px;padding-top:13px;padding-bottom:13px}.ticket-cta{margin-top:9px}}
+@media (prefers-reduced-motion:reduce){.ticket-entry{transition:none}}
 /* header */
 .hd{position:sticky;top:0;background:linear-gradient(135deg,#5a9fd4,#7ab8e2);color:#fff;padding:15px 16px;display:flex;align-items:center;justify-content:space-between;z-index:20;box-shadow:0 2px 14px rgba(90,159,212,.22)}
 .hd .t{font-size:18px;font-weight:600;letter-spacing:.3px}
@@ -377,38 +355,74 @@ function valOf(p,k){return (p&&p[k]!=null)?String(p[k]):"";}
 
 /* ============== SPLASH ============== */
 function renderSplash(){
-  app.style.background='var(--bg)';
-  app.classList.remove('entered','schedule-shell');
+  app.style.background='#fff';
+  app.classList.remove('entered','schedule-shell','group-shell','info-shell','admin-shell');
   const bg=document.querySelector('.bg-layer'); if(bg) bg.style.display='none';
+  const partnerCount=(state.people&&state.people.length)||0;
+  const posterDate=EVENT_SUBTITLE || '11.08—11.11';
   app.innerHTML = `
-  <div class="splash home-splash">
-    <section class="home-hero" aria-label="林芝团建山景">
-      <div class="hero-kicker">${esc(EVENT_TITLE)}</div>
-      <div class="hero-title">一起出发，去山里</div>
-      <div class="hero-meta">${esc(EVENT_SUBTITLE)}</div>
-      <svg class="hero-mountains" viewBox="0 0 430 160" preserveAspectRatio="none" aria-hidden="true">
-        <path d="M0 160V96L77 42l54 47 69-76 90 94 61-57 79 49v1Z" fill="#85b7eb"/>
-        <path d="M0 160V125l66-50 51 42 76-67 88 86 57-44 92 61v7Z" fill="#378add"/>
-        <path d="M0 160V142l79-45 61 43 72-54 76 61 72-36 70 47v2Z" fill="#185fa5"/>
-        <path d="M193 50l18 23 19-23-19-25Z" fill="#e6f1fb"/>
+  <div class="splash ticket-splash">
+    <section class="ticket-poster" aria-label="林芝团建旅行海报">
+      <div class="ticket-brand">${esc(EVENT_TITLE)}</div>
+      <h1 class="ticket-poster-title">同行的人，出发吧</h1>
+      <p class="ticket-poster-sub">${esc(posterDate)} · 重庆 → 林芝</p>
+      <svg class="ticket-art" viewBox="0 0 430 250" preserveAspectRatio="none" aria-hidden="true">
+        <path d="M36 169 C84 138 108 155 140 128 C174 99 212 120 246 89 C285 54 329 88 395 48" fill="none" stroke="#3C9CC7" stroke-width="3" stroke-linecap="round"/>
+        <path d="M18 211 L72 151 L115 192 L165 125 L217 193 L270 149 L323 195 L375 158 L418 203" fill="none" stroke="#24789D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <path d="M165 125 L180 148 L194 137" fill="none" stroke="#24789D" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="353" cy="75" r="23" fill="#FFE28A" stroke="#27352E" stroke-width="1.5"/>
+        <path d="M338 76 Q343 71 348 76 M358 76 Q363 71 368 76 M342 86 Q353 94 364 86" fill="none" stroke="#27352E" stroke-width="1.5" stroke-linecap="round"/>
+        <g stroke-linecap="round" stroke-linejoin="round">
+          <g transform="translate(82 126)">
+            <circle cx="0" cy="0" r="21" fill="#fff" stroke="#27352E" stroke-width="1.6"/>
+            <path d="M-12 -8 Q0 -22 13 -8" fill="none" stroke="#3C9CC7" stroke-width="3"/>
+            <path d="M-10 2 Q-6 -2 -2 2 M3 2 Q7 -2 11 2 M-8 10 Q0 18 9 10" fill="none" stroke="#27352E" stroke-width="1.7"/>
+            <circle cx="-13" cy="8" r="3" fill="#F19ABC" stroke="none"/><circle cx="13" cy="8" r="3" fill="#F19ABC" stroke="none"/>
+            <path d="M-14 22 Q0 10 15 23 L19 57 L-19 57 Z" fill="#DFF1F7" stroke="#3C9CC7" stroke-width="1.6"/>
+            <path d="M-17 33 L-31 45 M17 33 L30 43" fill="none" stroke="#3C9CC7" stroke-width="2.5"/>
+          </g>
+          <g transform="translate(210 100)">
+            <circle cx="0" cy="0" r="24" fill="#fff" stroke="#27352E" stroke-width="1.6"/>
+            <path d="M-16 -9 Q0 -25 16 -9" fill="none" stroke="#7E6BDD" stroke-width="3"/>
+            <path d="M-11 3 Q-7 -2 -3 3 M4 3 Q8 -2 12 3 M-10 12 Q0 22 11 12" fill="none" stroke="#27352E" stroke-width="1.8"/>
+            <circle cx="-15" cy="10" r="3.5" fill="#F19ABC" stroke="none"/><circle cx="15" cy="10" r="3.5" fill="#F19ABC" stroke="none"/>
+            <path d="M-17 25 Q0 13 18 25 L22 66 L-22 66 Z" fill="#F0EDFF" stroke="#7E6BDD" stroke-width="1.6"/>
+            <path d="M-19 37 L-35 28 M19 37 L35 27" fill="none" stroke="#7E6BDD" stroke-width="2.5"/>
+          </g>
+          <g transform="translate(314 136)">
+            <circle cx="0" cy="0" r="20" fill="#fff" stroke="#27352E" stroke-width="1.6"/>
+            <path d="M-13 -8 Q0 -21 13 -8" fill="none" stroke="#F19ABC" stroke-width="3"/>
+            <path d="M-10 2 Q-6 -2 -2 2 M3 2 Q7 -2 11 2 M-8 10 Q0 18 9 10" fill="none" stroke="#27352E" stroke-width="1.7"/>
+            <circle cx="-12" cy="8" r="3" fill="#F19ABC" stroke="none"/><circle cx="12" cy="8" r="3" fill="#F19ABC" stroke="none"/>
+            <path d="M-14 22 Q0 10 15 22 L18 55 L-18 55 Z" fill="#FFF0F6" stroke="#F19ABC" stroke-width="1.6"/>
+            <path d="M-15 32 L-27 24 M15 32 L27 24" fill="none" stroke="#F19ABC" stroke-width="2.5"/>
+          </g>
+        </g>
       </svg>
+      <div class="ticket-count">${partnerCount} 位伙伴 · 开心出发</div>
     </section>
-    <main class="home-panel">
-      <div class="home-eyebrow">选择你的团建身份</div>
-      <h1 class="home-heading">今天，从这里出发</h1>
-      <button class="identity-card member" onclick="chooseMember()" aria-label="我是参与者，查看行程、任务与同行伙伴">
-        <span class="identity-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18c2-5 5-7 8-7s6 2 8 7"/><path d="M8 8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/><path d="M16 8.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/></svg></span>
-        <span class="identity-copy"><span class="identity-title">我是参与者</span><span class="identity-desc">查看行程、任务与同行伙伴</span></span><span class="identity-arrow" aria-hidden="true">›</span>
-      </button>
+    <main class="ticket-panel">
+      <div class="ticket-panel-kicker">领取你的同行证</div>
+      <h2 class="ticket-panel-title">选好身份，进入旅程</h2>
+      <div class="ticket-entry member-ticket" role="button" tabindex="0" onclick="ticketTap('member')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();ticketTap('member')}" aria-label="我是参与者，领取并进入">
+        <div class="ticket-main"><div class="ticket-role">我是参与者</div><div class="ticket-desc">看行程 · 做任务 · 找伙伴</div><span class="ticket-cta">领取并进入</span></div>
+        <div class="ticket-stub"><span class="ticket-stub-date">11.08</span><span class="ticket-stub-city">LINZHI</span><svg class="ticket-smile" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M10 14 Q12 11 14 14 M18 14 Q20 11 22 14 M10 20 Q16 25 22 20"/></svg></div>
+      </div>
       <div id="memberbox" class="inline-choice"></div>
-      <button class="identity-card organizer" onclick="askAdmin()" aria-label="我是组织者，管理行程、签到与重要信息">
-        <span class="identity-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 5h10v15H6V7"/><path d="M8 5V3h6v2"/><path d="M9 10h6M9 14h6"/><path d="m4 12 1.5 1.5L8 11"/></svg></span>
-        <span class="identity-copy"><span class="identity-title">我是组织者</span><span class="identity-desc">管理行程、签到与重要信息</span></span><span class="identity-arrow" aria-hidden="true">›</span>
-      </button>
+      <div class="ticket-entry organizer-ticket" role="button" tabindex="0" onclick="ticketTap('admin')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();ticketTap('admin')}" aria-label="我是组织者，领取并进入">
+        <div class="ticket-main"><div class="ticket-role">我是组织者</div><div class="ticket-desc">管行程 · 做签到 · 发提醒</div><span class="ticket-cta">领取并进入</span></div>
+        <div class="ticket-stub"><span class="ticket-stub-date">11.08</span><span class="ticket-stub-city">LINZHI</span><svg class="ticket-smile" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12"/><path d="M10 14 Q12 11 14 14 M18 14 Q20 11 22 14 M10 20 Q16 25 22 20"/></svg></div>
+      </div>
       <div id="pwdbox"></div>
-      <p class="home-footer">把日程交给助手，把风景留给大家</p>
+      <p class="ticket-foot">和伙伴一起，把旅程走成记忆</p>
     </main>
   </div>`;
+}
+function ticketTap(role){
+  if(ctx._entryTap) return;
+  ctx._entryTap=true;
+  setTimeout(()=>{ctx._entryTap=false;},260);
+  if(role==='member') chooseMember(); else askAdmin();
 }
 function chooseMember(){
   const box=$("#memberbox");
