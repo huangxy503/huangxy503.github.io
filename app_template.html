@@ -201,6 +201,9 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .profile-sync{position:absolute;right:12px;top:12px;width:auto;height:auto;padding:4px 8px;border-radius:999px;background:var(--sun-surface);border:var(--sun-border-thin);color:var(--sun-blue-deep);font-size:11px;box-shadow:none}.profile-section-title{font-size:15px;font-weight:700;color:var(--sun-text);margin:0 0 10px}
 .profile-module{position:relative;overflow:hidden;background:var(--sun-surface);border:var(--sun-border-thin);border-radius:var(--sun-radius-card);margin-bottom:16px;padding:20px 16px 10px}.profile-module.flight{background:var(--sun-surface);border-color:var(--sun-border)}.profile-module.stay{background:var(--sun-pink-soft);border-color:#f8d5e1}.profile-module::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0;background:var(--sun-blue)}.profile-module.stay::before{background:var(--sun-pink)}.profile-module-title{font-size:15px;line-height:1.3;font-weight:700;color:var(--sun-text);margin-bottom:6px}
 .profile-module .row{display:block;padding:11px 0;border-color:var(--sun-border)}.profile-module .row .k{display:block;color:var(--sun-muted);font-size:11px;font-weight:400;margin-bottom:4px}.profile-module .row .v{display:block;text-align:left;color:var(--sun-sub);font-size:13px;font-weight:400;line-height:1.6;word-break:break-word}.profile-module .row .v.empty{color:var(--sun-muted)}.profile-module .flight-prefix{display:block;color:var(--sun-muted);font-size:11px;margin:0 0 2px}.profile-module .flight-seg{font-size:13px;line-height:1.6}.profile-module .hotel-mate{font-size:12px;color:var(--sun-sub);margin-top:4px}.profile-edit{margin-top:2px;border-radius:20px;background:var(--sun-blue);box-shadow:none}
+/* 编辑资料页：沿用晴日山景、细边框和蓝色主操作，不改变表单字段或保存逻辑 */
+#app.edit-shell .edit-hd{height:132px;background:var(--sun-atmosphere);color:var(--sun-text);padding:18px}.edit-hd .t{font-size:19px;color:var(--sun-text)}.edit-hd .travel-subtitle{font-size:12px;color:var(--sun-sub)}.edit-hd .sw{background:var(--sun-surface);border:var(--sun-border-thin);color:var(--sun-purple);padding:6px 10px}.edit-hd .travel-hills{height:72px}.edit-hd .travel-actions{align-items:flex-start}
+.edit-profile-form{padding-bottom:4px}.edit-profile-form .hint{margin:0 0 16px;padding:13px 14px;border:1px solid #c9e5ef;border-radius:14px;background:var(--sun-blue-soft);color:var(--sun-blue-deep);font-size:12px;line-height:1.55}.edit-profile-form .card{margin:0 0 14px;padding:17px 16px;border:var(--sun-border-thin);border-radius:var(--sun-radius-card);box-shadow:none;background:var(--sun-surface)}.edit-profile-form .card h3{margin:0 0 14px}.edit-profile-form .mod-tag{padding:4px 9px;border-radius:999px;background:var(--sun-purple-soft);color:#6651bd;font-size:12px}.edit-profile-form .f-item{margin-bottom:14px}.edit-profile-form .f-item:last-child{margin-bottom:0}.edit-profile-form .f-item label{margin-bottom:6px;color:var(--sun-sub);font-size:12px;font-weight:600}.edit-profile-form .f-item input,.edit-profile-form .f-item select{height:46px;padding:10px 12px;border:1px solid #c9e5ef;border-radius:12px;background:#fff;color:var(--sun-text);font:inherit;font-size:14px;box-shadow:none}.edit-profile-form .f-item input:focus,.edit-profile-form .f-item select:focus{outline:2px solid rgba(60,156,199,.18);border-color:var(--sun-blue)}.edit-profile-form .sens-badge{background:var(--sun-pink-soft);color:#a84970;border-radius:999px}.edit-profile-form .btn{margin-top:2px;border-radius:20px;background:var(--sun-blue);box-shadow:none}.edit-profile-form .btn.ghost{margin-top:0;border:1px solid var(--sun-blue);background:#fff;color:var(--sun-blue-deep)}.edit-profile-form .edit-actions-gap{height:10px}
 /* ===================== 天蓝童话 · 启动页动态背景 ===================== */
 .bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(175deg,#4a8ac4 0%,#6aaddd 35%,#8fc5ea 60%,#b8ddf0 100%)}
 /* 远山层（三层递进，品牌蓝色阶） */
@@ -376,19 +379,19 @@ function renderSplash(){
         <path d="M347 99 Q358 108 369 99" fill="none" stroke="#27352E" stroke-width="1.8" stroke-linecap="round"/>
 
         <g stroke="#27352E" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <g transform="translate(96 182)">
+          <g transform="translate(96 150)">
             <circle cx="0" cy="-14" r="20" fill="#fff"/>
             <rect x="-22" y="2" width="44" height="28" rx="14" fill="#fff"/>
             <path d="M-8 -13 Q-5 -16 -2 -13 M2 -13 Q5 -16 8 -13 M-9 -2 Q0 6 9 -2" fill="none" stroke="#3C9CC7" stroke-width="2.2"/>
           </g>
 
-          <g transform="translate(214 172)">
+          <g transform="translate(214 140)">
             <circle cx="0" cy="-14" r="20" fill="#fff"/>
             <rect x="-22" y="2" width="44" height="28" rx="14" fill="#fff"/>
             <path d="M-8 -13 Q-5 -16 -2 -13 M2 -13 Q5 -16 8 -13 M-9 -2 Q0 6 9 -2" fill="none" stroke="#7E6BDD" stroke-width="2.2"/>
           </g>
 
-          <g transform="translate(320 190)">
+          <g transform="translate(320 158)">
             <circle cx="0" cy="-14" r="20" fill="#fff"/>
             <rect x="-22" y="2" width="44" height="28" rx="14" fill="#fff"/>
             <path d="M-8 -13 Q-5 -16 -2 -13 M2 -13 Q5 -16 8 -13 M-9 -2 Q0 6 9 -2" fill="none" stroke="#F19ABC" stroke-width="2.2"/>
@@ -498,10 +501,12 @@ function render(){
   const isSchedule=ctx.tab==="schedule";
   const isGroups=ctx.tab==="groups";
   const isInfo=ctx.tab==="notice";
+  const isEdit=ctx.tab==="edit";
   const isAdminWork=isAdmin && (ctx.tab==="admin"||ctx.tab==="home");
   app.classList.toggle('schedule-shell',isSchedule);
   app.classList.toggle('group-shell',isGroups);
   app.classList.toggle('info-shell',isInfo);
+  app.classList.toggle('edit-shell',isEdit);
   app.classList.toggle('admin-shell',isAdminWork);
   const activeSchedule=(state.schedule&&state.schedule.length)?state.schedule[Math.min(ctx.schedDay||0,state.schedule.length-1)]:null;
   const activeRoute=activeSchedule?scheduleRoute(activeSchedule):{km:""};
@@ -524,8 +529,10 @@ function render(){
   const scheduleMeta=activeSchedule?`${activeSchedule.date} · ${activeSchedule.week}${activeRoute.km?' · '+activeRoute.km:''}`:"行程已安排";
   const header=isMemberHome
     ? `<div class="hd my-hd"><span class="t">${title}</span>${sw}${gearBtn}${myMountains}</div>`
-    : isSchedule
-      ? `<div class="hd travel-hd schedule-hd"><div class="travel-header-copy"><span class="t">${esc(EVENT_TITLE)}</span><span class="travel-subtitle">今天，向山野出发</span><span class="schedule-header-meta">${esc(scheduleMeta)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${scheduleMountains}</div>`
+    : isEdit
+      ? `<div class="hd travel-hd edit-hd"><div class="travel-header-copy"><span class="t">${esc(top.title)}</span><span class="travel-subtitle">${esc(top.sub)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${groupMountains}</div>`
+      : isSchedule
+        ? `<div class="hd travel-hd schedule-hd"><div class="travel-header-copy"><span class="t">${esc(EVENT_TITLE)}</span><span class="travel-subtitle">今天，向山野出发</span><span class="schedule-header-meta">${esc(scheduleMeta)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${scheduleMountains}</div>`
       : isGroups
         ? `<div class="hd travel-hd group-hd"><div class="travel-header-copy"><span class="t">${esc(top.title)}</span><span class="travel-subtitle">${esc(top.sub)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${groupMountains}</div>`
         : isInfo
@@ -633,7 +640,7 @@ function editForm(){
       && !["手机号","身份证号"].includes(f.key));
   const bymod={};
   editable.forEach(f=>{(bymod[f.module]=bymod[f.module]||[]).push(f);});
-  let html=`<div class="hint">这里只放「你自己要填」的字段；${GF()&&GF().length?GF().join(" / ")+" 等":""}由组织者统一安排，你在上一页只能看。</div>`;
+  let html=`<div class="edit-profile-form"><div class="hint">这里只放「你自己要填」的字段；${GF()&&GF().length?GF().join(" / ")+" 等":""}由组织者统一安排，你在上一页只能看。</div>`;
   Object.keys(bymod).forEach(m=>{
     html+=`<div class="card"><h3><span class="mod-tag">${esc(m)}</span></h3>`;
     bymod[m].forEach(f=>{
@@ -651,8 +658,8 @@ function editForm(){
     html+=`</div>`;
   });
   html+=`<button class="btn" onclick="saveEdit()">保存</button>
-         <div style="height:8px"></div>
-         <button class="btn ghost" onclick="go('home')">返回</button>`;
+         <div class="edit-actions-gap"></div>
+         <button class="btn ghost" onclick="go('home')">返回</button></div>`;
   return html;
 }
 function saveEdit(){
