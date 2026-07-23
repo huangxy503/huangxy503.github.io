@@ -191,12 +191,12 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .sheet{background:#fff;width:100%;max-width:430px;max-height:88vh;overflow-y:auto;border-radius:22px 22px 0 0;padding:20px}
 .sheet h3{font-size:17px;margin-bottom:14px}
 .sheet .grpttl{font-size:12px;color:var(--brand);font-weight:700;margin:14px 0 6px}
-/* tabbar */
-.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:linear-gradient(180deg,#f0f7fc,#ffffff);border-top:1px solid var(--line2);display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:0 -2px 14px rgba(90,159,212,.08)}
-.tab{flex:1;text-align:center;padding:9px 0 8px;font-size:11px;color:#8a97a8;cursor:pointer;transition:color .2s}
-.tab.on{color:var(--brand)}
-.tab.on .ic{transform:translateY(-1px)}
-.tab .ic{font-size:19px;display:block;line-height:1.2;transition:transform .2s}
+/* tabbar · 统一线性图标 */
+.tabbar{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:.5px solid #e0e0e0;display:flex;z-index:30;padding-bottom:env(safe-area-inset-bottom);box-shadow:none}
+.tab{flex:1;text-align:center;padding:8px 0 7px;font-size:11px;color:#888;cursor:pointer;transition:color .2s}
+.tab.on{color:#378add}
+.tab .ic{width:24px;height:24px;display:flex;align-items:center;justify-content:center;margin:0 auto 1px;line-height:1}
+.tab .ic svg{width:24px;height:24px;display:block;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}
 .empty-note{text-align:center;color:#94a3b8;font-size:13px;padding:30px}
 .hint{font-size:12px;color:var(--sub);background:#fffef8;border:1px solid #f5e6c8;padding:10px 14px;border-radius:14px;margin-bottom:13px}
 /* tips */
@@ -224,6 +224,25 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .dtab .dd{font-size:10px;opacity:.8;margin-top:2px}
 .sec-h{font-size:18px;font-weight:700;margin:20px 0 12px;color:var(--ink);display:flex;align-items:center;gap:6px}
 .sec-div{height:1px;background:var(--line);margin:22px 0 2px}
+/* ===================== 我的页 · 高原旅行资料册 ===================== */
+.my-hd{position:relative;top:auto;height:184px;padding:22px 18px;background:#378add;align-items:flex-start;overflow:hidden;box-shadow:none}
+.my-hd .t,.my-hd .sw{position:relative;z-index:1}
+.my-hd .t{font-size:18px;font-weight:700;letter-spacing:.2px}
+.my-hd .sw{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.4);padding:5px 10px;font-size:12px}
+.my-hills{position:absolute;left:0;right:0;bottom:-1px;width:100%;height:112px;pointer-events:none}
+.my-page{position:relative;z-index:3;margin-top:-70px;padding:0 18px 22px;background:transparent}
+.profile-home{padding-bottom:4px}
+.profile-card{position:relative;background:#fff;border:.5px solid #e0e0e0;border-radius:16px;padding:18px 16px;margin-bottom:22px;display:flex;align-items:center;gap:13px}
+.profile-avatar{width:50px;height:50px;flex:0 0 50px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:#e6f1fb;color:#185fa5;font-size:19px;font-weight:700}
+.profile-copy{min-width:0;flex:1}.profile-name{font-size:20px;line-height:1.2;color:#243b53;font-weight:700;letter-spacing:.1px}.profile-dept{margin-top:4px;color:#888;font-size:12px;line-height:1.35}
+.profile-chips{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}.profile-chip{display:inline-flex;align-items:center;padding:4px 8px;border-radius:999px;font-size:11px;font-weight:700;line-height:1.2}.profile-chip.vehicle{background:#e6f1fb;color:#185fa5}.profile-chip.game{background:#e1f5ee;color:#0f6e56}.profile-chip.default{background:#f0ecf9;color:#534ab7}
+.profile-sync{position:absolute;right:12px;top:12px;width:auto;height:auto;padding:4px 7px;border-radius:8px;background:#fff;border:.5px solid #dbe6ee;color:#378add;font-size:11px;box-shadow:none}
+.profile-section-title{font-size:15px;font-weight:700;color:#243b53;margin:0 0 10px}
+.profile-module{position:relative;overflow:hidden;background:#fff;border:.5px solid #e0e0e0;border-radius:16px;margin-bottom:16px;padding:20px 16px 10px}
+.profile-module::before{content:"";position:absolute;top:0;left:0;right:0;height:4px;border-radius:16px 16px 0 0;background:#378add}.profile-module.stay::before{background:#1d9e75}
+.profile-module-title{font-size:15px;line-height:1.3;font-weight:700;color:#243b53;margin-bottom:6px}
+.profile-module .row{display:block;padding:11px 0;border-color:#edf0f2}.profile-module .row .k{display:block;color:#888;font-size:11px;font-weight:400;margin-bottom:4px}.profile-module .row .v{display:block;text-align:left;color:#445566;font-size:13px;font-weight:400;line-height:1.6;word-break:break-word}.profile-module .row .v.empty{color:#a9b1b9}.profile-module .flight-prefix{display:block;color:#888;font-size:11px;margin:0 0 2px}.profile-module .flight-seg{font-size:13px;line-height:1.6}.profile-module .hotel-mate{font-size:12px;color:#657786;margin-top:4px}
+.profile-edit{margin-top:2px;border-radius:14px;background:#378add;box-shadow:none}
 /* ===================== 天蓝童话 · 启动页动态背景 ===================== */
 .bg-layer{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none;background:linear-gradient(175deg,#4a8ac4 0%,#6aaddd 35%,#8fc5ea 60%,#b8ddf0 100%)}
 /* 远山层（三层递进，品牌蓝色阶） */
@@ -483,21 +502,33 @@ function render(){
   else if(ctx.tab==="admin") body = adminTable();
   else if(ctx.tab==="me") body = memberHome();
 
+  const isMemberHome=!isAdmin && (ctx.tab==="home"||ctx.tab==="me");
   const sw = `<span class="sw" onclick="switchRole()">${isAdmin?"切换为参与者":"切换身份"}</span>`;
   const gearBtn = "";
-  const syncBtn = (isAdmin && SYNC_ENABLED) ? `<button class="btn sm ghost" style="margin-left:auto;font-size:12px;padding:4px 10px;white-space:nowrap" onclick="genSyncLink()">📤 同步</button>` : "";
-  app.innerHTML = `<div class="hd"><span class="t">${title}</span>${sw}${gearBtn}${syncBtn}</div><div class="page">${body}</div>${tabbar()}`;
+  const syncBtn = (isAdmin && SYNC_ENABLED) ? `<button class="btn sm ghost" style="margin-left:auto;font-size:12px;padding:4px 10px;white-space:nowrap" onclick="genSyncLink()">同步</button>` : "";
+  const mountains=isMemberHome?`<svg class="my-hills" viewBox="0 0 430 112" preserveAspectRatio="none" aria-hidden="true"><path d="M0 112V73l66-37 48 31 58-53 81 70 51-36 126 58v6Z" fill="#85b7eb"/><path d="M0 112V89l61-41 49 33 61-51 75 65 63-39 121 59v7Z" fill="#185fa5"/><path d="M0 112c54-17 103-8 152-19 55-13 104-19 278-3v22Z" fill="#fafbfc"/></svg>`:"";
+  app.innerHTML = `<div class="hd ${isMemberHome?'my-hd':''}"><span class="t">${title}</span>${sw}${gearBtn}${syncBtn}${mountains}</div><div class="page ${isMemberHome?'my-page':''}">${body}</div>${tabbar()}`;
 }
 function switchRole(){ctx.role=null;ctx.tab="home";render();}
 function go(t){ctx.tab=t;render();}
 
+function tabIcon(k){
+  const icons={
+    home:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>`,
+    schedule:`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="5" width="16" height="15" rx="2"/><path d="M8 3v4M16 3v4M7 10h10"/></svg>`,
+    groups:`<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8" r="3"/><path d="M5 20c1-4 3.5-6 7-6s6 2 7 6"/></svg>`,
+    notice:`<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4h10v16H7zM10 8h4M10 12h4M10 16h3"/></svg>`,
+    admin:`<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="6" height="6" rx="1"/><rect x="14" y="4" width="6" height="6" rx="1"/><rect x="4" y="14" width="6" height="6" rx="1"/><rect x="14" y="14" width="6" height="6" rx="1"/></svg>`
+  };
+  return icons[k]||icons.home;
+}
 function tabbar(){
   const isAdmin=ctx.role==="admin";
   const tabs = isAdmin
-   ? [["admin","📋","数据后台"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","资讯"]]
-   : [["home","🏠","我的"],["schedule","🗓","行程"],["groups","🚗","分组"],["notice","📢","资讯"]];
-  return `<div class="tabbar">`+tabs.map(([k,ic,lb])=>
-    `<div class="tab ${ctx.tab===k||(k==='home'&&ctx.tab==='edit')?'on':''}" onclick="go('${k}')"><span class="ic">${ic}</span>${lb}</div>`
+   ? [["admin","数据后台"],["schedule","行程"],["groups","分组"],["notice","资讯"]]
+   : [["home","我的"],["schedule","行程"],["groups","分组"],["notice","资讯"]];
+  return `<div class="tabbar">`+tabs.map(([k,lb])=>
+    `<div class="tab ${ctx.tab===k||(k==='home'&&ctx.tab==='edit')?'on':''}" onclick="go('${k}')"><span class="ic">${tabIcon(k)}</span>${lb}</div>`
   ).join("")+`</div>`;
 }
 
@@ -508,8 +539,8 @@ function memberHome(){
   state.fields.filter(f=>f.key!=="身份证姓名").forEach(f=>{(modules[f.module]=modules[f.module]||[]).push(f);});
   // 参与者首页只展示与其切身相关的模块，按固定顺序；其余（人员基础/自驾出行/特殊关怀）不显示
   const MEMBER_MODULE_ORDER = ["机酒预订","住宿安排"];
-  const MODULE_ACCENT = {"机酒预订":"green","住宿安排":"coral"};
-  const HIDE_KEYS = ["手机号","身份证号"];   // 机酒预订里的敏感字段：参与者端不展示
+  const MODULE_STYLE = {"机酒预订":"flight","住宿安排":"stay"};
+  const HIDE_KEYS = ["手机号","身份证号"];   // 保持既有隐私规则：参与者端不展示敏感证件信息
   let cards=MEMBER_MODULE_ORDER.filter(m=>modules[m]).map(m=>{
 
   /* ── 特殊排版：机酒航班 ── */
@@ -525,32 +556,17 @@ function memberHome(){
     return `<div class="row row-flight"><span class="k">${esc(label)}</span><span class="v"><span class="flight-prefix">${esc(prefix)}</span> ${flightHtml}</span></div>`;
   }
 
-  /* ── 特殊排版：住宿（去label日期、去值内冗余日期、酒店与室友分行）── */
-  function renderHotelRow(rawLabel, rawVal){
-    // label 去掉末尾日期括号：如「重庆住宿(11.7)」→「重庆住宿」
-    const label=rawLabel.replace(/[\(（].*$/,"").trim();
+  /* ── 住宿：保留原始字段全文，不再清洗日期、房号或室友信息 ── */
+  function renderHotelRow(label, rawVal){
     const v=String(rawVal||"").trim();
     if(!v) return `<div class="row row-hotel"><span class="k">${esc(label)}</span><span class="v empty">待定</span></div>`;
-    // 用 indexOf 提取室友（避免脆弱的 unicode 正则）
-    let mate="", body=v;
-    const mi=v.indexOf("室友");
-    if(mi>=0){
-      let after=v.slice(mi+2).replace(/^[\s：:]+/,"");   // 去「室友」后的冒号/空格
-      const stops=["）",")","。"];
-      let end=after.length;
-      stops.forEach(s=>{ const i=after.indexOf(s); if(i>=0 && i<end) end=i; });
-      mate=after.slice(0,end).trim();
-      body=v.slice(0,mi).replace(/[\(（]\s*$/,"").trim();
-    }
-    const cleanBody=body.replace(/\s*\d+号\s*/g," ").replace(/\s{2,}/g," ").trim();
-    const mateHtml=mate?`<div class="hotel-mate">👤 室友：${esc(mate)}</div>`:"";
-    return `<div class="row row-hotel"><span class="k">${esc(label)}</span><span class="v">${esc(cleanBody)}${mateHtml}</span></div>`;
+    return `<div class="row row-hotel"><span class="k">${esc(label)}</span><span class="v">${esc(v)}</span></div>`;
   }
 
     const rows=modules[m].filter(f=>!(m==="机酒预订"&&HIDE_KEYS.includes(f.key))).map(f=>{
       let v=valOf(me,f.key);
       if(f.sensitive){ v = (f.key.indexOf("手机")>=0||f.key.indexOf("电话")>=0)?maskPhone(v):(v?"已加密·仅组织者可见":""); }
-      const lock = f.editor==="admin" ? `<span class="lockicon">🔒只读</span>` : "";
+      const lock = f.editor==="admin" ? `<span class="lockicon">只读</span>` : "";
       const sens = f.sensitive ? `<span class="sens-badge">脱敏</span>`:"";
 
       /* 特殊字段走专用排版 */
@@ -560,22 +576,26 @@ function memberHome(){
       const shown = v ? esc(v) : "待定";
       return `<div class="row"><span class="k">${esc(f.label)}${lock}${sens}</span><span class="v ${v?'':'empty'}">${shown}</span></div>`;
     }).join("");
-    return `<div class="card accent-${MODULE_ACCENT[m]||'blue'}"><h3><span class="mod-tag">${esc(m)}</span></h3>${rows}</div>`;
+    return `<section class="profile-module ${MODULE_STYLE[m]||'flight'}"><h3 class="profile-module-title">${esc(m)}</h3>${rows}</section>`;
   }).join("");
 
-  const chips=(CHIP_FIELDS||[]).filter(k=>valOf(me,k)).map(k=>`<span class="chip">${esc(k)}: ${esc(valOf(me,k))}</span>`).join("");
+  const chips=(CHIP_FIELDS||[]).filter(k=>valOf(me,k)).map(k=>{
+    const cls=k==="车号"?"vehicle":(k==="游戏分组"?"game":"default");
+    return `<span class="profile-chip ${cls}">${esc(k)} · ${esc(valOf(me,k))}</span>`;
+  }).join("");
+  const name=displayName(me);
+  const avatar=(name||"同").trim().slice(0,1);
 
-  return `
-  <div class="card" style="position:relative;overflow:hidden">
-    ${SYNC_ENABLED?`<button class="sync-mini-btn" onclick="manualResync()" title="同步最新数据">🔄</button>`:""}
-    <div style="font-size:12px;color:var(--brand);font-weight:700;letter-spacing:.5px;margin-bottom:4px;display:flex;align-items:center;gap:4px">✦ ${esc(EVENT_TITLE)}</div>
-    <div class="big-name">${esc(displayName(me))}</div>
-    ${subLine(me)?`<div class="dept">${esc(subLine(me))}</div>`:`<div style="height:8px"></div>`}
-    ${chips?`<div class="chips">${chips}</div>`:""}
-  </div>
-  ${cards ? `<div style="font-size:13px;font-weight:600;color:var(--ink);margin:16px 0 8px;display:flex;align-items:center;gap:6px"><span style="width:3px;height:14px;background:var(--brand);border-radius:2px"></span>快捷模块</div>` : ""}
-  ${cards}
-  <button class="btn" onclick="go('edit')">✏️ 编辑我的资料</button>`;
+  return `<div class="profile-home">
+    <section class="profile-card">
+      ${SYNC_ENABLED?`<button class="profile-sync" onclick="manualResync()" title="同步最新数据">同步</button>`:""}
+      <div class="profile-avatar">${esc(avatar)}</div>
+      <div class="profile-copy"><div class="profile-name">${esc(name)}</div>${subLine(me)?`<div class="profile-dept">${esc(subLine(me))}</div>`:""}${chips?`<div class="profile-chips">${chips}</div>`:""}</div>
+    </section>
+    ${cards ? `<div class="profile-section-title">我的行程信息</div>` : ""}
+    ${cards}
+    <button class="btn profile-edit" onclick="go('edit')">编辑我的资料</button>
+  </div>`;
 }
 
 /* ============== MEMBER: 编辑表单 ============== */
