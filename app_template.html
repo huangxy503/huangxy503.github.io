@@ -105,47 +105,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei
 .sheet textarea{width:100%;padding:11px;border:1px solid var(--line);border-radius:10px;font-size:15px;background:#fff;min-height:60px;font-family:inherit;margin-top:6px;box-sizing:border-box}
 .f-note{font-size:11px;color:#94a3b8;margin-top:3px}
 .sens-badge{font-size:10px;background:var(--redbg);color:var(--red);padding:1px 6px;border-radius:5px;margin-left:5px}
-/* schedule · 旅行日程册 */
-.schedule-page{padding-bottom:4px}
-.route-summary{background:#fffdf8;border:1px solid #dfeaf1;border-radius:16px;padding:16px;margin-bottom:14px}
-.route-title{font-size:22px;line-height:1.25;color:#243b53;font-weight:700;letter-spacing:.1px}
-.route-subtitle{margin-top:6px;font-size:13px;line-height:1.55;color:#6b7f94}
-.route-toggle{display:inline-flex;align-items:center;margin-top:12px;padding:0;border:0;background:transparent;color:var(--brand);font:inherit;font-size:12px;font-weight:700;cursor:pointer}
-.route-toggle::after{content:"›";margin-left:4px;font-size:16px;line-height:1}
-.route-drawer{margin:-3px 0 14px;padding:4px 15px 8px;background:#fff;border:1px solid #dfeaf1;border-radius:14px}
-.route-drawer-title{padding:10px 0 7px;font-size:12px;color:#6b7f94;font-weight:700}
-.route-stop{display:flex;gap:10px;padding:10px 0;border-top:1px solid #edf2f5;align-items:flex-start}
-.route-stop-day{display:inline-flex;align-items:center;justify-content:center;flex:0 0 28px;height:22px;border-radius:8px;background:#e3f0fb;color:#3776ae;font-size:11px;font-weight:700}
-.route-stop-main{flex:1;min-width:0;font-size:13px;line-height:1.45;color:#354b61}
-.route-stop-km{flex:0 0 auto;font-size:11px;color:#7b8fa1}
-.sched-tabs{display:flex;gap:8px;overflow-x:auto;margin:0 -2px 16px;padding:2px;-webkit-overflow-scrolling:touch}
-.sched-tab{display:flex;align-items:center;justify-content:center;gap:6px;min-width:74px;padding:10px 9px;border:1px solid #d9e4eb;border-radius:14px;background:#fff;color:#728394;font-size:12px;cursor:pointer;flex-shrink:0;transition:background .18s,color .18s,border-color .18s}
-.sched-tab .sched-day{font-size:14px;font-weight:700;color:#40556a}
-.sched-tab .sched-date{font-size:11px}
-.sched-tab.on{background:var(--brand);border-color:var(--brand);color:#fff}
-.sched-tab.on .sched-day{color:#fff}
-.schedule-timeline{position:relative;margin:0;padding:0}
-.timeline-item{display:grid;grid-template-columns:48px 20px minmax(0,1fr);gap:9px;position:relative;min-height:78px}
-.timeline-time{padding-top:12px;font-size:12px;line-height:1;color:#57718a;font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
-.timeline-rail{position:relative;display:flex;justify-content:center}
-.timeline-rail::before{content:"";position:absolute;top:0;bottom:0;width:1px;background:#cfe0eb}
-.timeline-item:first-child .timeline-rail::before{top:20px}
-.timeline-item:last-child .timeline-rail::before{bottom:calc(100% - 20px)}
-.timeline-dot{position:relative;z-index:1;width:11px;height:11px;margin-top:12px;border:2px solid #fff;border-radius:50%;background:#6aaee0;box-shadow:0 0 0 1px #b9d9ed}
-.timeline-item.kind-transport .timeline-dot{background:#6aaee0;box-shadow:0 0 0 1px #b9d9ed}
-.timeline-item.kind-gathering .timeline-dot{background:#68b992;box-shadow:0 0 0 1px #b9e0c8}
-.timeline-item.kind-meal .timeline-dot{background:#e7a34e;box-shadow:0 0 0 1px #f2d5a4}
-.timeline-item.kind-stay .timeline-dot{background:#998ac8;box-shadow:0 0 0 1px #d7d0ee}
-.timeline-item.kind-activity .timeline-dot{background:#7da6bd;box-shadow:0 0 0 1px #ccdde6}
-.timeline-card{min-width:0;margin-bottom:14px;padding:12px 13px;background:#fff;border:1px solid #dfeaf1;border-radius:14px}
-.timeline-event{font-size:15px;line-height:1.45;color:#294256;font-weight:700;word-break:break-word}
-.timeline-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}
-.timeline-note{min-width:0;font-size:12px;line-height:1.4;color:#718397;word-break:break-word}
-.event-tag{display:inline-flex;align-items:center;flex:0 0 auto;padding:3px 8px;border-radius:999px;font-size:11px;line-height:1.2;font-weight:700}
-.event-tag.transport{background:#e3f0fb;color:#3776ae}.event-tag.gathering{background:#e4f7f1;color:#357e62}.event-tag.meal{background:#fdf3e3;color:#a76719}.event-tag.stay{background:#f0ecf9;color:#6f5da5}.event-tag.activity{background:#eef3f6;color:#607686}
-.timeline-admin-actions{display:flex;gap:6px;margin-top:9px}.timeline-admin-actions .mini{padding:3px 8px}
-.schedule-admin-add{margin:0 0 14px;padding-left:77px}.schedule-admin-add .btn,.schedule-add-day{margin:0;background:var(--brand);border-radius:12px;padding:10px;font-size:13px;box-shadow:none}.schedule-add-day{display:block;width:100%;margin-top:2px}
-.schedule-empty{padding:38px 18px;text-align:center;color:#7b8fa1;font-size:13px;background:#fff;border:1px solid #dfeaf1;border-radius:14px}
+/* schedule · 林芝晴日明亮协调版（仅行程页） */
+.schedule-page{--sch-blue:#3c9cc7;--sch-blue-deep:#24789d;--sch-blue-soft:#dff1f7;--sch-purple:#7e6bdd;--sch-purple-soft:#f0edff;--sch-pink:#f19abc;--sch-pink-soft:#fff0f6;--sch-green:#80c977;--sch-green-soft:#e6f7dc;--sch-orange:#f1a06f;--sch-text:#27352e;--sch-sub:#66766c;--sch-muted:#979d98;--sch-border:#e4e8e3;padding-bottom:4px;color:var(--sch-text)}
+.schedule-page .route-summary{position:relative;overflow:hidden;margin:-54px 0 16px;min-height:144px;padding:18px;border:.5px solid var(--sch-border);border-radius:22px;background:#cdebf5}
+.route-mountains{position:absolute;inset:auto 0 0;width:100%;height:100%;pointer-events:none}.route-copy{position:relative;z-index:1;max-width:73%;padding:14px 16px;border-radius:18px;background:#fff}
+.route-title{font-size:15px;line-height:1.3;color:var(--sch-text);font-weight:700;letter-spacing:.1px}.route-subtitle{margin-top:6px;font-size:11px;line-height:1.5;color:var(--sch-sub)}.route-km{display:inline-flex;margin-top:10px;padding:3px 8px;border-radius:999px;background:#fff0e8;color:#b15d30;font-size:11px;font-weight:700}
+.route-toggle{position:absolute;right:18px;bottom:16px;z-index:2;display:inline-flex;align-items:center;padding:0;border:0;background:transparent;color:var(--sch-blue-deep);font:inherit;font-size:11px;font-weight:700;cursor:pointer}.route-toggle::after{content:"›";margin-left:4px;font-size:16px;line-height:1}
+.route-drawer{margin:-2px 0 16px;padding:5px 15px 9px;background:#fff;border:.5px solid var(--sch-border);border-radius:16px}.route-drawer-title{padding:10px 0 7px;font-size:12px;color:var(--sch-sub);font-weight:700}.route-stop{display:flex;gap:10px;padding:10px 0;border-top:.5px solid var(--sch-border);align-items:flex-start}.route-stop-day{display:inline-flex;align-items:center;justify-content:center;flex:0 0 30px;height:23px;border-radius:9px;background:var(--sch-blue-soft);color:var(--sch-blue-deep);font-size:11px;font-weight:700}.route-stop-main{flex:1;min-width:0;font-size:12px;line-height:1.45;color:var(--sch-text)}.route-stop-km{flex:0 0 auto;font-size:11px;color:var(--sch-muted)}
+.sched-tabs{display:flex;gap:8px;overflow-x:auto;margin:0 -2px 18px;padding:2px;-webkit-overflow-scrolling:touch}.sched-tab{display:flex;align-items:center;justify-content:center;gap:5px;min-width:76px;padding:10px 8px;border:.5px solid var(--sch-border);border-radius:14px;background:#fff;color:var(--sch-sub);font-size:11px;cursor:pointer;flex-shrink:0;transition:background .18s,color .18s,border-color .18s}.sched-tab .sched-day{font-size:13px;font-weight:700;color:var(--sch-text)}.sched-tab .sched-date{font-size:11px}.sched-tab.on{background:var(--sch-blue);border-color:var(--sch-blue);color:#fff}.sched-tab.on .sched-day{color:#fff}
+.schedule-section-head{display:flex;align-items:center;justify-content:space-between;margin:0 0 12px}.schedule-section-head h2{margin:0;font-size:15px;line-height:1.3;color:var(--sch-text);font-weight:700}.schedule-section-link{border:0;background:transparent;color:var(--sch-blue-deep);font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+.schedule-timeline{position:relative;margin:0;padding:0}.timeline-item{display:grid;grid-template-columns:48px 20px minmax(0,1fr);gap:9px;position:relative;min-height:80px}.timeline-time{padding-top:12px;font-size:11px;line-height:1;color:var(--sch-sub);font-weight:700;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}.timeline-rail{position:relative;display:flex;justify-content:center}.timeline-rail::before{content:"";position:absolute;top:0;bottom:0;width:1px;background:#d8ded9}.timeline-item:first-child .timeline-rail::before{top:20px}.timeline-item:last-child .timeline-rail::before{bottom:calc(100% - 20px)}.timeline-dot{position:relative;z-index:1;width:11px;height:11px;margin-top:12px;border:2px solid #fff;border-radius:50%;background:var(--sch-green);box-shadow:0 0 0 1px #b8dcb4}.timeline-item.kind-transport .timeline-dot{background:var(--sch-blue);box-shadow:0 0 0 1px #a9dbea}.timeline-item.kind-gathering .timeline-dot{background:var(--sch-purple);box-shadow:0 0 0 1px #c7bdf4}.timeline-item.kind-meal .timeline-dot,.timeline-item.kind-stay .timeline-dot{background:var(--sch-pink);box-shadow:0 0 0 1px #f7c8d9}.timeline-item.kind-activity .timeline-dot{background:var(--sch-green);box-shadow:0 0 0 1px #b8dcb4}
+.timeline-card{min-width:0;margin-bottom:14px;padding:12px 13px;background:#fff;border:.5px solid var(--sch-border);border-radius:16px}.timeline-event{font-size:13px;line-height:1.45;color:var(--sch-text);font-weight:700;word-break:break-word}.timeline-foot{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:8px}.timeline-note{min-width:0;font-size:11px;line-height:1.4;color:var(--sch-sub);word-break:break-word}.event-tag{display:inline-flex;align-items:center;flex:0 0 auto;padding:3px 8px;border-radius:999px;font-size:11px;line-height:1.2;font-weight:700}.event-tag.transport{background:var(--sch-blue-soft);color:var(--sch-blue-deep)}.event-tag.gathering{background:var(--sch-purple-soft);color:#6651bd}.event-tag.meal,.event-tag.stay{background:var(--sch-pink-soft);color:#a84970}.event-tag.activity{background:var(--sch-green-soft);color:#427c3e}
+.schedule-reminder{display:flex;align-items:flex-start;gap:10px;margin:0 0 16px;padding:13px 14px;border-radius:16px;background:var(--sch-blue-soft);color:var(--sch-blue-deep)}.schedule-reminder-mark{width:24px;height:24px;flex:0 0 24px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:var(--sch-blue);color:#fff;font-size:13px;font-weight:700}.schedule-reminder strong{display:block;font-size:12px;margin-bottom:2px}.schedule-reminder span{display:block;font-size:11px;line-height:1.5;color:#4e7585}
+.timeline-admin-actions{display:flex;gap:6px;margin-top:9px}.timeline-admin-actions .mini{padding:3px 8px}.schedule-admin-add{margin:0 0 14px;padding-left:77px}.schedule-admin-add .btn,.schedule-add-day{margin:0;background:var(--sch-blue);border-radius:20px;padding:10px;font-size:13px;box-shadow:none}.schedule-add-day{display:block;width:100%;margin-top:2px}.schedule-empty{padding:38px 18px;text-align:center;color:var(--sch-muted);font-size:13px;background:#fff;border:.5px solid var(--sch-border);border-radius:16px}
+#app.schedule-shell .tab.on{color:var(--sch-blue)}
 /* notice */
 .nt{background:#ffffff;border:1px solid var(--line2);border-radius:18px;padding:15px 18px;margin-bottom:13px;box-shadow:0 3px 20px rgba(90,159,212,.07),0 1px 4px rgba(0,0,0,.03)}
 .nt .th{font-weight:600;display:flex;align-items:center;gap:6px;font-size:14px;color:var(--ink)}
@@ -233,6 +206,8 @@ tr:nth-child(even) td.name-col{background:#f7fafd}
 .info-page .info-tabs{display:flex;gap:8px;margin:0 0 16px}.info-tab{flex:1;padding:10px 12px;border:1px solid #dce6ec;border-radius:14px;background:#fff;color:#718397;font-size:13px;text-align:center;cursor:pointer}.info-tab small{font-size:11px}.info-tab.on{background:#378add;border-color:#378add;color:#fff}.info-page .nt,.info-page .card{border:.5px solid #e0e0e0;border-radius:16px;box-shadow:none}.info-page .nt{padding:16px;margin-bottom:14px}.info-page .card{padding:16px;margin-bottom:14px}.info-page .card h3{font-size:15px}.info-page .hint{background:#fffdf8;border-color:#f0e3c8}
 /* 组织者：旅行工作台 */
 .admin-page .admin-summary{display:flex;gap:12px;margin-bottom:16px}.admin-page .stat{min-width:112px;flex:0 0 112px;background:#fff;border:.5px solid #e0e0e0;border-radius:16px;padding:14px 16px;box-shadow:none;text-align:left}.admin-page .stat .num{font-size:24px;color:#378add}.admin-page .stat .lb{font-size:11px;color:#888;margin-top:2px}.admin-section-title{font-size:15px;color:#243b53;font-weight:700;margin:0 0 10px}.admin-toolbar{display:flex;gap:8px;margin-bottom:12px}.admin-toolbar .btn{margin:0;width:auto;padding:9px 14px;border-radius:12px;background:#378add;box-shadow:none}.admin-page .tbl-wrap{border:.5px solid #e0e0e0;border-radius:16px;box-shadow:none}.admin-page th{background:#e6f1fb;color:#185fa5}.admin-page tr:nth-child(even) td,.admin-page tr:nth-child(even) td.name-col{background:#fafcff}
+/* 行程页专属浅青柠绿头图：不影响其他页面 */
+.travel-hd.schedule-hd{height:214px;background:#e9f9d9;color:#27352e;padding:18px}.schedule-hd .travel-header-copy{gap:5px}.schedule-hd .t{font-size:12px;font-weight:500;color:#5c6f63}.schedule-hd .travel-subtitle{font-size:22px;line-height:1.25;font-weight:700;color:#27352e}.schedule-hd .schedule-header-meta{font-size:12px;line-height:1.4;color:#66766c}.schedule-hd .sw{background:#fff;border-color:#fff;color:#6651bd;padding:6px 10px}.schedule-hd .travel-hills{height:84px}.schedule-hd .header-sync{border-color:#fff;color:#24789d}.schedule-hd .travel-actions{align-items:flex-start}
 /* ===================== 我的页 · 高原旅行资料册 ===================== */
 .my-hd{position:relative;top:auto;height:184px;padding:22px 18px;background:#378add;align-items:flex-start;overflow:hidden;box-shadow:none}
 .my-hd .t,.my-hd .sw{position:relative;z-index:1}
@@ -404,7 +379,7 @@ function valOf(p,k){return (p&&p[k]!=null)?String(p[k]):"";}
 /* ============== SPLASH ============== */
 function renderSplash(){
   app.style.background='var(--bg)';
-  app.classList.remove('entered');
+  app.classList.remove('entered','schedule-shell');
   const bg=document.querySelector('.bg-layer'); if(bg) bg.style.display='none';
   app.innerHTML = `
   <div class="splash home-splash">
@@ -497,7 +472,7 @@ function checkAdmin(){
 /* ============== MAIN RENDER ============== */
 function render(){
   if(!ctx.role){renderSplash();return;}
-  app.style.background='#fafbfc';
+  app.style.background=ctx.tab==="schedule"?'#ffffff':'#fafbfc';
   app.classList.add('entered');
   const bg=document.querySelector('.bg-layer'); if(bg) bg.style.display='none';
   const isAdmin = ctx.role==="admin";
@@ -512,6 +487,10 @@ function render(){
   else if(ctx.tab==="me") body = memberHome();
 
   const isMemberHome=!isAdmin && (ctx.tab==="home"||ctx.tab==="me");
+  const isSchedule=ctx.tab==="schedule";
+  app.classList.toggle('schedule-shell',isSchedule);
+  const activeSchedule=(state.schedule&&state.schedule.length)?state.schedule[Math.min(ctx.schedDay||0,state.schedule.length-1)]:null;
+  const activeRoute=activeSchedule?scheduleRoute(activeSchedule):{km:""};
   const meta={
     schedule:isAdmin?{title:"行程管理",sub:"掌握每一段旅途节奏"}:{title:"行程",sub:"把每一段路，走成共同记忆"},
     groups:isAdmin?{title:"分组管理",sub:"让每位伙伴安心同行"}:{title:"同行伙伴",sub:"同车、同组，一起出发"},
@@ -526,9 +505,13 @@ function render(){
   const syncBtn = (isAdmin && SYNC_ENABLED) ? `<button class="header-sync" onclick="genSyncLink()">同步</button>` : "";
   const myMountains=`<svg class="my-hills" viewBox="0 0 430 112" preserveAspectRatio="none" aria-hidden="true"><path d="M0 112V73l66-37 48 31 58-53 81 70 51-36 126 58v6Z" fill="#85b7eb"/><path d="M0 112V89l61-41 49 33 61-51 75 65 63-39 121 59v7Z" fill="#185fa5"/><path d="M0 112c54-17 103-8 152-19 55-13 104-19 278-3v22Z" fill="#fafbfc"/></svg>`;
   const travelMountains=`<svg class="travel-hills" viewBox="0 0 430 68" preserveAspectRatio="none" aria-hidden="true"><path d="M0 68V47l66-26 44 20 58-34 75 45 64-28 123 39v5Z" fill="#85b7eb"/><path d="M0 68V57l63-27 45 19 62-32 70 41 67-28 123 34v4Z" fill="#185fa5"/><path d="M0 68c74-12 139-3 203-12 63-9 125-8 227 3v9Z" fill="#fafbfc"/></svg>`;
+  const scheduleMountains=`<svg class="travel-hills" viewBox="0 0 430 84" preserveAspectRatio="none" aria-hidden="true"><path d="M0 84V58l67-30 48 25 59-38 80 48 58-29 118 45v5Z" fill="#b9d59f"/><path d="M0 84V67l66-29 48 22 60-34 75 42 61-25 120 36v5Z" fill="#80c977"/><path d="M0 84c74-13 135-5 198-14 72-10 147-6 232 4v10Z" fill="#f1a06f"/></svg>`;
+  const scheduleMeta=activeSchedule?`${activeSchedule.date} · ${activeSchedule.week}${activeRoute.km?' · '+activeRoute.km:''}`:"行程已安排";
   const header=isMemberHome
     ? `<div class="hd my-hd"><span class="t">${title}</span>${sw}${gearBtn}${myMountains}</div>`
-    : `<div class="hd travel-hd"><div class="travel-header-copy"><span class="t">${esc(top.title)}</span><span class="travel-subtitle">${esc(top.sub)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${travelMountains}</div>`;
+    : isSchedule
+      ? `<div class="hd travel-hd schedule-hd"><div class="travel-header-copy"><span class="t">${esc(EVENT_TITLE)}</span><span class="travel-subtitle">今天，向山野出发</span><span class="schedule-header-meta">${esc(scheduleMeta)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${scheduleMountains}</div>`
+      : `<div class="hd travel-hd"><div class="travel-header-copy"><span class="t">${esc(top.title)}</span><span class="travel-subtitle">${esc(top.sub)}</span></div><div class="travel-actions">${sw}${gearBtn}${syncBtn}</div>${travelMountains}</div>`;
   app.innerHTML = `${header}<div class="page ${isMemberHome?'my-page':'travel-page'}">${body}</div>${tabbar()}`;
 }
 function switchRole(){ctx.role=null;ctx.tab="home";render();}
@@ -844,10 +827,13 @@ function scheduleView(){
   const d=state.schedule[ctx.schedDay];
   if(!d || !d.items) return `<div class="schedule-empty">行程数据异常</div>`;
   const r=scheduleRoute(d);
-  const routeBtn=(state.overview||[]).length?`<button class="route-toggle" onclick="toggleRouteOverview()">${ctx.routeOverview?'收起全程路线':'查看全程路线'}</button>`:"";
+  const routeBtn=(state.overview||[]).length?`<button class="route-toggle" onclick="toggleRouteOverview()">${ctx.routeOverview?'收起路线':'查看路线'}</button>`:"";
+  const reminder=d.tip?`<aside class="schedule-reminder"><span class="schedule-reminder-mark">i</span><div><strong>当日提醒</strong><span>${esc(d.tip)}</span></div></aside>`:"";
+  const routeScene=`<svg class="route-mountains" viewBox="0 0 394 160" preserveAspectRatio="none" aria-hidden="true"><circle cx="318" cy="34" r="19" fill="#ffe28a"/><path d="M0 116 L48 68 L94 99 L145 48 L198 98 L250 61 L304 101 L350 70 L394 104 L394 160 L0 160 Z" fill="#b9d59f"/><path d="M0 133 L50 96 L101 124 L156 78 L209 126 L262 88 L315 122 L363 98 L394 117 L394 160 L0 160 Z" fill="#80c977"/><path d="M0 145 C49 132 89 148 132 137 C184 124 223 150 268 138 C310 127 352 143 394 132 L394 160 L0 160 Z" fill="#f1a06f"/></svg>`;
+  const routeSummary=`<section class="route-summary">${routeScene}<div class="route-copy"><div class="route-title">${esc(d.week)} · ${scheduleStory(d)}</div><div class="route-subtitle">${esc(r.route)}</div>${r.km?`<div class="route-km">全程 ${esc(r.km)}</div>`:""}</div>${routeBtn}</section>`;
   const timeline=`<section class="schedule-timeline" aria-label="${esc(d.week)} 当日时间线">${d.items.map((it,i)=>scheduleTimelineItem(it,i,isAdmin)).join("")}</section>`;
   const adminControls=isAdmin?`<div class="schedule-admin-add"><button class="btn" onclick="addSchedItem(${ctx.schedDay})">新增时段</button></div><button class="btn schedule-add-day" onclick="editSchedDay(-1)">新增一天行程</button>`:"";
-  return `<div class="schedule-page"><section class="route-summary"><div class="route-title">${esc(d.week)} · ${scheduleStory(d)}</div><div class="route-subtitle">${esc(d.date)}｜${esc(r.route)}${r.km?'｜'+esc(r.km):''}</div>${routeBtn}</section>${scheduleRouteDrawer()}${scheduleTabs()}${timeline}${adminControls}</div>`;
+  return `<div class="schedule-page">${routeSummary}${scheduleRouteDrawer()}${scheduleTabs()}<div class="schedule-section-head"><h2>今日路线</h2>${(state.overview||[]).length?`<button class="schedule-section-link" onclick="toggleRouteOverview()">${ctx.routeOverview?'收起路线':'路线入口 ↗'}</button>`:""}</div>${timeline}${reminder}${adminControls}</div>`;
 }
 function editSchedDay(di){
   const d = di<0?{date:'',week:'',title:'',tip:''}:state.schedule[di];
